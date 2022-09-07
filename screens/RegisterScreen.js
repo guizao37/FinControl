@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/core'
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import styles from './styles'
-import config from '../config/config.json'
+import React, {useState, useEffect} from 'react'
+import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import styleRegister from '../styles/styleRegister'
+import * as Animatable from 'react-native-animatable'
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState('')
@@ -38,60 +38,62 @@ const RegisterScreen = () => {
   const navigation = useNavigation()
 
   const backToHome = () => {
-      navigation.replace("Login")
+      navigation.goBack();
   }
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior="height"
-      enabled
+    <Animatable.View
+    animation="fadeInRight"
+    style={styleRegister.container}
+    behavior="height"
+    enabled
+  >
+    <View
+    style={styleRegister.containerTexto}>
+      <Text style={styleRegister.textoPrincipal}> Crie sua conta </Text>
+    </View>
+    <View
+    style={styleRegister.containerRegister}
     >
-
-      <View style={styles.inputContainer}>
-      <Text>{mensagem}</Text> 
+      <Text style={styleRegister.textFormulario}>
+        Nome
+      </Text>
       <TextInput
-          placeholder="Nome"
-          placeholderTextColor='#878787'
-          value={nome}
-          onChangeText={text => setNome(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="E-mail"
-          placeholderTextColor='#878787'
-          value={email}
-          onChangeText={text => setEmail(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Senha"
-          placeholderTextColor='#878787'
-          value={password}
-          onChangeText={text => setPassword(text)}
-          style={styles.input}
-          secureTextEntry
-        />
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={handleSignUp}
-          style={[styles.button, styles.buttonOutline]}
-        >
-          <Text style={styles.buttonOutlineText}>Registrar</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-        style={styles.resetPassword}
-        onPress={backToHome}>
-          <Text style={styles.textResetPassword}>
-            VOLTAR
-          </Text>
-        </TouchableOpacity>
-
-      </View>
-    </KeyboardAvoidingView>
+      style={styleRegister.textoInput}
+      placeholder="Insira seu nome."
+      placeholderTextColor="#959595"
+      />
+      <Text style={styleRegister.textFormulario}>
+        E-mail
+      </Text>
+      <TextInput
+      style={styleRegister.textoInput}
+      placeholder="Insira seu e-mail."
+      placeholderTextColor="#959595"
+      />
+      <Text style={styleRegister.textFormulario}>
+        Senha
+      </Text>
+      <TextInput 
+      style={styleRegister.textoInput}
+      placeholder="Insira sua senha."
+      placeholderTextColor="#959595"
+      />
+      <Text style={styleRegister.textFormulario}>
+        Confirme a senha
+      </Text>
+      <TextInput 
+      style={styleRegister.textoInput}
+      placeholder="Insira sua senha novamente."
+      placeholderTextColor="#959595"
+      />
+      <TouchableOpacity
+      style={styleRegister.botaoRegister}
+      >
+        <Text>Registrar</Text>
+      </TouchableOpacity>
+    </View>
+  </Animatable.View>
   )
 }
 

@@ -9,12 +9,7 @@ export default function Settings() {
   const navigation = useNavigation()
 
   const handleSignOut = () => {
-    auth
-      .signOut()
-      .then(() => {
-        navigation.replace("Login")
-      })
-      .catch(error => alert(error.message))
+    navigation.navigate("Login")
   }
   return (
     <View style={styles.container}>
