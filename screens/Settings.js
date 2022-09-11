@@ -14,10 +14,6 @@ export default function Settings() {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.settingsButton}>
-      <Image
-        style={styles.user}
-        source={require('../assets/user.png')}
-      />
         <Text style={styles.settingsText}>
           Meus dados
         </Text>

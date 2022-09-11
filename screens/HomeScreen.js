@@ -6,6 +6,9 @@ import Dashboard from '../screens/Dashboard'
 import Planning from '../screens/Planning'
 import Settings from '../screens/Settings'
 import StackFinance from './StackFinance'
+import Patrimonio from './Patrimonio'
+import styleTabNavigator from '../styles/styleTabNavigator'
+import * as COLORS from '../styles/cores.json';
 
 const HomeScreen = () => {
 
@@ -17,14 +20,24 @@ const HomeScreen = () => {
     <Tab.Navigator
     initialRouteName="Dashboard"
     screenOptions={{
-      tabBarShowLabel: false
-    }}>
+      tabBarShowLabel: false,
+      tabBarStyle: styleTabNavigator.tabNavigator
+    }}
+    >
 
         <Tab.Screen
         name='Dashboard'
         component={Dashboard}
         options={{
-          tabBarIcon: () => (<Image source={require("../assets/aumentar.png")} style={{width: 35, height: 35}} />),
+          tabBarIcon: ({focused}) => (<Image source={require("../assets/home.png")} style={{width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : 'black'}} />),
+        }}
+        />
+
+        <Tab.Screen
+        name='Patrimonio'
+        component={Patrimonio}
+        options={{
+          tabBarIcon: ({focused}) => (<Image source={require("../assets/patrimonio.png")} style={{width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : 'black'}} />),
         }}
         />
 
@@ -32,17 +45,16 @@ const HomeScreen = () => {
         name='StackFinance'
         component={StackFinance}
         options={{
-          tabBarIcon: () => (<Image source={require("../assets/finances.png")} style={{width: 35, height: 35}} />),
+          tabBarIcon: ({focused}) => (<Image source={require("../assets/finance.png")} style={{width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : 'black'}} />),
           headerShown: false
         }}
         />
-
 
         <Tab.Screen
         name='Planning'
         component={Planning}
         options={{
-          tabBarIcon: () => (<Image source={require("../assets/planning.png")} style={{width: 35, height: 35}} />)
+          tabBarIcon: ({focused}) => (<Image source={require("../assets/planning.png")} style={{width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : 'black'}} />)
         }}
         />
 
@@ -50,7 +62,7 @@ const HomeScreen = () => {
         name='Settings'
         component={Settings}
         options={{
-          tabBarIcon: () => (<Image source={require("../assets/setting.png")} style={{width: 35, height: 35}}  />)
+          tabBarIcon: ({focused}) => (<Image source={require("../assets/settings.png")} style={{width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : 'black'}}  />)
       }}
       />
 
