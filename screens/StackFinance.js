@@ -19,11 +19,16 @@ export default function StackFinance() {
         component={Finances}
         options={{
           title: 'Finanças',
+          headerShown: false
         }}
       />
       <Stack.Screen
         name="Despesa"
         component={Despesa}
+      />
+      <Stack.Screen
+        name="Receita"
+        component={Receita}
       />
     </Stack.Navigator>
   );

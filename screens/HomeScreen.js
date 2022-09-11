@@ -9,6 +9,7 @@ import StackFinance from './StackFinance'
 import Patrimonio from './Patrimonio'
 import styleTabNavigator from '../styles/styleTabNavigator'
 import * as COLORS from '../styles/cores.json';
+import { color } from 'react-native-elements/dist/helpers'
 
 const HomeScreen = () => {
 
@@ -20,24 +21,24 @@ const HomeScreen = () => {
     <Tab.Navigator
     initialRouteName="Dashboard"
     screenOptions={{
-      tabBarShowLabel: false,
-      tabBarStyle: styleTabNavigator.tabNavigator
+      tabBarStyle: styleTabNavigator.tabNavigator,
+      tabBarShowLabel: false
     }}
     >
 
         <Tab.Screen
-        name='Dashboard'
+        name='Início'
         component={Dashboard}
         options={{
-          tabBarIcon: ({focused}) => (<Image source={require("../assets/home.png")} style={{width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : 'black'}} />),
+          tabBarIcon: ({focused}) => (<Image source={require("../assets/home.png")} style={{top: 10, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : 'black'}} />),
         }}
         />
 
         <Tab.Screen
-        name='Patrimonio'
+        name='Patrimônio'
         component={Patrimonio}
         options={{
-          tabBarIcon: ({focused}) => (<Image source={require("../assets/patrimonio.png")} style={{width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : 'black'}} />),
+          tabBarIcon: ({focused}) => (<Image source={require("../assets/patrimonio.png")} style={{top: 10, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : 'black'}} />),
         }}
         />
 
@@ -45,24 +46,25 @@ const HomeScreen = () => {
         name='StackFinance'
         component={StackFinance}
         options={{
-          tabBarIcon: ({focused}) => (<Image source={require("../assets/finance.png")} style={{width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : 'black'}} />),
-          headerShown: false
+          tabBarIcon: ({focused}) => (<Image source={require("../assets/finance.png")} style={{top: 10, bottom: 5, width: 40, height: 40, tintColor: focused ? COLORS.PRIMARY_COLOR : 'black'}} />),
+          headerShown: false,
+          tabBarLabel: ''
         }}
         />
 
         <Tab.Screen
-        name='Planning'
+        name='Planejamento'
         component={Planning}
         options={{
-          tabBarIcon: ({focused}) => (<Image source={require("../assets/planning.png")} style={{width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : 'black'}} />)
+          tabBarIcon: ({focused}) => (<Image source={require("../assets/planning.png")} style={{top: 10, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : 'black'}} />)
         }}
         />
 
         <Tab.Screen
-        name='Settings'
+        name='Ajustes'
         component={Settings}
         options={{
-          tabBarIcon: ({focused}) => (<Image source={require("../assets/settings.png")} style={{width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : 'black'}}  />)
+          tabBarIcon: ({focused}) => (<Image source={require("../assets/settings.png")} style={{top: 10, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : 'black'}}  />)
       }}
       />
 

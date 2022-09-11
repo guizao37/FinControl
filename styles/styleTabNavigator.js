@@ -7,9 +7,8 @@ const styleTabNavigator = StyleSheet.create({
         bottom: 25,
         left: 20,
         right: 20,
-        elevation: 0,
         borderRadius: 15,
-        height: 90
+        height: 70
     }
 })
 
