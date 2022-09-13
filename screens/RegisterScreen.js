@@ -6,39 +6,27 @@ import styleRegister from '../styles/styleRegister'
 import * as Animatable from 'react-native-animatable'
 
 const RegisterScreen = () => {
+  const navigation = useNavigation();
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [nome, setNome] = useState('')
   const [mensagem, setMensagem] = useState('')
   
-  const handleSignUp = () => {
+  const registerButton = () => {
     setMensagem("")
-    if (password.length <8) {
-      setMensagem("A senha deve ter 8 ou mais caracteres.")
-    } else {
-    axios.post("http://localhost:3001/create", {
+    axios.get("http://127.0.0.1:3001/create", {
       nomeUsuario: nome,
       senhaUsuario: password,
       emailUsuario: email.toLowerCase(),
     }).then(function (response) {
       if (response.status == 200){
         setMensagem("Esse e-mail já está cadastrado.")
-      } else {
-        setEmail("")
-        setNome("")
-        setPassword("")
       }
     })
     .catch(function (error) {
       console.error(error);
     });
-  }
-  }
-
-  const navigation = useNavigation()
-
-  const backToHome = () => {
-      navigation.goBack();
   }
 
   return (
@@ -55,6 +43,7 @@ const RegisterScreen = () => {
     <View
     style={styleRegister.containerRegister}
     >
+      <Text> {mensagem} </Text>
       <Text style={styleRegister.textFormulario}>
         Nome
       </Text>
@@ -78,6 +67,7 @@ const RegisterScreen = () => {
       style={styleRegister.textoInput}
       placeholder="Insira sua senha."
       placeholderTextColor="#959595"
+      secureTextEntry={true}
       />
       <Text style={styleRegister.textFormulario}>
         Confirme a senha
@@ -86,12 +76,16 @@ const RegisterScreen = () => {
       style={styleRegister.textoInput}
       placeholder="Insira sua senha novamente."
       placeholderTextColor="#959595"
+      secureTextEntry={true}
       />
+
       <TouchableOpacity
       style={styleRegister.botaoRegister}
+      onPress={registerButton}
       >
         <Text>Registrar</Text>
       </TouchableOpacity>
+
     </View>
   </Animatable.View>
   )

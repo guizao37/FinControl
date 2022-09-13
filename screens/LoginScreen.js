@@ -10,10 +10,6 @@ const LoginScreen = () => {
 
   const navigation = useNavigation()
 
-  const handleLogin = () => {
-    navigation.navigate("Home")
-  }
-
   return (
     <Animatable.View
       animation="fadeInRight"
@@ -46,7 +42,7 @@ const LoginScreen = () => {
         />
         <TouchableOpacity
         style={styleLogin.botaoLogin}
-        onPress={handleLogin}
+        onPress={()=>{navigation.navigate("Home")}}
         >
           <Text>Entrar</Text>
         </TouchableOpacity>

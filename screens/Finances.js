@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, RefreshControl, ScrollView } from 'react-native';
 import styleFinance from '../styles/styleFinance';
 import { useNavigation } from '@react-navigation/native';
 
@@ -17,7 +17,6 @@ export default function Finances() {
 
   return (
     <View style={styleFinance.container}>
-
       <View style={styleFinance.containerList}>
         <Text style={styleFinance.textoPrincipal}>Extrato</Text>
         <Text style={styleFinance.textoExtrato}>R$4.500,00</Text>
