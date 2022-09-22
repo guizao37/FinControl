@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native"
 import * as COLORS from './cores.json';
 
-const styleReceita = StyleSheet.create({ 
+const styleDespesa = StyleSheet.create({ 
     container: {
         flex: 1,
         alignItems: 'center'
@@ -44,4 +44,4 @@ const styleReceita = StyleSheet.create({
     }
 })
 
-export default styleReceita;
+export default styleDespesa;

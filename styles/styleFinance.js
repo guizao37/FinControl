@@ -12,7 +12,8 @@ const styleFinance = StyleSheet.create({
         fontSize: 35
     },
     containerList:{
-        margin: '5%',
+        marginLeft: '5%',
+        marginBottom: '5%',
         width: "90%",
         borderRadius: 10,
         backgroundColor: 'white',
@@ -21,8 +22,7 @@ const styleFinance = StyleSheet.create({
     add: {
         width: 40,
         height: 40,
-        position: "absolute",
-        left: "90%"
+        position: "absolute"
     },
     touchableOpacity: {
         position: "absolute",
@@ -35,6 +35,19 @@ const styleFinance = StyleSheet.create({
     textoExtrato: {
         fontSize: 30,
         fontWeight: '500',
+    },
+    items:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    containerList:{
+        marginLeft: '5%',
+        marginBottom: '5%',
+        width: "90%",
+        borderRadius: 10,
+        backgroundColor: 'white',
+        padding: "1%"
     }
 })
 
