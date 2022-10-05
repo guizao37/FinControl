@@ -112,6 +112,7 @@ const RegisterScreen = () => {
         Nome
       </Text>
       <TextInput
+      maxLength={200}
       onChangeText={(value) => setNome(value)}
       style={styleRegister.textoInput}
       placeholder="Insira seu nome."
@@ -121,6 +122,7 @@ const RegisterScreen = () => {
         E-mail
       </Text>
       <TextInput
+      maxLength={200}
       onChangeText={(value) => setEmail(value)}
       style={styleRegister.textoInput}
       placeholder="Insira seu e-mail."
