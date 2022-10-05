@@ -3,6 +3,7 @@ const app = express();
 const mysql = require('mysql')
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const port = 3301;
 
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:false}))
@@ -16,15 +17,38 @@ const db = mysql.createPool({
     database: 'mydb'
 })
 
-app.get("/create", async(req,res)=>{
-    let findEmail = "SELECT * FROM USUARIO WHERE Email = '" + req.body.emailUsuario + "';"
+app.post("/create", async(req,res)=>{
+    const email = "'" + req.body.email + "'"
+    console.log(email)
+    const senha = "'" + req.body.senha + "'"
+    console.log(senha)
+    const nome = "'" + req.body.nome + "'"
+    console.log(nome)
+    const findEmail = "SELECT * FROM USUARIO WHERE Email =" + email + ";"
     db.query(findEmail, (err, results) => {
-        numRows = results.length;
-        console.log(results)
-        console.log(numRows)
+        var numRows = results.length;
+        if (numRows==0) {
+            let registerUser = "INSERT INTO usuario (Nome, Email, Senha) VALUES (" + nome + "," + email  + "," + senha + ");"
+            console.log(registerUser)
+            db.query(registerUser, (err, results)=>{
+                console.log(results)
+                var rows = results.affectedRows;
+                if (rows = 1) {
+                    res.status(200).send("Cadastrado com sucesso.")
+                    console.log("Cadastrado com sucesso.")
+                } else {
+                    res.status(400).send("Deu errado")
+                }
+            })
+        } else {
+            res.status(400).send("Usuário já cadastrado.")
+            console.log("Usuário já cadastrado.")
+        }
     })
 })
 
-app.listen(3001, () => {
-    console.log('Servidor rodando na porta 3001')
+
+
+app.listen(port, () => {
+    console.log('Servidor rodando na porta ' + port)
 })

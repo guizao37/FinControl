@@ -7,7 +7,6 @@ import * as Animatable from "react-native-animatable"
 const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
   const navigation = useNavigation()
 
   return (
@@ -42,7 +41,7 @@ const LoginScreen = () => {
         />
         <TouchableOpacity
         style={styleLogin.botaoLogin}
-        onPress={()=>{navigation.navigate("Home")}}
+        onPress={() => { }}
         >
           <Text>Entrar</Text>
         </TouchableOpacity>
