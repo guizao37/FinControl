@@ -66,13 +66,19 @@ const RegisterScreen = () => {
     }
   };
 
+  const limpaCampos = () => {
+    setNome('');
+    setEmail('');
+    setConfirmPassword('');
+    setPassword('');
+  }
 
   const createUser = () => {
     checkCampos();
     checkPassword();
     checkEmail();
     if (checkCampos() && checkPassword() && checkEmail()){
-      fetch('http://localhost:3301/create', 
+      fetch('http://localhost:3301/register', 
     {
       method: 'POST',
       body: JSON.stringify({
@@ -86,6 +92,7 @@ const RegisterScreen = () => {
 }).then((response) => {
       if (response.status == 200) {
         setMsg("Usuário cadastrado com sucesso.")
+        limpaCampos();
       } else {
         setMsg("Usuário já cadastrado.")
       }
@@ -113,6 +120,7 @@ const RegisterScreen = () => {
       </Text>
       <TextInput
       maxLength={200}
+      value = {nome}
       onChangeText={(value) => setNome(value)}
       style={styleRegister.textoInput}
       placeholder="Insira seu nome."
@@ -123,6 +131,7 @@ const RegisterScreen = () => {
       </Text>
       <TextInput
       maxLength={200}
+      value= {email}
       onChangeText={(value) => setEmail(value)}
       style={styleRegister.textoInput}
       placeholder="Insira seu e-mail."
@@ -132,7 +141,8 @@ const RegisterScreen = () => {
       style={styleRegister.textFormulario}>
         Senha
       </Text>
-      <TextInput 
+      <TextInput
+      value={password}
       maxLength={32}
       onChangeText={(value) => setPassword(value)}
       style={styleRegister.textoInput}
@@ -145,6 +155,7 @@ const RegisterScreen = () => {
       </Text>
       <TextInput
       maxLength={32}
+      value={confirmPassword}
       onChangeText={(value)=>setConfirmPassword(value)}
       style={styleRegister.textoInput}
       placeholder="Insira sua senha novamente."

@@ -1,4 +1,6 @@
 const express = require('express')
+const session = require('express-session')
+
 const app = express();
 const mysql = require('mysql')
 const cors = require('cors');
@@ -8,6 +10,11 @@ const port = 3301;
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
+app.use(session({
+    secret:"JoaoMandriao",
+    saveUninitialized: true,
+    resave: true
+}))
 
 const db = mysql.createPool({
     host: "127.0.0.1",
@@ -17,7 +24,7 @@ const db = mysql.createPool({
     database: 'mydb'
 })
 
-app.post("/create", async(req,res)=>{
+app.post("/register", async(req,res)=>{
     const email = "'" + req.body.email + "'"
     console.log(email)
     const senha = "'" + req.body.senha + "'"
@@ -47,6 +54,20 @@ app.post("/create", async(req,res)=>{
     })
 })
 
+app.post("/login", async(req,res)=>{
+    const email = req.body.email;
+    const senha = req.body.senha;
+    const validate = "SELECT * FROM USUARIO WHERE Email = '" + email + "' AND Senha = '" + senha + "'";
+    db.query(validate, (err, results)=>{
+        if (results.length > 0) {
+            console.log("Autenticado")
+            res.status(200).send("Logado")
+        } else {
+            console.log("Credenciais incorretas.")
+            res.status(400).send("Não logou.")
+        }
+    })
+})
 
 
 app.listen(port, () => {

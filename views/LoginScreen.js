@@ -7,7 +7,62 @@ import * as Animatable from "react-native-animatable"
 const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [msg, setMsg] = useState('')
   const navigation = useNavigation()
+
+  const limpaCampos = () => {
+    setEmail("");
+    setPassword("");
+  }
+
+  const checkEmail = () => {
+    const verifica = email.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+    if (verifica) {
+      setMsg('')
+      return true
+    } else {
+      setMsg("E-mail inválido.")
+      return false
+    }
+  };
+
+  const checkPassword = () => {
+    if (password.length<8) {
+      setMsg("A senha deve possuir 8 ou mais caracteres.")
+      return false
+    } else {
+      return true
+    }
+  }
+
+  const efetuaLogin = () => {
+    checkEmail();
+    checkPassword();
+    if (checkEmail() && checkPassword()){
+      fetch("http://localhost:3301/login",
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          email: email,
+          senha: password,
+    }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    }
+    }).then((response) => {
+      if (response.status == 200) {
+        setMsg("");
+        limpaCampos();
+        navigation.navigate("Home");
+      } else {
+        setMsg("As credenciais estão incorretas.")
+        limpaCampos();
+      }
+    })
+    }
+  }
 
   return (
     <Animatable.View
@@ -23,10 +78,14 @@ const LoginScreen = () => {
       <View
       style={styleLogin.containerLogin}
       >
+        <Text>{msg}</Text>
         <Text style={styleLogin.textFormulario}>
           E-mail
         </Text>
         <TextInput
+        maxLength={200}
+        value={email}
+        onChangeText={(value) => {setEmail(value)}}
         style={styleLogin.textoInput}
         placeholder="Insira seu e-mail."
         placeholderTextColor="#959595"
@@ -35,13 +94,17 @@ const LoginScreen = () => {
           Senha
         </Text>
         <TextInput 
+        value={password}
+        maxLength={32}
+        secureTextEntry = {true}
+        onChangeText={(value)=>{setPassword(value)}}
         style={styleLogin.textoInput}
         placeholder="Insira sua senha."
         placeholderTextColor="#959595"
         />
         <TouchableOpacity
         style={styleLogin.botaoLogin}
-        onPress={() => { }}
+        onPress={() => {efetuaLogin()}}
         >
           <Text>Entrar</Text>
         </TouchableOpacity>
