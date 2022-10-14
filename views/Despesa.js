@@ -1,7 +1,7 @@
 import React, { useState} from 'react';
 import { View, Text, TextInput, Button, KeyboardAvoidingView } from 'react-native';
 import styleDespesa from '../styles/styleDespesa'
-import DateTimePicker from '@react-native-community/datetimepicker'
+ 
 import { TouchableOpacity } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -71,14 +71,7 @@ export default function Despesa() {
         />
         <View style={{width: "80%", justifyContent: 'center'}}>
         <Text style={{position:'absolute', fontSize: 15}}>Selecione a data:</Text>
-        <DateTimePicker
-          style={{width:100, left:120}}
-          testID="dateTimePicker"
-          value={date}
-          mode={'date'}
-          is24Hour={true}
-          onChange={onChange}
-        />
+        
         </View>
         
         <DropDownPicker

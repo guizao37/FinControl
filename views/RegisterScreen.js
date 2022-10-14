@@ -133,7 +133,8 @@ const RegisterScreen = () => {
       placeholder="Insira seu e-mail."
       placeholderTextColor="#959595"
       />
-      <Text style={styleRegister.textFormulario}>
+      <Text
+      style={styleRegister.textFormulario}>
         Senha
       </Text>
       <TextInput

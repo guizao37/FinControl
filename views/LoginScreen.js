@@ -95,6 +95,10 @@ const LoginScreen = () => {
           Senha
         </Text>
         <TextInput 
+        value={password}
+        maxLength={32}
+        secureTextEntry = {true}
+        onChangeText={(value)=>{setPassword(value)}}
         style={styleLogin.textoInput}
         maxLength={32}
         secureTextEntry = {true}
