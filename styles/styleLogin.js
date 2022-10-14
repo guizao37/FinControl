@@ -3,50 +3,43 @@ import * as COLORS from './cores.json';
 
 const styleLogin = StyleSheet.create({ 
     container: {
-        backgroundColor: COLORS.PRIMARY_COLOR,
+        backgroundColor: COLORS.GRAY_900,
         flex: 1
-    },
-    containerLogin: {
-        flex: 5,
-        backgroundColor: "white",
-        borderTopStartRadius: 20,
-        borderTopEndRadius: 20,
-        paddingStart:"5%",
-        paddingEnd:"5%",
-        paddingTop: "5%"
-    },
-    containerTexto:{
-        flex: 1,
-        backgroundColor: COLORS.PRIMARY_COLOR,
-        marginTop: "10%",
-        justifyContent: "center",
-        alignItems: 'center'
     },
     textoPrincipal: {
         fontWeight: "bold",
-        fontSize: 35
+        fontSize: 32,
+        color: "#e1e1e6"
+    },
+    containerLogin:{
+        width: "80%"
     },
     textoInput:{
-        borderBottomWidth: 1,
         marginBottom: 20,
-        height: 40
+        height: 40,
+        backgroundColor: COLORS.GRAY_800,
+        borderRadius: 4,
+        padding: 12,
+        color: COLORS.GRAY_100
     },
     textFormulario:{
-        fontSize: 20,
-        marginTop: 10
-    },
-    botaoLogin: {
-        borderRadius: 15,
-        backgroundColor: COLORS.PRIMARY_COLOR,
-        height: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: "100%"
+        fontSize: 16,
+        marginBottom: 12,
+        color: COLORS.GRAY_100
     },
     resetPassword:{
         alignItems: 'center',
         justifyContent: 'center',
-        margin: "5%"
+        marginBottom: "5%",
+        
+    },
+    botaoLogin: {
+        backgroundColor: COLORS.PRIMARY_COLOR,
+        borderRadius: 4,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 12
     }
 })
 

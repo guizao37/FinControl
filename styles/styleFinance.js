@@ -5,7 +5,8 @@ const styleFinance = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: '10%',
-        width: "100%"
+        width: "100%",
+        backgroundColor: COLORS.GRAY_900,
     },
     textoPrincipal: {
         fontWeight: 'bold',
@@ -16,7 +17,7 @@ const styleFinance = StyleSheet.create({
         marginBottom: '5%',
         width: "90%",
         borderRadius: 10,
-        backgroundColor: 'white',
+        backgroundColor: COLORS.GRAY_900,
         padding: '1%'
     },
     add: {

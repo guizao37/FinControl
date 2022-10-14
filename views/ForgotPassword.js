@@ -1,8 +1,10 @@
 import { useNavigation } from '@react-navigation/core'
-import { Text, TextInput, TouchableOpacity, View, Button } from 'react-native'
+import { Text, TextInput, TouchableOpacity, View, Button, SafeAreaView } from 'react-native'
 import { useState } from 'react'
-import * as Animatable from 'react-native-animatable'
 import styleForgotPassword from '../styles/styleForgotPassword'
+import * as COLORS from '../styles/cores.json';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 
 export default function ForgotPassword (){
 
@@ -13,34 +15,28 @@ export default function ForgotPassword (){
       
     }
     return (
-      <Animatable.View
-      animation="fadeInRight"
+      <SafeAreaView
       style={styleForgotPassword.container}
-      behavior="height"
-      enabled
-    >
-      <View
-      style={styleForgotPassword.containerTexto}>
-        <Text style={styleForgotPassword.textoPrincipal}> Esqueci a senha </Text>
-      </View>
-      <View
-      style={styleForgotPassword.containerLogin}
       >
-        <Text style={styleForgotPassword.textFormulario}>
+        <Text style={{color: COLORS.GRAY_100, fontSize: 32, fontWeight: 'bold', marginBottom: 12}}>Recupere sua senha</Text>
+        <View
+        style={{width: "80%"}}
+        >
+        <Text style={{
+          fontSize: 16,
+          marginBottom: 12,
+          color: COLORS.GRAY_100
+        }}>
           E-mail
         </Text>
-        <TextInput 
+        <TextInput
         style={styleForgotPassword.textoInput}
-        placeholder="Insira seu e-mail."
-        placeholderTextColor="#959595"
-        />
-        <TouchableOpacity
-        style={styleForgotPassword.botaoLogin}
-        >
-          <Text>Alterar senha</Text>
+        placeholder='Insira seu e-mail'
+        /> 
+        <TouchableOpacity style={styleForgotPassword.botao}>
+          <Text style={{fontWeight: 'bold'}}>Enviar</Text>
         </TouchableOpacity>
-
-      </View>
-    </Animatable.View>
+        </View>
+      </SafeAreaView>
     )
   }
