@@ -8,10 +8,8 @@ const styleTabNavigator = StyleSheet.create({
         left: 20,
         right: 20,
         borderRadius: 20,
-        height: 70,
-        borderWidth: 1,
-        borderTopWidth: 1,
-        borderColor: 'white',
+        height: 65,
+        borderTopWidth: 0,
         backgroundColor: 'black',
     }
 })

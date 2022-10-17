@@ -1,54 +1,80 @@
 import { StyleSheet } from "react-native"
+import { colors, withTheme } from "react-native-elements";
 import * as COLORS from './cores.json';
 
 const styleFinance = StyleSheet.create({ 
-    container: {
+    container:{
         flex: 1,
-        marginTop: '10%',
-        width: "100%",
         backgroundColor: COLORS.GRAY_900,
     },
-    textoPrincipal: {
-        fontWeight: 'bold',
-        fontSize: 35
+    header:{
+        alignItems: 'center',
+        top: 42,
+        flex: 1
+    }, 
+    headerText: {
+        fontSize: 24,
+        color: COLORS.GRAY_100,
+        fontWeight: 'bold'
     },
-    containerList:{
-        marginLeft: '5%',
-        marginBottom: '5%',
-        width: "90%",
-        borderRadius: 10,
-        backgroundColor: COLORS.GRAY_900,
-        padding: '1%'
+    containerSaldo:{
+        borderWidth: 1,
+        borderColor: 'white',
+        marginTop: 40
     },
-    add: {
-        width: 40,
+    dataText:{
+        fontSize: 28,
+        color: COLORS.GRAY_100
+    },
+    containerReceitas:{
         height: 40,
-        position: "absolute"
+        margin: 20
     },
-    touchableOpacity: {
-        position: "absolute",
-        left:"90%",
-        marginTop: '1%'
+    containerDespesas:{
+        height: 40,
+        margin: 20
     },
-    extrato: {
+    containerDados:{
+        backgroundColor: COLORS.GRAY_800,
+        borderRadius: 16,
+        flex: 6,
         
     },
-    textoExtrato: {
-        fontSize: 30,
-        fontWeight: '500',
+    containerEntradas:{
+        justifyContent: "space-between",
+        flexDirection: "row"
     },
-    items:{
+    valorReceita:{
+        fontSize: 24,
+        color: '#71FF4B',
+        marginTop: 4
+    },
+    valorDespesa:{
+        fontSize: 24,
+        color: "#FF4B4B",
+        marginTop: 4
+    },
+    valorSaldo:{
+        fontSize: 32,
+        color: 'white',
+        fontWeight: 'bold'
+    },
+    textoSecundario:{
+        fontSize: 20,
+        color: COLORS.GRAY_100
+    },
+    viewExtrato:{
         flex: 1,
-        justifyContent: 'center',
+        marginTop: 20,
+        backgroundColor: 'rgb(31, 41, 55)',
+        borderRadius: 16,
         alignItems: 'center'
     },
-    containerList:{
-        marginLeft: '5%',
-        marginBottom: '5%',
-        width: "90%",
-        borderRadius: 10,
-        backgroundColor: 'white',
-        padding: "1%"
+    textExtrato:{
+        fontSize: 28,
+        color: COLORS.GRAY_100,
+        fontWeight: 'bold',
+        margin: 12
     }
 })
 

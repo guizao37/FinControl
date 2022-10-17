@@ -10,7 +10,7 @@ export default function StackFinance() {
     <Stack.Navigator
       initialRouteName="Finances"
       options={{
-        headerShown: false
+        headerShown: true
       }
       }
     >
@@ -18,17 +18,28 @@ export default function StackFinance() {
         name="Finances"
         component={Finances}
         options={{
-          title: 'Finanças',
-          headerShown: false
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="Despesa"
         component={Despesa}
+        options={{
+          headerShown: true,
+          statusBarHidden: true,
+          headerTransparent: true,
+          headerTitle: ''
+        }}
       />
       <Stack.Screen
         name="Receita"
         component={Receita}
+        options={{
+          headerShown: true,
+          statusBarHidden: true,
+          headerTransparent: true,
+          headerTitle: ''
+        }}
       />
     </Stack.Navigator>
   );

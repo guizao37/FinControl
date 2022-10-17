@@ -67,19 +67,15 @@ const LoginScreen = () => {
   }
 
   return (
-    <Animatable.View
-      animation="fadeInRight"
+    <View
       style={styleLogin.container}
-      behavior="height"
-      enabled
     >
       <View style={{justifyContent:'center', alignItems: 'center', marginBottom: 24}}>
         <Text style={styleLogin.textoPrincipal}> FinApp </Text>
         <Text style={{color:"#e1e1e6", fontSize: 18, fontWeight: 'bold'}}>Faça seu login e comece agora!</Text>
       </View>
-      <View style={styleLogin.containerLogin}
-      >
-        <Text>{msg}</Text>
+        <Text style={{marginBottom: 8, color: COLORS.GRAY_100}}>{msg}</Text>
+        <View style={{width: '80%'}}>
         <Text style={styleLogin.textFormulario}>
           E-mail
         </Text>
@@ -100,18 +96,16 @@ const LoginScreen = () => {
         secureTextEntry = {true}
         onChangeText={(value)=>{setPassword(value)}}
         style={styleLogin.textoInput}
-        maxLength={32}
-        secureTextEntry = {true}
-        onChangeText={(value)=>{setPassword(value)}}
         placeholder="Insira sua senha."
         placeholderTextColor="#959595"
         />
         <TouchableOpacity
         style={styleLogin.botaoLogin}
-        onPress={() => {efetuaLogin()}}
+        onPress={() => {navigation.navigate("Home")}}
         >
           <Text style={{fontWeight: 'bold'}}>Entrar</Text>
         </TouchableOpacity>
+        </View>
         <TouchableOpacity
         onPress={()=>{navigation.navigate("Esqueci a senha")}}
         style={styleLogin.resetPassword}
@@ -125,7 +119,6 @@ const LoginScreen = () => {
           <Text style={{color: COLORS.GRAY_100, textDecorationLine: 'underline'}}>Não tem conta? Registre-se agora.</Text>
         </TouchableOpacity>
       </View>
-    </Animatable.View>
   )
 }
 

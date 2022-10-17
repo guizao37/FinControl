@@ -30,7 +30,7 @@ const HomeScreen = () => {
         name='Início'
         component={Dashboard}
         options={{
-          tabBarIcon: ({focused}) => (<Image source={require("../assets/home.png")} style={{top: 10, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
+          tabBarIcon: ({focused}) => (<Image source={require("../assets/home.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
         }}
         />
 
@@ -38,7 +38,7 @@ const HomeScreen = () => {
         name='Patrimônio'
         component={Patrimonio}
         options={{
-          tabBarIcon: ({focused}) => (<Image source={require("../assets/patrimonio.png")} style={{top: 10, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
+          tabBarIcon: ({focused}) => (<Image source={require("../assets/patrimonio.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
         }}
         />
 
@@ -46,9 +46,8 @@ const HomeScreen = () => {
         name='StackFinance'
         component={StackFinance}
         options={{
-          tabBarIcon: ({focused}) => (<Image source={require("../assets/finance.png")} style={{top: 10, bottom: 5, width: 40, height: 40, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
-          headerShown: false,
-          tabBarLabel: ''
+          tabBarIcon: ({focused}) => (<Image source={require("../assets/finance.png")} style={{top: 13, bottom: 5, width: 40, height: 40, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
+          headerShown: false
         }}
         />
 
@@ -56,7 +55,7 @@ const HomeScreen = () => {
         name='Planejamento'
         component={Planning}
         options={{
-          tabBarIcon: ({focused}) => (<Image source={require("../assets/planning.png")} style={{top: 10, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />)
+          tabBarIcon: ({focused}) => (<Image source={require("../assets/planning.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />)
         }}
         />
 
@@ -64,7 +63,7 @@ const HomeScreen = () => {
         name='Ajustes'
         component={Settings}
         options={{
-          tabBarIcon: ({focused}) => (<Image source={require("../assets/settings.png")} style={{top: 10, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}}  />)
+          tabBarIcon: ({focused}) => (<Image source={require("../assets/settings.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}}  />)
       }}
       />
 

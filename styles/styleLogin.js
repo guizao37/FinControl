@@ -4,7 +4,9 @@ import * as COLORS from './cores.json';
 const styleLogin = StyleSheet.create({ 
     container: {
         backgroundColor: COLORS.GRAY_900,
-        flex: 1
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     textoPrincipal: {
         fontWeight: "bold",
