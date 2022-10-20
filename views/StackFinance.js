@@ -25,20 +25,14 @@ export default function StackFinance() {
         name="Despesa"
         component={Despesa}
         options={{
-          headerShown: true,
-          statusBarHidden: true,
-          headerTransparent: true,
-          headerTitle: ''
+          headerShown: false
         }}
       />
       <Stack.Screen
         name="Receita"
         component={Receita}
         options={{
-          headerShown: true,
-          statusBarHidden: true,
-          headerTransparent: true,
-          headerTitle: ''
+          headerShown: false
         }}
       />
     </Stack.Navigator>

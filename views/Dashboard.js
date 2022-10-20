@@ -1,11 +1,12 @@
 import React from 'react';
+import { SafeAreaView } from 'react-native';
 import { View, Text } from 'react-native';
-import styles from './styles';
+import styleDashboard from '../styles/styleDashboard';
 
-export default function Dashboard() {
+export default function Dashboard({email}) {
   return (
-    <View style={styles.container}>
-      <Text>Dashboard</Text>
-     </View>
+    <SafeAreaView style={styleDashboard.container}>
+      <Text style={{color: 'white'}}>{email}</Text>
+     </SafeAreaView>
   );
 }

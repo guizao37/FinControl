@@ -5,12 +5,11 @@ import styleLogin from '../styles/styleLogin'
 import * as Animatable from "react-native-animatable"
 import * as COLORS from '../styles/cores.json';
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
 
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState('')
   const [msg, setMsg] = useState('')
-  const navigation = useNavigation()
 
   const limpaCampos = () => {
     setEmail("");
@@ -39,6 +38,13 @@ const LoginScreen = () => {
     }
   }
 
+  const teste = () => {
+    navigation.navigate("Home",
+        {
+          email: "Guilherme"
+        })
+  }
+
   const efetuaLogin = () => {
     checkEmail();
     checkPassword();
@@ -57,7 +63,10 @@ const LoginScreen = () => {
       if (response.status == 200) {
         setMsg("");
         limpaCampos();
-        navigation.navigate("Home");
+        navigation.navigate("Home",
+        {
+          paramKey: email
+        });
       } else {
         setMsg("As credenciais estão incorretas.")
         limpaCampos();
@@ -101,7 +110,7 @@ const LoginScreen = () => {
         />
         <TouchableOpacity
         style={styleLogin.botaoLogin}
-        onPress={() => {navigation.navigate("Home")}}
+        onPress={() => {teste()}}
         >
           <Text style={{fontWeight: 'bold'}}>Entrar</Text>
         </TouchableOpacity>

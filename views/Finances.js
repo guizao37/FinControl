@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, StatusBar, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, StatusBar, ScrollView, Touchable } from 'react-native';
 import styleFinance from '../styles/styleFinance';
 import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -8,16 +8,24 @@ import * as COLORS from '../styles/cores.json';
 
 export default function Finances() {
 
+  const addReceitas = () =>{
+    navigation.navigate("Receita")
+  }
+
+  const addDespesas = () =>{
+    navigation.navigate("Despesa")
+  }
+
   const ListHeader = () => {
     return (
       <View style={{flexDirection: 'row', justifyContent: 'space-between', width: 400}}>
-        <Text style={{color: COLORS.GRAY_100, fontWeight: 'bold', fontSize: 16}}>
+        <Text style={{color: COLORS.GRAY_400, fontWeight: 'bold', fontSize: 16, marginLeft: 4}}>
           Data                  
         </Text>
-        <Text style={{color: COLORS.GRAY_100, fontWeight: 'bold', fontSize: 16}}>
+        <Text style={{color: COLORS.GRAY_400, fontWeight: 'bold', fontSize: 16}}>
           Valor
         </Text>
-        <Text style={{color: COLORS.GRAY_100, fontWeight: 'bold', fontSize: 16}}>
+        <Text style={{color: COLORS.GRAY_400, fontWeight: 'bold', fontSize: 16}}>
           Categoria
         </Text>
       </View>
@@ -25,8 +33,6 @@ export default function Finances() {
   };
 
   const Extrato = () => {
-
-    const valor = formatarMoeda(12345678)
 
     const data = [
       {id: 1, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Lazer', tipo: 'despesa'},
@@ -48,7 +54,7 @@ export default function Finances() {
       {id: 16, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Lazer', tipo: 'despesa'},
       {id: 17, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Salário', tipo: 'receita'},
       {id: 18, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Compras', tipo: 'despesa'},
-      {id: 19, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Educação', tipo: 'despesa'},
+      {id: 19, data: "17/10/2022", valor: "R$" + formatarMoeda(12312145), categoria: 'Educação', tipo: 'despesa'},
       {id: 20, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Lazer', tipo: 'despesa'},
       {id: 21, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Salário', tipo: 'receita'},
       {id: 22, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Compras', tipo: 'despesa'},
@@ -57,14 +63,14 @@ export default function Finances() {
 
     const item = ({ item }) => (
       <View style={{ flexDirection: 'row', paddingBottom: 5, paddingTop: 5 }}>
-          <View style={{marginRight: 60}}>
-              <Text style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center', color: item.tipo == 'receita' ? '#71FF4B' : '#FF4B4B'}}>{item.data}</Text>
+          <View style={{marginRight: 40, marginLeft: 4}}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center', color: COLORS.GRAY_100}}>{item.data}</Text>
           </View>
-          <View style={{marginRight: 100}}>
-              <Text style={{ fontSize: 16, fontWeight: 'bold' , textAlign: 'center', color: item.tipo == 'receita' ? '#71FF4B' : '#FF4B4B'}}>{item.valor}</Text>
+          <View style={{marginRight: 75, width: 120}}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold' , textAlign: 'center', color: COLORS.GRAY_100}}>{item.tipo=='despesa' ? "-" : "+"} {item.valor}</Text>
           </View>
-          <View>
-              <Text style={{ fontSize: 16, fontWeight: 'bold' , textAlign: 'center', color: item.tipo == 'receita' ? '#71FF4B' : '#FF4B4B'}}>{item.categoria}</Text>
+          <View >
+              <Text style={{ fontSize: 16, fontWeight: 'bold' , textAlign: 'center', color: COLORS.GRAY_100}}>{item.categoria}</Text>
           </View>
       </View>
   )
@@ -101,13 +107,17 @@ export default function Finances() {
       <View style={styleFinance.containerEntradas}>
 
         <View style={styleFinance.containerReceitas}>
-         <Text style={styleFinance.textoSecundario}>Receitas</Text>
-          <Text style={styleFinance.valorReceita}>R$ {formatarMoeda(12345678)}</Text>
+          <TouchableOpacity onPress={() => {addReceita()}}>
+            <Text style={styleFinance.textoSecundario}>Receitas</Text>
+            <Text style={styleFinance.valorReceita}>R$ {formatarMoeda(12345678)}</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styleFinance.containerDespesas}>
-          <Text style={styleFinance.textoSecundario}>Despesas</Text>
-          <Text style={styleFinance.valorDespesa}>R$ {formatarMoeda(12345678)}</Text>
+          <TouchableOpacity onPress={() => {addDespesa()}}>
+            <Text style={styleFinance.textoSecundario}>Despesas</Text>
+            <Text style={styleFinance.valorDespesa}>R$ {formatarMoeda(12345678)}</Text>
+          </TouchableOpacity>
         </View>
       </View>
       

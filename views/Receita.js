@@ -1,23 +1,16 @@
 import React, { useState} from 'react';
-import { View, Text, TextInput, Button, KeyboardAvoidingView } from 'react-native';
-import styleReceita from '../styles/styleReceita';
-
-import { TouchableOpacity } from 'react-native';
+import { 
+  View,
+  Text, 
+  TextInput, 
+  TouchableOpacity, 
+  SafeAreaView } from 'react-native';
+import styleAdd from '../styles/styleAdd';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import * as COLORS from "../styles/cores.json"
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function Receita() {
-
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    {label: 'Venda', value: 'venda'},
-    {label: 'Salário', value: 'salario'},
-    {label: 'Dividendos', value: 'dividendos'},
-    {label: 'Aluguel', value: 'aluguel'},
-    {label: 'Outra', value: 'outra'}
-  ]);
-
-  const [valor, setValor] = useState(0)
 
   function formatarMoeda(valor) {
     valor = valor + '';
@@ -34,57 +27,132 @@ export default function Receita() {
     return valor;
 }
 
-  //DATEPICKER
+  const Header = () => {
 
-  const [date, setDate] = useState(new Date())
+    return (
+      <View style={styleAdd.header}>
+        <Text style={styleAdd.textHeader}>
+          Nova receita
+        </Text>
+      </View>
+    )
+  }
 
-  const onChange = (event, selectedDate) => {
+  const Form = () => {
+
+    const [mode, setMode] = useState('date');
+    const [show, setShow] = useState(false);
+    const [valor, setValor] = useState(0)
+    const [date, setDate] = useState(new Date())
+
+    const [description, setDescription] = useState("")
+    const [categoria, setCategoria] = useState("")
+    const [categorias, setCategorias] = useState([
+      {label: 'Salário', value: 'salario'},
+      {label: 'Empréstimo', value: 'emprestimo'},
+      {label: 'Bônus', value: 'bonus'},
+      {label: 'Rendimento', value: 'rendimento'},
+      {label: 'Dividendos', value: 'dividendos'},
+      {label: 'Venda', value: 'venda'},
+      {label: 'Outras rendas', value: 'outro'}
+    ]);
+    const [open, setOpen] = useState(false)
+
+    const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
+    setShow(false);
     setDate(currentDate);
-    var SQLDate = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear()
-    console.log(SQLDate)
   };
 
-  //PICKER 
-  const [categoria, setCategoria] = useState('selecione');
+  const showDatepicker = () => {
+    if (show == false) { 
+      setShow(true)
+    } else {
+      setShow(false)
+    }
+  };
+
+    return (
+      <View style={styleAdd.form}>
+        <Text style={styleAdd.label}>
+          Qual o valor?
+        </Text>
+        <TextInput
+        maxLength={12}
+        style={styleAdd.input}
+        value= {"R$"+formatarMoeda(valor)}
+        onChangeText={(value) => {setValor(value)}}
+        />
+        
+        <Text style={styleAdd.label}>
+          Qual a data?
+        </Text>
+        <View
+        style={styleAdd.inputDate}
+        >
+          <TouchableOpacity onPress={() => {showDatepicker()}}>
+            <Text style={{color: COLORS.GRAY_100}}>{date.toLocaleDateString()}</Text>
+          </TouchableOpacity>
+        </View>
+        {show && (<DateTimePicker
+          value={date}
+          display={'inline'}
+          mode='date'
+          onChange={onChange}
+          style={styleAdd.datePicker}
+        />)}
+
+        <Text style={styleAdd.label}>
+          Adicione uma breve descrição
+        </Text>
+        <TextInput
+        maxLength={255}
+        style={styleAdd.input}
+        value= {description}
+        onChangeText={(value) => {setDescription(value)}}
+        />
+
+        <Text style={styleAdd.label}>
+          Selecione uma categoria
+        </Text>
+
+        <View>
+        <DropDownPicker
+        style={styleAdd.input}
+        textStyle={{
+          color:COLORS.GRAY_100
+        }}
+        open={open}
+        value={categoria}
+        items={categorias}
+        setOpen={setOpen}
+        setValue={(value)=> {setCategoria(value)}}
+        setItems={setCategorias}
+        dropDownContainerStyle={{
+          backgroundColor: COLORS.GRAY_800,
+          width: "80%",
+          borderWidth: 0,
+        }}
+        placeholder="Categorias"
+        />
+         <TouchableOpacity 
+        style={styleAdd.button}>
+          <Text style={{color: COLORS.GRAY_800, fontWeight: 'bold'}}>Adicionar</Text>
+        </TouchableOpacity>
+        </View>
+       
+      </View>
+    )
+  }
+  
 
   return (
-    <View style={styleReceita.container}>
-      <Text style={styleReceita.textValor}>R$ {formatarMoeda(valor)}</Text>
-      <TextInput
-        maxLength={8}
-        value= {valor}
-        style={styleReceita.textoInput}
-        keyboardType='numeric'
-        placeholder="Insira o valor."
-        placeholderTextColor="#959595"
-        onChangeText={valor => setValor(valor)}
-        />
-        <TextInput
-        placeholder='Insira a descrição'
-        placeholderTextColor="#959595"
-        style={styleReceita.textoInput}
-        maxLength={45}
-        />
-        <View style={{width: "80%", justifyContent: 'center'}}>
-        <Text style={{position:'absolute', fontSize: 15}}>Selecione a data:</Text>
-        
-        </View>
-        
-        <DropDownPicker
-        style={styleReceita.dropdownPicker}
-        dropDownContainerStyle={{width:"78%", marginLeft:"10%", borderRadius: 15, borderWidth:0}}
-        placeholder="Selecione uma categoria"
-        open={open}
-        value={value}
-        items={items}
-        setOpen={setOpen}
-        setValue={setValue}
-        setItems={setItems}
-        />
-      <TouchableOpacity style={styleReceita.Button}>
-        <Text style={styleReceita.textButton}>Inserir receita</Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView style= {styleAdd.container}>
+
+      <Header/>
+
+      <Form/>
+
+    </SafeAreaView>
   );
 }

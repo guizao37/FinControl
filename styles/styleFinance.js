@@ -14,7 +14,7 @@ const styleFinance = StyleSheet.create({
     }, 
     headerText: {
         fontSize: 24,
-        color: COLORS.GRAY_100,
+        color: COLORS.GRAY_400,
         fontWeight: 'bold'
     },
     containerSaldo:{
@@ -56,7 +56,7 @@ const styleFinance = StyleSheet.create({
     },
     valorSaldo:{
         fontSize: 32,
-        color: 'white',
+        color: COLORS.GRAY_100,
         fontWeight: 'bold'
     },
     textoSecundario:{
@@ -72,7 +72,7 @@ const styleFinance = StyleSheet.create({
     },
     textExtrato:{
         fontSize: 28,
-        color: COLORS.GRAY_100,
+        color: COLORS.GRAY_400,
         fontWeight: 'bold',
         margin: 12
     }
