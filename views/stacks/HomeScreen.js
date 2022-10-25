@@ -2,14 +2,15 @@ import { useNavigation } from '@react-navigation/core'
 import React from 'react'
 import { Image } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import Dashboard from '../views/Dashboard'
-import Planning from '../views/Planning'
-import StackSettings from '../views/StackSettings'
-import StackFinance from './StackFinance'
-import Patrimonio from './Patrimonio'
+
+import Dashboard from "../pages/Dashboard"
+import StackPatrimonio from "../stacks/StackPatrimonio"
+import StackFinance from "../stacks/StackFinance"
+import StackSettings from "../stacks/StackSettings"
+import Planning from "../pages/Planning"
+
 import styleTabNavigator from '../styles/styleTabNavigator'
 import * as COLORS from '../styles/cores.json';
-import StackPatrimonio from './StackPatrimonio'
 
 const HomeScreen = ({route}) => {
 
@@ -30,7 +31,7 @@ const HomeScreen = ({route}) => {
         name='Início'
         component={Dashboard}
         options={{
-          tabBarIcon: ({focused}) => (<Image source={require("../assets/home.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
+          tabBarIcon: ({focused}) => (<Image source={require("../../assets/home.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
           headerShown: false
         }}
         initialParams= {email}
@@ -40,7 +41,7 @@ const HomeScreen = ({route}) => {
         name='StackPatrimonio'
         component={StackPatrimonio}
         options={{
-          tabBarIcon: ({focused}) => (<Image source={require("../assets/patrimonio.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
+          tabBarIcon: ({focused}) => (<Image source={require("../../assets/patrimonio.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
           headerShown: false
         }}
         initialParams= {email}
@@ -50,7 +51,7 @@ const HomeScreen = ({route}) => {
         name='StackFinance'
         component={StackFinance}
         options={{
-          tabBarIcon: ({focused}) => (<Image source={require("../assets/finance.png")} style={{top: 13, bottom: 5, width: 40, height: 40, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
+          tabBarIcon: ({focused}) => (<Image source={require("../../assets/finance.png")} style={{top: 13, bottom: 5, width: 40, height: 40, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
           headerShown: false
         }}
         initialParams= {email}
@@ -60,7 +61,7 @@ const HomeScreen = ({route}) => {
         name='Planejamento'
         component={Planning}
         options={{
-          tabBarIcon: ({focused}) => (<Image source={require("../assets/planning.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
+          tabBarIcon: ({focused}) => (<Image source={require("../../assets/planning.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
           headerShown: false
         }}
         initialParams= {email}
@@ -70,7 +71,7 @@ const HomeScreen = ({route}) => {
         name='AjustesStack'
         component={StackSettings}
         options={{
-          tabBarIcon: ({focused}) => (<Image source={require("../assets/settings.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}}/>),
+          tabBarIcon: ({focused}) => (<Image source={require("../../assets/settings.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}}/>),
           headerShown: false
       }}
       initialParams= {email}

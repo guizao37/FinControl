@@ -5,14 +5,13 @@ import {
   TextInput, 
   TouchableOpacity, 
   SafeAreaView } from 'react-native';
-import styleAdd from '../styles/styleAdd';
+import style from "../styles/style"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as COLORS from "../styles/cores.json"
 import DropDownPicker from 'react-native-dropdown-picker';
 
-export default function Despesa() {
 
-  function formatarMoeda(valor) {
+function formatarMoeda(valor) {
     valor = valor + '';
     valor = parseInt(valor.replace(/[\D]+/g, ''));
     valor = valor + '';
@@ -27,33 +26,49 @@ export default function Despesa() {
     return valor;
 }
 
-  const Header = () => {
+const Header = () => {
+    return (
+        <View style={{alignItems: 'center'}}>
+            <Text style={style.textHeader}>
+                Bens e dívidas
+            </Text>
+        </View>
+    )
+}
+
+const Parcelas = () => {
+    const [parcelas, setParcelas] = useState(0)
 
     return (
-      <View style={styleAdd.header}>
-        <Text style={styleAdd.textHeader}>
-          Nova despesa
+    <View style={{alignItems: 'center', marginTop: 12}}>
+        <Text style={style.label}>
+            Número de parcelas?
         </Text>
-      </View>
+        <TextInput
+        maxLength={3}
+        keyboardType="numeric"
+        style={style.input}
+        value= {parcelas}
+        onChangeText={() => {setParcelas(parcelas)}}
+        />
+    </View>
     )
-  }
+}
 
-  const Form = () => {
-
+const Form = () => 
+{   
+    const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [valor, setValor] = useState(0)
     const [date, setDate] = useState(new Date())
 
-    const [description, setDescription] = useState("")
     const [categoria, setCategoria] = useState("")
+
+    const [description, setDescription] = useState("")
     const [categorias, setCategorias] = useState([
-      {label: 'Lazer', value: 'lazer'},
-      {label: 'Educação', value: 'educacao'},
-      {label: 'Compras', value: 'compras'},
-      {label: 'Assinatura', value: 'assinatura'},
-      {label: 'Alimentação', value: 'alimento'},
-      {label: 'Outras despesas', value: 'outro'}
-    ]);
+        {label: 'Bem', value: 'bem'},
+        {label: 'Dívida', value: 'divida'},
+    ])
     
     const [open, setOpen] = useState(false)
 
@@ -61,35 +76,35 @@ export default function Despesa() {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
-  };
+    };
 
-  const showDatepicker = () => {
+    const showDatepicker = () => {
     if (show == false) { 
       setShow(true)
     } else {
       setShow(false)
     }
-  };
+    };
 
     return (
-      <View style={styleAdd.form}>
-        <Text style={styleAdd.label}>
-          Qual o valor?
+        <View style={{width: '80%', alignItems: 'center'}}>
+        <Text style={style.label}>
+            Qual o valor?
         </Text>
         <TextInput
         maxLength={12}
-        style={styleAdd.input}
-        value= {"R$"+formatarMoeda(valor)}
-        onChangeText={(value) => {setValor(value)}}
+        keyboardType="numeric"
+        style={style.input}
+        value= {"R$" + formatarMoeda(valor)}
+        onChangeText={(valor) => {setValor(valor)}}
         />
-        
-        <Text style={styleAdd.label}>
+        <Text style={style.label}>
           Qual a data?
         </Text>
         <View
-        style={styleAdd.inputDate}
+        style={style.inputDate}
         >
-          <TouchableOpacity onPress={() => {showDatepicker()}}>
+          <TouchableOpacity style={{width: "100%"}} onPress={() => {showDatepicker()}}>
             <Text style={{color: COLORS.GRAY_100}}>{date.toLocaleDateString()}</Text>
           </TouchableOpacity>
         </View>
@@ -98,28 +113,27 @@ export default function Despesa() {
           display={'inline'}
           mode='date'
           onChange={onChange}
-          style={styleAdd.datePicker}
+          style={style.datePicker}
         />)}
-
-        <Text style={styleAdd.label}>
+        <Text style={style.label}>
           Adicione uma breve descrição
         </Text>
         <TextInput
         maxLength={255}
-        style={styleAdd.input}
+        style={style.input}
         value= {description}
-        onChangeText={(value) => {setDescription(value)}}
+        onChangeText={() => {setDescription(description)}}
         />
 
-        <Text style={styleAdd.label}>
-          Selecione uma categoria
+        <Text style={style.label}>
+        Selecione a categoria
         </Text>
 
         <View>
         <DropDownPicker
-        style={styleAdd.input}
+        style={style.input}
         textStyle={{
-          color:COLORS.GRAY_100
+        color:COLORS.GRAY_100
         }}
         open={open}
         value={categoria}
@@ -128,30 +142,34 @@ export default function Despesa() {
         setValue={(value)=> {setCategoria(value)}}
         setItems={setCategorias}
         dropDownContainerStyle={{
-          backgroundColor: COLORS.GRAY_800,
-          width: "80%",
-          borderWidth: 0,
+        backgroundColor: COLORS.GRAY_800,
+        width: "80%",
+        borderWidth: 0,
         }}
-        placeholder="Categorias"
+        placeholder="Categoria"
         />
-         <TouchableOpacity 
-        style={styleAdd.button}>
+        {categoria == "divida" ? (
+            <Parcelas/>
+        ):null}
+        <TouchableOpacity 
+        style={style.button}>
           <Text style={{color: COLORS.GRAY_800, fontWeight: 'bold'}}>Adicionar</Text>
         </TouchableOpacity>
-        </View>
-       
+      </View>
       </View>
     )
-  }
-  
-
-  return (
-    <SafeAreaView style= {styleAdd.container}>
-
-      <Header/>
-
-      <Form/>
-
-    </SafeAreaView>
-  );
 }
+
+
+const AddPatrimonio = () => {
+    return (
+    <SafeAreaView style={style.container}>
+      <View style={{alignItems:'center'}}>
+        <Header/>
+        <Form/>
+      </View>
+    </SafeAreaView>
+  )
+}
+
+export default AddPatrimonio

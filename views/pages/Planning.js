@@ -3,7 +3,7 @@ import { TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native';
 import { View, Text, TouchableOpacity } from 'react-native';
 import * as COLORS from '../styles/cores.json';
-import styleAdd from '../styles/styleAdd';
+import style from "../styles/style"
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { KeyboardAvoidingView } from 'react-native';
@@ -58,42 +58,52 @@ export default function Planning() {
       <KeyboardAvoidingView
       behavior='padding'
       style={{width: "80%", alignItems: 'center'}}>
-        <Text style={styleAdd.label}>
+        <Text style={style.label}>
+          Dê um nome ao planejamento.
+        </Text>
+        <TextInput
+        maxLength={20}
+        style={style.input}
+        value= {description}
+        onChangeText={(value) => {setDescription(value)}}
+        />
+
+        <Text style={style.label}>
           Qual o valor?
         </Text>
         <TextInput
         maxLength={12}
-        style={styleAdd.input}
+        style={style.input}
         keyboardType = "numeric"
         value= {"R$"+formatarMoeda(valor)}
         onChangeText={(value) => {setValor(value)}}
         />
 
-        <Text style={styleAdd.label}>
+        <Text style={style.label}>
           Qual o número de parcelas?
         </Text>
         <TextInput
         maxLength={3}
-        style={styleAdd.input}
+        style={style.input}
         keyboardType = "numeric"
         value= {parcelas}
         onChangeText={(value) => {setParcelas(value)}}
         />
-        <Text style={styleAdd.label}>
+        <Text style={style.label}>
           Informe os juros mensais(%).
         </Text>
         <TextInput
         maxLength={5}
-        style={styleAdd.input}
+        style={style.input}
         keyboardType = "numeric"
         value= {formatarMoeda(juros)}
         onChangeText={(value) => {setJuros(value)}}
         />
-        <Text style={styleAdd.label}>
+        <Text style={style.label}>
           Qual a data de início?
         </Text>
         <View
-        style={styleAdd.inputDate}
+        style={style.inputDate}
         >
           <TouchableOpacity onPress={() => {showDatepicker()}}>
             <Text style={{color: COLORS.GRAY_100}}>{date.toLocaleDateString()}</Text>
@@ -104,26 +114,16 @@ export default function Planning() {
           display={'inline'}
           mode='date'
           onChange={onChange}
-          style={styleAdd.datePicker}
+          style={style.datePicker}
         />)}
 
-        <Text style={styleAdd.label}>
-          Adicione uma breve descrição
-        </Text>
-        <TextInput
-        maxLength={255}
-        style={styleAdd.input}
-        value= {description}
-        onChangeText={(value) => {setDescription(value)}}
-        />
-
-        <Text style={styleAdd.label}>
-          Selecione uma categoria
+        <Text style={style.label}>
+          Selecione uma categoria.
         </Text>
 
         <View>
         <DropDownPicker
-        style={styleAdd.input}
+        style={style.input}
         textStyle={{
           color:COLORS.GRAY_100
         }}
@@ -142,7 +142,7 @@ export default function Planning() {
         />
         <TouchableOpacity
         onPress={() => {}}
-        style={styleAdd.button}>
+        style={style.button}>
           <Text style={{color: COLORS.GRAY_800, fontWeight: 'bold'}}>Estimar</Text>
         </TouchableOpacity>
         </View>
@@ -152,8 +152,8 @@ export default function Planning() {
 
   const Header = () => {
     return (
-      <View style={styleAdd.header}>
-        <Text style={styleAdd.textHeader}>
+      <View style={style.header}>
+        <Text style={style.textHeader}>
           Planejamento
         </Text>
       </View>
@@ -162,11 +162,14 @@ export default function Planning() {
 
   return (
     <SafeAreaView 
-    style={styleAdd.container}>
+    style={style.container}>
+        <View style={{alignItems:'center'}}>
 
         <Header/>
         
         <Form/>
+
+        </View>
 
     </SafeAreaView>
   );

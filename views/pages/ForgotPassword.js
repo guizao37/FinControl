@@ -3,7 +3,6 @@ import { Text, TextInput, TouchableOpacity, View, Button, SafeAreaView, Keyboard
 import { useState } from 'react'
 import styleForgotPassword from '../styles/styleForgotPassword'
 import * as COLORS from '../styles/cores.json';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 export default function ForgotPassword (){

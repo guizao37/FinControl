@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import Patrimonio from './Patrimonio';
-import AddPatrimonio from './AddPatrimonio'
+import Patrimonio from '../pages/Patrimonio';
+import AddPatrimonio from '../pages/AddPatrimonio'
 
 const Stack = createNativeStackNavigator();
 

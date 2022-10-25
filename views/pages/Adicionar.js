@@ -5,7 +5,7 @@ import {
   TextInput, 
   TouchableOpacity, 
   SafeAreaView } from 'react-native';
-import styleAdd from '../styles/styleAdd';
+import style from "../styles/style"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as COLORS from "../styles/cores.json"
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -29,7 +29,7 @@ function formatarMoeda(valor) {
 const Header = () => {
     return (
         <View style={{alignItems: 'center'}}>
-            <Text style={styleAdd.textHeader}>
+            <Text style={style.textHeader}>
                 Adicionar transação
             </Text>
         </View>
@@ -82,21 +82,21 @@ const Form = () =>
 
     return (
         <View style={{width: '80%', alignItems: 'center'}}>
-        <Text style={styleAdd.label}>
+        <Text style={style.label}>
             Qual o valor?
         </Text>
         <TextInput
         maxLength={12}
         keyboardType="numeric"
-        style={styleAdd.input}
+        style={style.input}
         value= {"R$" + formatarMoeda(valor)}
         onChangeText={(valor) => {setValor(valor)}}
         />
-        <Text style={styleAdd.label}>
+        <Text style={style.label}>
           Qual a data?
         </Text>
         <View
-        style={styleAdd.inputDate}
+        style={style.inputDate}
         >
           <TouchableOpacity style={{width: "100%"}} onPress={() => {showDatepicker()}}>
             <Text style={{color: COLORS.GRAY_100}}>{date.toLocaleDateString()}</Text>
@@ -107,34 +107,34 @@ const Form = () =>
           display={'inline'}
           mode='date'
           onChange={onChange}
-          style={styleAdd.datePicker}
+          style={style.datePicker}
         />)}
-        <Text style={styleAdd.label}>
+        <Text style={style.label}>
           Adicione uma breve descrição
         </Text>
         <TextInput
         maxLength={255}
-        style={styleAdd.input}
+        style={style.input}
         value= {description}
         onChangeText={() => {setDescription(description)}}
         />
-        <Text style={styleAdd.label}>
+        <Text style={style.label}>
           Repetir (em meses)
         </Text>
         <TextInput
         maxLength={3}
         keyboardType="numeric"
-        style={styleAdd.input}
+        style={style.input}
         value= {repete}
         onChangeText={() => {setRepete(repete)}}
         />
-        <Text style={styleAdd.label}>
+        <Text style={style.label}>
         Selecione a categoria
         </Text>
 
         <View>
         <DropDownPicker
-        style={styleAdd.input}
+        style={style.input}
         textStyle={{
         color:COLORS.GRAY_100
         }}
@@ -152,7 +152,7 @@ const Form = () =>
         placeholder="Categorias"
         />
         <TouchableOpacity 
-        style={styleAdd.button}>
+        style={style.button}>
           <Text style={{color: COLORS.GRAY_800, fontWeight: 'bold'}}>Adicionar</Text>
         </TouchableOpacity>
       </View>
@@ -163,9 +163,12 @@ const Form = () =>
 
 const Adicionar = () => {
     return (
-    <SafeAreaView style={styleAdd.container}>
+    <SafeAreaView style={style.container}>
+      <View style={{alignItems:'center'}}>
         <Header/>
         <Form/>
+      </View>
+        
     </SafeAreaView>
   )
 }

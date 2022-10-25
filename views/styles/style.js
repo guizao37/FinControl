@@ -1,11 +1,10 @@
 import { StyleSheet } from "react-native"
 import * as COLORS from './cores.json';
 
-const styleAdd = StyleSheet.create({ 
+const style = StyleSheet.create({ 
     container: {
         flex : 1,
         backgroundColor: COLORS.GRAY_900,
-        alignItems: 'center'
     },
     header:{
         alignItems: 'center'
@@ -66,4 +65,4 @@ const styleAdd = StyleSheet.create({
     }
 })
 
-export default styleAdd
+export default style

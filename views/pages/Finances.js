@@ -1,6 +1,6 @@
 import React, {useState, useCallback} from 'react';
 import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, StatusBar, ScrollView, Touchable } from 'react-native';
-import styleFinance from '../styles/styleFinance';
+import style from '../styles/style';
 import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as COLORS from '../styles/cores.json';
@@ -16,21 +16,31 @@ export default function Finances() {
     navigation.navigate("Despesa")
   }
 
-  const Header = ({texto}) => {
+  const Header = () => {
     return (
       <View style={{alignItems: 'center'}}>
-        <Text style={{fontSize: 24, fontWeight: 'bold', color: COLORS.GRAY_100}}>
-          {texto}
+        <TouchableOpacity>
+        <View style={{flexDirection: 'row'}}>
+        <View>
+        <Text style={style.textHeader}>
+          Outubro
         </Text>
+        </View>
+        <View style={{justifyContent: 'center', marginLeft: 8}}>
+        <Image source={require("../../assets/seta.png")}
+        style={{tintColor: COLORS.GRAY_100, width: 25, height: 25, }}
+        />
+        </View>
+        </View>
+        </TouchableOpacity>
       </View>
     )
   }
 
   const Saldo = () => {
     return (
-    <View style={{alignItems: 'center'}}>
+    <View style={{alignItems: 'center', marginTop: 12}}>
       <View style={{width: "90%", backgroundColor: 'black', borderRadius: 4, padding: 12}}>
-      <Header texto={"Outubro"}/>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
           Receitas:
@@ -66,41 +76,14 @@ export default function Finances() {
         <TouchableOpacity style= {{margin: 8}} onPress={() => {navigation.navigate("Adicionar")}}>
         <Image
         style={{width: 25, height: 25, tintColor: COLORS.GRAY_100}}
-        source= {require("../assets/adicionar.png")}
+        source= {require("../../assets/adicionar.png")}
         />
         </TouchableOpacity>
       </View>
     )
   }
 
-  const GerenciarContas = () => {
-    
-    return (
-      <View style={{alignItems: 'center', marginTop: 12}}>
-      <View style={{width: "90%", backgroundColor: 'black', borderRadius: 4, padding: 12}}>
-        <Header texto={"Gerenciar contas"}/>
-        <ScrollView style={{height: 100}}> 
-          <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 20, fontWeight: '500'}}>Nubank:</Text>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 20}}>R$1.200,00</Text>
-          </View>
-          <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 20, fontWeight: '500'}}>Itaú:</Text>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 20}}>R$1.200,00</Text>
-          </View>
-          <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 20, fontWeight: '500'}}>C6 Bank:</Text>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 20}}>R$1.200,00</Text>
-          </View>
-          <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 20, fontWeight: '500'}}>Banco inter:</Text>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 20}}>R$1.200,00</Text>
-          </View>
-        </ScrollView>
-      </View>
-      </View>
-    )
-  }
+  
 
   const Extrato = () => {
     const [show, setShow] = useState(true)
@@ -108,10 +91,14 @@ export default function Finances() {
       <View style={{alignItems: 'center', marginTop: 12}}>
         <View style={{width: "90%", backgroundColor: 'black', borderRadius: 4, padding: 12}}>
           <TouchableOpacity onPress={() => {setShow(show ? false : true)}}>
-            <Header texto={"Extrato"}/>
+            <View style={{alignItems: 'center'}}>
+            <Text style={{color:COLORS.GRAY_100, fontSize: 28, fontWeight: '500'}}>
+              Extrato
+            </Text>
+            </View>
           </TouchableOpacity>
           {show ? (
-            <FlatList style={{height:"60%"}}>
+            <FlatList style={{height:"70%"}}>
               
             </FlatList>
           ) : null}
@@ -146,11 +133,10 @@ export default function Finances() {
   }
 
   return (    
-  <SafeAreaView style={styleFinance.container}>
+  <SafeAreaView style={style.container}>
     
-    
+    <Header/>
     <Saldo/>
-    <GerenciarContas/>
     <Extrato/>
     
     <AddButton/>

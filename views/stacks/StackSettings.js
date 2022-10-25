@@ -1,8 +1,8 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import Ajuda from './Ajuda';
-import DadosPessoais from './DadosPessoais';
-import AlterarSenha from './AlterarSenha';
-import Settings from './Settings';
+import Ajuda from "../pages/Ajuda"
+import AlterarSenha from "../pages/AlterarSenha"
+import DadosPessoais from "../pages/DadosPessoais"
+import Settings from "../pages/Settings"
 import { Route, useRoute } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();

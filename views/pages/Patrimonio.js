@@ -9,7 +9,7 @@ import {
   ScrollView,
   FlatList
 } from 'react-native';
-import stylePatrimonio from "../styles/stylePatrimonio";
+import style from "../styles/style";
 import * as COLORS from '../styles/cores.json';
 import { useNavigation } from '@react-navigation/native';
 
@@ -34,8 +34,8 @@ export default function Patrimonio() {
 
   const Header = ({texto}) => {
     return (
-      <View style={stylePatrimonio.header}>
-        <Text style={stylePatrimonio.textHeader}>
+      <View style={style.header}>
+        <Text style={style.textHeader}>
           {texto}
         </Text>
       </View>
@@ -80,7 +80,7 @@ export default function Patrimonio() {
     return (
       <View style={{alignItems: 'center', marginTop: 12}}>
       <View style={{width: "90%", backgroundColor: 'black', borderRadius: 4, padding: 12}}>
-      <View style={stylePatrimonio.header}>
+      <View style={style.header}>
         <Text style={{
           color: COLORS.GRAY_100,
           fontSize: 24,
@@ -102,7 +102,7 @@ export default function Patrimonio() {
     return (
       <View style={{alignItems: 'center', marginTop: 12}}>
       <View style={{width: "90%", backgroundColor: 'black', borderRadius: 4, padding: 12}}>
-      <View style={stylePatrimonio.header}>
+      <View style={style.header}>
         <Text style={{
           color: COLORS.GRAY_100,
           fontSize: 24,
@@ -125,25 +125,15 @@ export default function Patrimonio() {
         <TouchableOpacity style= {{margin: 8}} onPress={() => {navigation.navigate("AddPatrimonio")}}>
         <Image
         style={{width: 25, height: 25, tintColor: COLORS.GRAY_100}}
-        source= {require("../assets/adicionar.png")}
+        source= {require("../../assets/adicionar.png")}
         />
         </TouchableOpacity>
       </View>
     )
   }
 
-  const Form = () => {
-
-    return (
-      <View>
-        <Text style={stylePatrimonio.label}>
-          
-        </Text>
-      </View>
-    )
-  }
   return (
-    <SafeAreaView style={stylePatrimonio.container}>
+    <SafeAreaView style={style.container}>
 
       <Header texto={"Patrimônio"}/>
       <Overview/>
