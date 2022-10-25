@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Receita from './Receita';
 import Finances from './Finances';
 import Despesa from './Despesa';
+import Adicionar from './Adicionar';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,13 @@ export default function StackFinance() {
           headerShown: false
         }}
       />
+      <Stack.Screen
+      name="Adicionar"
+      component={Adicionar}
+      options={{
+        headerShown: false
+      }}
+    />
     </Stack.Navigator>
   );
 }

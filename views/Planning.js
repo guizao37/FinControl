@@ -57,7 +57,7 @@ export default function Planning() {
     return (
       <KeyboardAvoidingView
       behavior='padding'
-      style={styleAdd.form}>
+      style={{width: "80%", alignItems: 'center'}}>
         <Text style={styleAdd.label}>
           Qual o valor?
         </Text>
@@ -146,7 +146,6 @@ export default function Planning() {
           <Text style={{color: COLORS.GRAY_800, fontWeight: 'bold'}}>Estimar</Text>
         </TouchableOpacity>
         </View>
-       
       </KeyboardAvoidingView>
       )
   }
@@ -162,10 +161,11 @@ export default function Planning() {
   }
 
   return (
-    <SafeAreaView style={styleAdd.container}>
-      
-        <Header/>
+    <SafeAreaView 
+    style={styleAdd.container}>
 
+        <Header/>
+        
         <Form/>
 
     </SafeAreaView>

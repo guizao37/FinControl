@@ -1,9 +1,8 @@
 import { useNavigation } from '@react-navigation/core'
 import axios from 'axios'
 import React, {useState, useEffect} from 'react'
-import { Text, TextInput, TouchableOpacity, View, SafeAreaView } from 'react-native'
+import { Text, TextInput, TouchableOpacity, View, SafeAreaView, KeyboardAvoidingView } from 'react-native'
 import styleRegister from '../styles/styleRegister'
-import * as Animatable from 'react-native-animatable'
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -78,7 +77,7 @@ const RegisterScreen = () => {
     checkPassword();
     checkEmail();
     if (checkCampos() && checkPassword() && checkEmail()){
-      fetch('http://localhost:3301/register', 
+      fetch('http://192.168.0.10:3301/register',
     {
       method: 'POST',
       body: JSON.stringify({
@@ -94,14 +93,18 @@ const RegisterScreen = () => {
         setMsg("Usuário cadastrado com sucesso.")
         limpaCampos();
       } else {
-        setMsg("Usuário já cadastrado.")
+        setMsg("Usuário já cadastrado.");
       }
-    })
+    }).catch((error)=>{
+      console.log("Erro");
+      alert(error.message);
+   });
     }
   }
 
   return (
-    <SafeAreaView
+    <KeyboardAvoidingView
+    behavior='padding'
     style={styleRegister.container}>
     <View
     style={styleRegister.containerTexto}>
@@ -110,7 +113,9 @@ const RegisterScreen = () => {
     <View
     style={styleRegister.containerRegister}
     >
-      <Text> {msg} </Text>
+      <View style={{alignItems: 'center', margin: 8}}>
+      <Text style={{color: 'white', fontSize: 12}}> {msg} </Text>
+      </View>
       <Text style={styleRegister.textFormulario}>
         Nome
       </Text>
@@ -167,7 +172,7 @@ const RegisterScreen = () => {
       </TouchableOpacity>
 
     </View>
-  </SafeAreaView>
+  </KeyboardAvoidingView>
   )
 }
 

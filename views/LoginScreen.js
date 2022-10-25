@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
-import {StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native'
+import {StyleSheet, Text, TextInput, TouchableOpacity, View, Image, KeyboardAvoidingView } from 'react-native'
 import styleLogin from '../styles/styleLogin'
 import * as Animatable from "react-native-animatable"
 import * as COLORS from '../styles/cores.json';
@@ -76,7 +76,8 @@ const LoginScreen = ({navigation}) => {
   }
 
   return (
-    <View
+    <KeyboardAvoidingView
+    behavior='padding'
       style={styleLogin.container}
     >
       <View style={{justifyContent:'center', alignItems: 'center', marginBottom: 24}}>
@@ -127,7 +128,7 @@ const LoginScreen = ({navigation}) => {
         >
           <Text style={{color: COLORS.GRAY_100, textDecorationLine: 'underline'}}>Não tem conta? Registre-se agora.</Text>
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
   )
 }
 

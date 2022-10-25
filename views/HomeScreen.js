@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/core'
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
+import { Image } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Dashboard from '../views/Dashboard'
 import Planning from '../views/Planning'
@@ -9,6 +9,7 @@ import StackFinance from './StackFinance'
 import Patrimonio from './Patrimonio'
 import styleTabNavigator from '../styles/styleTabNavigator'
 import * as COLORS from '../styles/cores.json';
+import StackPatrimonio from './StackPatrimonio'
 
 const HomeScreen = ({route}) => {
 
@@ -36,8 +37,8 @@ const HomeScreen = ({route}) => {
         />
 
         <Tab.Screen
-        name='Patrimônio'
-        component={Patrimonio}
+        name='StackPatrimonio'
+        component={StackPatrimonio}
         options={{
           tabBarIcon: ({focused}) => (<Image source={require("../assets/patrimonio.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
           headerShown: false

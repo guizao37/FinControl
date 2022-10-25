@@ -16,7 +16,7 @@ app.use(session({
     resave: true
 }))
 
-const db = mysql.createPool({
+const db = mysql.createConnection({
     host: "127.0.0.1",
     port: '3306',
     user: 'root',
@@ -31,8 +31,9 @@ app.post("/register", async(req,res)=>{
     console.log(senha)
     const nome = "'" + req.body.nome + "'"
     console.log(nome)
-    const findEmail = "SELECT * FROM USUARIO WHERE Email =" + email + ";"
+    const findEmail = "SELECT * FROM usuario WHERE Email: 'guilherme.augusto0307@gmail.com';"
     db.query(findEmail, (err, results) => {
+        console.log(results)
         var numRows = results.length;
         if (numRows==0) {
             let registerUser = "INSERT INTO usuario (Nome, Email, Senha) VALUES (" + nome + "," + email  + "," + senha + ");"
@@ -54,6 +55,15 @@ app.post("/register", async(req,res)=>{
     })
 })
 
+app.get("/teste", async(req,res)=>{
+    const findEmail = "select * from usuario"
+    db.query(findEmail, (err, results)=>{
+        const resultado = results;
+        res.send(findEmail)
+        console.log(resultado)
+    })
+})
+
 app.post("/login", async(req,res)=>{
     const email = req.body.email;
     const senha = req.body.senha;
@@ -68,7 +78,6 @@ app.post("/login", async(req,res)=>{
         }
     })
 })
-
 
 app.listen(port, () => {
     console.log('Servidor rodando na porta ' + port)

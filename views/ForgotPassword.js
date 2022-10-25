@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/core'
-import { Text, TextInput, TouchableOpacity, View, Button, SafeAreaView } from 'react-native'
+import { Text, TextInput, TouchableOpacity, View, Button, SafeAreaView, KeyboardAvoidingView } from 'react-native'
 import { useState } from 'react'
 import styleForgotPassword from '../styles/styleForgotPassword'
 import * as COLORS from '../styles/cores.json';
@@ -15,7 +15,8 @@ export default function ForgotPassword (){
       
     }
     return (
-      <SafeAreaView
+      <KeyboardAvoidingView
+      behavior='padding'
       style={styleForgotPassword.container}
       >
         <Text style={{color: COLORS.GRAY_100, fontSize: 32, fontWeight: 'bold', marginBottom: 12}}>Recupere sua senha</Text>
@@ -37,6 +38,6 @@ export default function ForgotPassword (){
           <Text style={{fontWeight: 'bold'}}>Enviar</Text>
         </TouchableOpacity>
         </View>
-      </SafeAreaView>
+      </KeyboardAvoidingView>
     )
   }

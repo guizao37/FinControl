@@ -16,113 +16,107 @@ export default function Finances() {
     navigation.navigate("Despesa")
   }
 
-  const ListHeader = () => {
+  const Header = ({texto}) => {
     return (
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', width: 400}}>
-        <Text style={{color: COLORS.GRAY_400, fontWeight: 'bold', fontSize: 16, marginLeft: 4}}>
-          Data                  
-        </Text>
-        <Text style={{color: COLORS.GRAY_400, fontWeight: 'bold', fontSize: 16}}>
-          Valor
-        </Text>
-        <Text style={{color: COLORS.GRAY_400, fontWeight: 'bold', fontSize: 16}}>
-          Categoria
+      <View style={{alignItems: 'center'}}>
+        <Text style={{fontSize: 24, fontWeight: 'bold', color: COLORS.GRAY_100}}>
+          {texto}
         </Text>
       </View>
-    );
-  };
-
-  const Extrato = () => {
-
-    const data = [
-      {id: 1, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Lazer', tipo: 'despesa'},
-      {id: 2, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Salário', tipo: 'receita'},
-      {id: 3, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Compras', tipo: 'despesa'},
-      {id: 4, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Educação', tipo: 'despesa'},
-      {id: 5, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Lazer', tipo: 'despesa'},
-      {id: 6, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Salário', tipo: 'receita'},
-      {id: 7, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Compras', tipo: 'despesa'},
-      {id: 8, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Educação', tipo: 'despesa'},
-      {id: 9, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Lazer', tipo: 'despesa'},
-      {id: 0, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Salário', tipo: 'receita'},
-      {id: 10, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Compras', tipo: 'despesa'},
-      {id: 11, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Educação', tipo: 'despesa'},
-      {id: 12, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Lazer', tipo: 'despesa'},
-      {id: 13, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Salário', tipo: 'receita'},
-      {id: 14, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Compras', tipo: 'despesa'},
-      {id: 15, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Educação', tipo: 'despesa'},
-      {id: 16, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Lazer', tipo: 'despesa'},
-      {id: 17, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Salário', tipo: 'receita'},
-      {id: 18, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Compras', tipo: 'despesa'},
-      {id: 19, data: "17/10/2022", valor: "R$" + formatarMoeda(12312145), categoria: 'Educação', tipo: 'despesa'},
-      {id: 20, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Lazer', tipo: 'despesa'},
-      {id: 21, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Salário', tipo: 'receita'},
-      {id: 22, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Compras', tipo: 'despesa'},
-      {id: 23, data: "17/10/2022", valor: "R$" + formatarMoeda(12345), categoria: 'Educação', tipo: 'despesa'},
-  ]
-
-    const item = ({ item }) => (
-      <View style={{ flexDirection: 'row', paddingBottom: 5, paddingTop: 5 }}>
-          <View style={{marginRight: 40, marginLeft: 4}}>
-              <Text style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center', color: COLORS.GRAY_100}}>{item.data}</Text>
-          </View>
-          <View style={{marginRight: 75, width: 120}}>
-              <Text style={{ fontSize: 16, fontWeight: 'bold' , textAlign: 'center', color: COLORS.GRAY_100}}>{item.tipo=='despesa' ? "-" : "+"} {item.valor}</Text>
-          </View>
-          <View >
-              <Text style={{ fontSize: 16, fontWeight: 'bold' , textAlign: 'center', color: COLORS.GRAY_100}}>{item.categoria}</Text>
-          </View>
-      </View>
-  )
-    return (
-      <View style={styleFinance.viewExtrato}>
-        <Text style={styleFinance.textExtrato}>Extrato</Text>
-        <View style={{height: "75%"}}>
-        <ListHeader/>
-        <FlatList
-        nestedScrollEnabled
-        data={data} renderItem={item} keyExtractor={item => item.id.toString()}
-        />
-        </View>
-      </View>
-    );
+    )
   }
 
-  const Header = () => {
+  const Saldo = () => {
     return (
-    <View style={styleFinance.header}>
-    <Text style={styleFinance.headerText}>
-      Saldo
-    </Text>
-    <Text style={styleFinance.valorSaldo}>
-      R$ {formatarMoeda(123456)}
-    </Text>
+    <View style={{alignItems: 'center'}}>
+      <View style={{width: "90%", backgroundColor: 'black', borderRadius: 4, padding: 12}}>
+      <Header texto={"Outubro"}/>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
+          Receitas:
+        </Text>
+        <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
+          R${formatarMoeda(123456)}
+        </Text>
+        </View>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
+          Despesas:
+        </Text>
+        <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
+          -R${formatarMoeda(123456)}
+        </Text>
+        </View>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
+          Saldo total:
+        </Text>
+        <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
+        R${formatarMoeda(123456)}
+        </Text>
+        </View>
+      </View>
     </View>
     )
   }
 
-  const ContainerDados = () => {
+  const AddButton = () => {
     return (
-    <View style={styleFinance.containerDados}>
-      <View style={styleFinance.containerEntradas}>
+      <View style={{alignItems: 'center', position: 'absolute', right: 0, bottom: "15%", right: "5%", padding: 4, backgroundColor: 'black', borderRadius: 50}}>
+        <TouchableOpacity style= {{margin: 8}} onPress={() => {navigation.navigate("Adicionar")}}>
+        <Image
+        style={{width: 25, height: 25, tintColor: COLORS.GRAY_100}}
+        source= {require("../assets/adicionar.png")}
+        />
+        </TouchableOpacity>
+      </View>
+    )
+  }
 
-        <View style={styleFinance.containerReceitas}>
-          <TouchableOpacity onPress={() => {addReceita()}}>
-            <Text style={styleFinance.textoSecundario}>Receitas</Text>
-            <Text style={styleFinance.valorReceita}>R$ {formatarMoeda(12345678)}</Text>
-          </TouchableOpacity>
-        </View>
+  const GerenciarContas = () => {
+    
+    return (
+      <View style={{alignItems: 'center', marginTop: 12}}>
+      <View style={{width: "90%", backgroundColor: 'black', borderRadius: 4, padding: 12}}>
+        <Header texto={"Gerenciar contas"}/>
+        <ScrollView style={{height: 100}}> 
+          <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+          <Text style={{color: COLORS.GRAY_100, fontSize: 20, fontWeight: '500'}}>Nubank:</Text>
+          <Text style={{color: COLORS.GRAY_100, fontSize: 20}}>R$1.200,00</Text>
+          </View>
+          <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+          <Text style={{color: COLORS.GRAY_100, fontSize: 20, fontWeight: '500'}}>Itaú:</Text>
+          <Text style={{color: COLORS.GRAY_100, fontSize: 20}}>R$1.200,00</Text>
+          </View>
+          <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+          <Text style={{color: COLORS.GRAY_100, fontSize: 20, fontWeight: '500'}}>C6 Bank:</Text>
+          <Text style={{color: COLORS.GRAY_100, fontSize: 20}}>R$1.200,00</Text>
+          </View>
+          <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+          <Text style={{color: COLORS.GRAY_100, fontSize: 20, fontWeight: '500'}}>Banco inter:</Text>
+          <Text style={{color: COLORS.GRAY_100, fontSize: 20}}>R$1.200,00</Text>
+          </View>
+        </ScrollView>
+      </View>
+      </View>
+    )
+  }
 
-        <View style={styleFinance.containerDespesas}>
-          <TouchableOpacity onPress={() => {addDespesa()}}>
-            <Text style={styleFinance.textoSecundario}>Despesas</Text>
-            <Text style={styleFinance.valorDespesa}>R$ {formatarMoeda(12345678)}</Text>
+  const Extrato = () => {
+    const [show, setShow] = useState(true)
+    return (
+      <View style={{alignItems: 'center', marginTop: 12}}>
+        <View style={{width: "90%", backgroundColor: 'black', borderRadius: 4, padding: 12}}>
+          <TouchableOpacity onPress={() => {setShow(show ? false : true)}}>
+            <Header texto={"Extrato"}/>
           </TouchableOpacity>
+          {show ? (
+            <FlatList style={{height:"60%"}}>
+              
+            </FlatList>
+          ) : null}
         </View>
       </View>
-      
-      <Extrato />
-    </View>
     )
   }
 
@@ -152,12 +146,14 @@ export default function Finances() {
   }
 
   return (    
-  <View style={styleFinance.container}>
+  <SafeAreaView style={styleFinance.container}>
     
-    <Header/>
-
-    <ContainerDados/>
-
-  </View>
+    
+    <Saldo/>
+    <GerenciarContas/>
+    <Extrato/>
+    
+    <AddButton/>
+  </SafeAreaView>
   );
 }

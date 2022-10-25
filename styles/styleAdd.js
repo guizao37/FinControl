@@ -4,7 +4,8 @@ import * as COLORS from './cores.json';
 const styleAdd = StyleSheet.create({ 
     container: {
         flex : 1,
-        backgroundColor: COLORS.GRAY_900
+        backgroundColor: COLORS.GRAY_900,
+        alignItems: 'center'
     },
     header:{
         alignItems: 'center'
@@ -15,19 +16,30 @@ const styleAdd = StyleSheet.create({
         fontWeight: '500'
     },
     form:{
-        alignItems: 'center'
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: 'white',
     },
     input:{
+        width: "100%",
+        backgroundColor: COLORS.GRAY_800,
+        height: 40,
+        borderRadius: 4,
+        padding: 12,
+        color: COLORS.GRAY_100,
+        borderWidth: 0,
+    },
+    catReceitas:{
         width: "80%",
         backgroundColor: COLORS.GRAY_800,
         height: 40,
         borderRadius: 4,
         padding: 12,
         color: COLORS.GRAY_100,
-        borderWidth: 0
+        borderWidth: 0,
     },
     inputDate:{
-        width: "80%",
+        width: "100%",
         backgroundColor: COLORS.GRAY_800,
         height: 40,
         borderRadius: 4,

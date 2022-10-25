@@ -15,10 +15,9 @@ const stylePlanejamento = StyleSheet.create({
         fontWeight: '500'
     },
     form:{
-        alignItems: 'center'
     },
     input:{
-        width: "80%",
+        width: "100%",
         backgroundColor: COLORS.GRAY_800,
         height: 40,
         borderRadius: 4,
