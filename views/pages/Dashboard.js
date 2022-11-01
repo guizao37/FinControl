@@ -3,6 +3,7 @@ import { SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
 import { View, Text, Image } from 'react-native';
 import style from "../styles/style"
 import * as COLORS from "../styles/cores.json"
+import { VictoryPie } from 'victory-native';
 
 export default function Dashboard() {
 
@@ -30,7 +31,7 @@ export default function Dashboard() {
   const GerenciarContas = () => {
     
     return (
-      <View style={{width: "90%", backgroundColor: 'black', borderRadius: 4, padding: 12}}>
+      <View style={{width: "90%", backgroundColor: 'black', borderRadius: 4, padding: 12, marginTop: 12}}>
         <Text style={{color: COLORS.GRAY_100, fontSize: 24, marginBottom:12}}>
           Gerenciar contas
         </Text>
@@ -104,15 +105,30 @@ export default function Dashboard() {
     )
   }
 
-  const ContainerCategorias = () => {
+  const Grafico = () => {
     
     return (
-      <View style={{width: "90%", backgroundColor: 'black', marginTop: 12, borderRadius: 4, marginBottom: 12}}>
+      <View style={{width: "90%", marginTop: 12, borderRadius: 4, marginBottom: 12}}>
+        <TouchableOpacity>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text style={{fontSize: 24, color: COLORS.GRAY_100, margin: 12}}>
-          Suas despesas
+          Despesas
         </Text>
-        <View style={{height: "50%"}}>
+        <Image source={require("../../assets/seta.png")}
+        style={{tintColor: COLORS.GRAY_100, width: 20, height: 20, justifyContent: 'center'}}
+        />
         </View>
+        </TouchableOpacity>
+        <View style={{alignItems: 'center'}}>
+          <VictoryPie
+          data={[
+            {x: "Camisinha", y: 100},
+            {x: "Puteiro", y: 50}
+          ]
+          }
+          innerRadius= {90}
+          />
+      </View>
       </View>
     )
   }
@@ -121,8 +137,8 @@ export default function Dashboard() {
     <SafeAreaView style={style.container}>
       <ScrollView contentContainerStyle={{alignItems: 'center'}}>
       <Header/>
-      <ContainerCategorias/>
       <GerenciarContas/>
+      <Grafico/>
       </ScrollView>
     </SafeAreaView>
   );

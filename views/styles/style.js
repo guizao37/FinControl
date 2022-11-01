@@ -52,7 +52,7 @@ const style = StyleSheet.create({
     },
     datePicker:{
         height: 300,
-        width: "80%",
+        width: "100%",
         backgroundColor: COLORS.GRAY_800
     },
     button:{

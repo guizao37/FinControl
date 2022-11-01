@@ -36,6 +36,34 @@ const Header = () => {
     )
 }
 
+const Categorias = () => {
+  const [categoria, setCategoria] = useState("")
+  const [categorias, setCategorias] = useState([
+
+  ])
+  const [open, setOpen] = useState(false)
+  return (
+    <DropDownPicker
+        style={style.input}
+        textStyle={{
+        color:COLORS.GRAY_100
+        }}
+        open={open}
+        value={categoria}
+        items={categorias}
+        setOpen={setOpen}
+        setValue={(value)=> {setCategoria(value)}}
+        setItems={setCategorias}
+        dropDownContainerStyle={{
+        backgroundColor: COLORS.GRAY_800,
+        width: "100%",
+        borderWidth: 0,
+        }}
+        placeholder="Categoria"
+    />
+  )
+}
+
 const Parcelas = () => {
     const [parcelas, setParcelas] = useState(0)
 
@@ -62,10 +90,10 @@ const Form = () =>
     const [valor, setValor] = useState(0)
     const [date, setDate] = useState(new Date())
 
-    const [categoria, setCategoria] = useState("")
+    const [tipo, setTipo] = useState("")
 
     const [description, setDescription] = useState("")
-    const [categorias, setCategorias] = useState([
+    const [tipos, setTipos] = useState([
         {label: 'Bem', value: 'bem'},
         {label: 'Dívida', value: 'divida'},
     ])
@@ -115,18 +143,9 @@ const Form = () =>
           onChange={onChange}
           style={style.datePicker}
         />)}
-        <Text style={style.label}>
-          Adicione uma breve descrição
-        </Text>
-        <TextInput
-        maxLength={255}
-        style={style.input}
-        value= {description}
-        onChangeText={() => {setDescription(description)}}
-        />
 
         <Text style={style.label}>
-        Selecione a categoria
+        Selecione o tipo
         </Text>
 
         <View>
@@ -136,21 +155,25 @@ const Form = () =>
         color:COLORS.GRAY_100
         }}
         open={open}
-        value={categoria}
-        items={categorias}
+        value={tipo}
+        items={tipos}
         setOpen={setOpen}
-        setValue={(value)=> {setCategoria(value)}}
-        setItems={setCategorias}
+        setValue={(value)=> {setTipo(value)}}
+        setItems={setTipos}
         dropDownContainerStyle={{
         backgroundColor: COLORS.GRAY_800,
-        width: "80%",
+        width: "100%",
         borderWidth: 0,
         }}
         placeholder="Categoria"
         />
-        {categoria == "divida" ? (
+        {tipo == "divida" ? (
+          <View>
             <Parcelas/>
-        ):null}
+            <Categorias/>
+          </View>
+        ):null};
+        
         <TouchableOpacity 
         style={style.button}>
           <Text style={{color: COLORS.GRAY_800, fontWeight: 'bold'}}>Adicionar</Text>

@@ -12,6 +12,7 @@ import {
 import style from "../styles/style";
 import * as COLORS from '../styles/cores.json';
 import { useNavigation } from '@react-navigation/native';
+import { VictoryChart, VictoryLine, VictoryTheme } from 'victory-native'
 
 export default function Patrimonio() {
 
@@ -45,7 +46,7 @@ export default function Patrimonio() {
   const Overview = () => {
     return (
     <View style={{alignItems: 'center', marginTop: 12}}>
-      <View style={{width: "90%", backgroundColor: 'black', borderRadius: 4, padding: 12}}>
+      <View style={{width: "90%", backgroundColor: COLORS.GRAY_800, borderRadius: 4, padding: 12}}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
           Bens:
@@ -75,47 +76,39 @@ export default function Patrimonio() {
     )
   }
 
-  const GerenciarBens = () => {
-    
+  const Grafico = () => {
     return (
-      <View style={{alignItems: 'center', marginTop: 12}}>
-      <View style={{width: "90%", backgroundColor: 'black', borderRadius: 4, padding: 12}}>
-      <View style={style.header}>
-        <Text style={{
-          color: COLORS.GRAY_100,
-          fontSize: 24,
-          fontWeight: '500'
-        }}>
-          Bens
-        </Text>
-      </View>
-        <FlatList style={{height: 180}}> 
-          
-        </FlatList>
-      </View>
-      </View>
-    )
-  }
-
-  const GerenciarDividas = () => {
-    
-    return (
-      <View style={{alignItems: 'center', marginTop: 12}}>
-      <View style={{width: "90%", backgroundColor: 'black', borderRadius: 4, padding: 12}}>
-      <View style={style.header}>
-        <Text style={{
-          color: COLORS.GRAY_100,
-          fontSize: 24,
-          fontWeight: '500'
-        }}>
-          Dívidas
-        </Text>
-      </View>
-        <FlatList style={{height: 180}}>
-
-        </FlatList>
-      </View>
-      </View>
+      <View style= {{ alignItems: 'center'}}>
+      <View style={{ backgroundColor: COLORS.GRAY_800, borderRadius: 4, marginTop: 20, width: "90%", alignItems: 'center'}}>
+          <Text style={{ color: COLORS.GRAY_100, fontWeight: '500', fontSize: 24, margin: 8, alignItems: 'center'}}>
+            Evolução
+          </Text>
+          <Text style={{ color: COLORS.GRAY_100, fontSize: 16}}>
+            (patrimônio líquido)
+          </Text>
+          <View style={{marginLeft: 20}}>
+          <VictoryChart
+          width={350}
+          theme={VictoryTheme.material}
+          >
+            <VictoryLine
+            interpolation="natural"
+            style={{
+              data: { stroke: "#c43a31" },
+              parent: { border: "1px solid #e1e1e6"}
+            }}
+            data={[
+              { x: 1, y: 999 },
+              { x: 2, y: 3000 },
+              { x: 3, y: 4000 },
+              { x: 4, y: 5000 },
+              { x: 5, y: 6000 }
+            ]}
+            />
+          </VictoryChart>
+          </View>
+          </View>
+    </View>
     )
   }
 
@@ -137,8 +130,7 @@ export default function Patrimonio() {
 
       <Header texto={"Patrimônio"}/>
       <Overview/>
-      <GerenciarBens/>
-      <GerenciarDividas/>
+      <Grafico/>
       <AddButton/>
     </SafeAreaView>
   );

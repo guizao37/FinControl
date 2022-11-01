@@ -135,7 +135,7 @@ export default function Planning() {
         setItems={setCategorias}
         dropDownContainerStyle={{
           backgroundColor: COLORS.GRAY_800,
-          width: "80%",
+          width: "100%",
           borderWidth: 0,
         }}
         placeholder="Categorias"
