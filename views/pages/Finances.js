@@ -23,7 +23,7 @@ export default function Finances() {
         <View style={{flexDirection: 'row'}}>
         <View>
         <Text style={style.textHeader}>
-          Outubro
+          Novembro
         </Text>
         </View>
         <View style={{justifyContent: 'center', marginLeft: 8}}>
@@ -40,7 +40,7 @@ export default function Finances() {
   const Saldo = () => {
     return (
     <View style={{alignItems: 'center', marginTop: 12}}>
-      <View style={{width: "90%", backgroundColor: 'black', borderRadius: 4, padding: 12}}>
+      <View style={{width: "90%", backgroundColor: COLORS.GRAY_800, borderRadius: 4, padding: 12}}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
           Receitas:
@@ -62,7 +62,7 @@ export default function Finances() {
           Saldo total:
         </Text>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
-        R${formatarMoeda(123456)}
+        R${formatarMoeda(0)}
         </Text>
         </View>
       </View>
@@ -89,7 +89,7 @@ export default function Finances() {
     const [show, setShow] = useState(true)
     return (
       <View style={{alignItems: 'center', marginTop: 12}}>
-        <View style={{width: "90%", backgroundColor: 'black', borderRadius: 4, padding: 12}}>
+        <View style={{width: "90%", backgroundColor: COLORS.GRAY_800, borderRadius: 4, padding: 12}}>
           <TouchableOpacity onPress={() => {setShow(show ? false : true)}}>
             <View style={{alignItems: 'center'}}>
             <Text style={{color:COLORS.GRAY_100, fontSize: 28, fontWeight: '500'}}>

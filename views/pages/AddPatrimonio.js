@@ -85,14 +85,14 @@ const Parcelas = () => {
 
 const Form = () => 
 {   
-    const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [valor, setValor] = useState(0)
     const [date, setDate] = useState(new Date())
 
+    const divida = "divida"
+ 
     const [tipo, setTipo] = useState("")
 
-    const [description, setDescription] = useState("")
     const [tipos, setTipos] = useState([
         {label: 'Bem', value: 'bem'},
         {label: 'Dívida', value: 'divida'},
@@ -116,26 +116,26 @@ const Form = () =>
 
     return (
         <View style={{width: '80%', alignItems: 'center'}}>
-        <Text style={style.label}>
+          <Text style={style.label}>
             Qual o valor?
-        </Text>
-        <TextInput
-        maxLength={12}
-        keyboardType="numeric"
-        style={style.input}
-        value= {"R$" + formatarMoeda(valor)}
-        onChangeText={(valor) => {setValor(valor)}}
-        />
-        <Text style={style.label}>
-          Qual a data?
-        </Text>
-        <View
-        style={style.inputDate}
-        >
+          </Text>
+          <TextInput
+          maxLength={12}
+          keyboardType="numeric"
+          style={style.input}
+          value= {"R$" + formatarMoeda(valor)}
+          onChangeText={(valor) => {setValor(valor)}}
+          />
+          <Text style={style.label}>
+            Qual a data?
+          </Text>
+
+        <View style={style.inputDate}>
           <TouchableOpacity style={{width: "100%"}} onPress={() => {showDatepicker()}}>
             <Text style={{color: COLORS.GRAY_100}}>{date.toLocaleDateString()}</Text>
           </TouchableOpacity>
         </View>
+
         {show && (<DateTimePicker
           value={date}
           display={'inline'}
@@ -145,7 +145,7 @@ const Form = () =>
         />)}
 
         <Text style={style.label}>
-        Selecione o tipo
+          Selecione o tipo
         </Text>
 
         <View>
@@ -162,28 +162,27 @@ const Form = () =>
         setItems={setTipos}
         dropDownContainerStyle={{
         backgroundColor: COLORS.GRAY_800,
-        width: "100%",
         borderWidth: 0,
         }}
         placeholder="Categoria"
         />
-        {tipo == "divida" ? (
+
+        {tipo == 'divida' ? (
           <View>
             <Parcelas/>
             <Categorias/>
           </View>
-        ):null};
+        ):null}
         
         <TouchableOpacity 
         style={style.button}>
           <Text style={{color: COLORS.GRAY_800, fontWeight: 'bold'}}>Adicionar</Text>
         </TouchableOpacity>
+        
       </View>
       </View>
     )
 }
-
-
 const AddPatrimonio = () => {
     return (
     <SafeAreaView style={style.container}>

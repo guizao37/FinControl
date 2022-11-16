@@ -11,7 +11,8 @@ const styleLogin = StyleSheet.create({
     textoPrincipal: {
         fontWeight: "bold",
         fontSize: 32,
-        color: "#e1e1e6"
+        color: "#e1e1e6",
+        marginBottom: 8
     },
     containerLogin:{
         width: "80%"

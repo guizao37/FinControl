@@ -68,7 +68,7 @@ export default function Patrimonio() {
           Patrimônio líquido:
         </Text>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
-        R${formatarMoeda(123456)}
+        R${formatarMoeda(0)}
         </Text>
         </View>
       </View>
@@ -98,11 +98,11 @@ export default function Patrimonio() {
               parent: { border: "1px solid #e1e1e6"}
             }}
             data={[
-              { x: 1, y: 999 },
-              { x: 2, y: 3000 },
-              { x: 3, y: 4000 },
-              { x: 4, y: 5000 },
-              { x: 5, y: 6000 }
+              { x: "Janeiro", y: "1.000" },
+              { x: "Fevereiro", y: "3.000" },
+              { x: "Março", y: "4.000" },
+              { x: "Abril", y: "5.000" },
+              { x: "Maio", y: "6.000" }
             ]}
             />
           </VictoryChart>

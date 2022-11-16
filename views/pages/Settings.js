@@ -33,7 +33,7 @@ export default function Settings({emailUser}) {
     return (
       <View style={{margin: 12}}>
       <Text style={styleSettings.greetings}>
-        Olá, Guilherme
+        Olá, João
       </Text>
       <View style={{borderWidth: 1, marginTop: 16, borderColor: COLORS.GRAY_100}}/>
       <View style={{marginTop: 8}}>
