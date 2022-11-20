@@ -81,7 +81,7 @@ const RegisterScreen = () => {
     {
       method: 'POST',
       body: JSON.stringify({
-        email: email,
+        email: email.toLowerCase(),
         senha: password,
         nome: nome
   }),
@@ -114,7 +114,7 @@ const RegisterScreen = () => {
     style={styleRegister.containerRegister}
     >
       <View style={{alignItems: 'center', margin: 8}}>
-      <Text style={{color: 'white', fontSize: 12}}> {msg} </Text>
+      <Text style={{color: 'white', fontSize: 16}}> {msg} </Text>
       </View>
       <Text style={styleRegister.textFormulario}>
         Nome

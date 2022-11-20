@@ -1,28 +1,40 @@
 const express = require('express')
-const session = require('express-session')
 
 const app = express();
 const mysql = require('mysql')
 const cors = require('cors');
+
 const bodyParser = require('body-parser');
 const port = 3301;
+
+// CONFIGURANDO SESSÃO
+const session = require('express-session')
+const store = new session.MemoryStore();
+
+app.use(session({
+    secret: "tcc2022",
+    saveUninitialized: false,
+    resave: false,
+    store: store
+}));
 
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
-app.use(session({
-    secret:"JoaoMandriao",
-    saveUninitialized: true,
-    resave: true
-}))
 
-const db = mysql.createConnection({
-    host: "127.0.0.1",
+var db = mysql.createConnection({
+    host: 'localhost',
     port: '3306',
     user: 'root',
     password: 'root',
-    database: 'mydb'
-})
+    database: "mydb"
+  });
+   
+db.connect(function(err) {
+    if (err) {
+      console.error('ERRO: ' + err);
+      } else console.log('Conexão com o banco de dados realizada com sucesso.');
+  });
 
 app.post("/register", async(req,res)=>{
     const email = "'" + req.body.email + "'"
@@ -31,7 +43,8 @@ app.post("/register", async(req,res)=>{
     console.log(senha)
     const nome = "'" + req.body.nome + "'"
     console.log(nome)
-    const findEmail = "SELECT * FROM usuario WHERE Email: 'guilherme.augusto0307@gmail.com';"
+    const findEmail = `SELECT * FROM usuario WHERE Email = ${email}`
+    console.log(findEmail)
     db.query(findEmail, (err, results) => {
         console.log(results)
         var numRows = results.length;
@@ -53,16 +66,7 @@ app.post("/register", async(req,res)=>{
             console.log("Usuário já cadastrado.")
         }
     })
-})
-
-app.get("/teste", async(req,res)=>{
-    const findEmail = "select * from usuario"
-    db.query(findEmail, (err, results)=>{
-        const resultado = results;
-        res.send(findEmail)
-        console.log(resultado)
-    })
-})
+});
 
 app.post("/login", async(req,res)=>{
     const email = req.body.email;
@@ -72,13 +76,36 @@ app.post("/login", async(req,res)=>{
         if (results.length > 0) {
             console.log("Autenticado")
             res.status(200).send("Logado")
+            req.session.save();
         } else {
             console.log("Credenciais incorretas.")
             res.status(400).send("Não logou.")
         }
     })
+});
+
+app.get("/teste", (req,res)=>{
+    console.log(getIdUsuario());
+    res.send("Teste")
+});
+
+app.post("/addfinanca", (req, res) => {
+    const valor = (req.body.valor).replace('.','').replace(',','.');
+    const categoria = req.body.categoria;
+    const data = req.body.data;
+    const descricao = req.body.descricao;
+    const repete = req.body.repete;
 })
 
 app.listen(port, () => {
     console.log('Servidor rodando na porta ' + port)
-})
+});
+
+function getIdUsuario () {
+    const dados = JSON.stringify(store);
+    const parseDados = JSON.parse(dados);
+    const sessionValues = Object.values(parseDados.sessions);
+    const sessionValuesJson = JSON.parse(sessionValues);
+    const idUsuario = sessionValuesJson.idUsuario;
+    return idUsuario;
+}

@@ -44,16 +44,31 @@ const LoginScreen = ({navigation}) => {
           email: "Guilherme"
         })
   }
+  const checkCampos = () => {
+    if (email=='') {
+      setMsg("Preencha os campos.")
+      return false
+    }
+    if (password=='') {
+      setMsg("Preencha os campos.")
+      return false
+    }    
+    if (email!= '' && password!= ''){
+      setMsg("")
+      return true
+    }
+  }
 
   const efetuaLogin = () => {
+    checkCampos();
     checkEmail();
     checkPassword();
-    if (checkEmail() && checkPassword()){
-      fetch("http://localhost:3301/login",
+    if (checkEmail() && checkPassword() && checkCampos()){
+      fetch("http://192.168.0.10:3301/login",
       {
         method: 'POST',
         body: JSON.stringify({
-          email: email,
+          email: email.toLowerCase(),
           senha: password,
     }),
     headers: {
@@ -71,6 +86,8 @@ const LoginScreen = ({navigation}) => {
         setMsg("As credenciais estão incorretas.")
         limpaCampos();
       }
+    }).catch(err=>{
+      console.log(err)
     })
     }
   }
@@ -111,7 +128,7 @@ const LoginScreen = ({navigation}) => {
         />
         <TouchableOpacity
         style={styleLogin.botaoLogin}
-        onPress={() => {teste()}}
+        onPress={() => {efetuaLogin()}}
         >
           <Text style={{fontWeight: 'bold'}}>Entrar</Text>
         </TouchableOpacity>

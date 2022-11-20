@@ -38,16 +38,16 @@ const Header = () => {
 
 const Form = () => 
 {   
-    const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+
+
     const [valor, setValor] = useState(0)
     const [date, setDate] = useState(new Date())
-
     const [repete, setRepete] = useState(0)
-
     const [categoria, setCategoria] = useState("")
-
     const [description, setDescription] = useState("")
+
+
     const [categorias, setCategorias] = useState([
         {label: 'Salário', value: 'salario'},
         {label: 'Empréstimo', value: 'emprestimo'},
@@ -64,6 +64,8 @@ const Form = () =>
         {label: 'Outras despesas', value: 'outras_despesas'}
     ])
     
+    const [msg, setMsg] = useState("")
+    
     const [open, setOpen] = useState(false)
 
     const onChange = (event, selectedDate) => {
@@ -79,17 +81,64 @@ const Form = () =>
       setShow(false)
     }
     };
+    const checkCampos = () => {
+      if (categoria=='') {
+        setMsg("Preencha os campos.")
+        return false
+      }
+      if (repete=='') {
+        setMsg("Preencha os campos.")
+        return false
+      } 
+      if (description=='') {
+        setMsg("Preencha os campos.")
+        return false
+      } 
+      if (valor==0) {
+        setMsg("Preencha os campos.")
+        return false
+      }    
+      if (repete!= '' && categoria!= '' && valor!= 0 && description!= ''){
+        setMsg("")
+        return true
+      }
+    }
+    const addFinanca = () => {
+        checkCampos();
+        if (checkCampos()) {
+        const uri = "http://192.168.0.10:3301/addfinanca";
+        const body =  {
+          method: 'POST',
+          body:
+          JSON.stringify({
+            valor: formatarMoeda(valor),
+            descricao: description,
+            data: date.toLocaleDateString(),
+            repete: repete,
+            categoria: categoria
+          }),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          }
+        }
+        fetch(uri, body)
+        .then((res)=>{console.log(res)}).catch(err => console.log(err))
+    }
+  }
 
     return (
         <View style={{width: '80%', alignItems: 'center'}}>
+        <Text style={{margin: 4, color: COLORS.GRAY_100, fontSize: 16}}>
+          { msg }
+        </Text>
         <Text style={style.label}>
             Qual o valor?
         </Text>
         <TextInput
-        maxLength={12}
+        maxLength={10}
         keyboardType="numeric"
         style={style.input}
-        value= {"R$" + formatarMoeda(valor)}
+        value= {formatarMoeda(valor)}
         onChangeText={(valor) => {setValor(valor)}}
         />
         <Text style={style.label}>
@@ -113,10 +162,10 @@ const Form = () =>
           Adicione uma breve descrição
         </Text>
         <TextInput
-        maxLength={255}
+        maxLength={45}
         style={style.input}
         value= {description}
-        onChangeText={() => {setDescription(description)}}
+        onChangeText={(description) => {setDescription(description)}}
         />
         <Text style={style.label}>
           Repetir (em meses)
@@ -125,8 +174,8 @@ const Form = () =>
         maxLength={3}
         keyboardType="numeric"
         style={style.input}
-        value= {repete}
-        onChangeText={() => {setRepete(repete)}}
+        value= {repete.toString()}
+        onChangeText={(repete) => {setRepete(repete.toString())}}
         />
         <Text style={style.label}>
         Selecione a categoria
@@ -142,7 +191,7 @@ const Form = () =>
         value={categoria}
         items={categorias}
         setOpen={setOpen}
-        setValue={(value)=> {setCategoria(value)}}
+        setValue={(categoria)=> {setCategoria(categoria)}}
         setItems={setCategorias}
         dropDownContainerStyle={{
         backgroundColor: COLORS.GRAY_800,
@@ -151,7 +200,8 @@ const Form = () =>
         }}
         placeholder="Categorias"
         />
-        <TouchableOpacity 
+        <TouchableOpacity
+        onPress={() => {addFinanca()}}
         style={style.button}>
           <Text style={{color: COLORS.GRAY_800, fontWeight: 'bold'}}>Adicionar</Text>
         </TouchableOpacity>
@@ -161,6 +211,8 @@ const Form = () =>
 }
 
 
+
+
 const Adicionar = () => {
     return (
     <SafeAreaView style={style.container}>
@@ -168,7 +220,6 @@ const Adicionar = () => {
         <Header/>
         <Form/>
       </View>
-        
     </SafeAreaView>
   )
 }
