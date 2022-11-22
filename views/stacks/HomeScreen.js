@@ -16,7 +16,6 @@ const HomeScreen = ({route}) => {
 
   const Tab = createBottomTabNavigator();
   const navigation = useNavigation()
-  const email = route.params.email
 
   return (
     <Tab.Navigator
@@ -34,7 +33,6 @@ const HomeScreen = ({route}) => {
           tabBarIcon: ({focused}) => (<Image source={require("../../assets/home.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
           headerShown: false
         }}
-        initialParams= {email}
         />
 
         <Tab.Screen
@@ -44,7 +42,6 @@ const HomeScreen = ({route}) => {
           tabBarIcon: ({focused}) => (<Image source={require("../../assets/patrimonio.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
           headerShown: false
         }}
-        initialParams= {email}
         />
 
         <Tab.Screen
@@ -54,7 +51,6 @@ const HomeScreen = ({route}) => {
           tabBarIcon: ({focused}) => (<Image source={require("../../assets/finance.png")} style={{top: 13, bottom: 5, width: 40, height: 40, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
           headerShown: false
         }}
-        initialParams= {email}
         />
 
         <Tab.Screen
@@ -64,7 +60,6 @@ const HomeScreen = ({route}) => {
           tabBarIcon: ({focused}) => (<Image source={require("../../assets/planning.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}} />),
           headerShown: false
         }}
-        initialParams= {email}
         />
 
         <Tab.Screen
@@ -74,7 +69,6 @@ const HomeScreen = ({route}) => {
           tabBarIcon: ({focused}) => (<Image source={require("../../assets/settings.png")} style={{top: 13, width: 35, height: 35, tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.GRAY_100}}/>),
           headerShown: false
       }}
-      initialParams= {email}
       />
 
     </Tab.Navigator>

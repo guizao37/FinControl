@@ -86,10 +86,6 @@ const Form = () =>
         setMsg("Preencha os campos.")
         return false
       }
-      if (repete=='') {
-        setMsg("Preencha os campos.")
-        return false
-      } 
       if (description=='') {
         setMsg("Preencha os campos.")
         return false
@@ -98,7 +94,7 @@ const Form = () =>
         setMsg("Preencha os campos.")
         return false
       }    
-      if (repete!= '' && categoria!= '' && valor!= 0 && description!= ''){
+      if (categoria!= '' && valor!= 0 && description!= ''){
         setMsg("")
         return true
       }
@@ -122,7 +118,8 @@ const Form = () =>
           }
         }
         fetch(uri, body)
-        .then((res)=>{console.log(res)}).catch(err => console.log(err))
+        .then((res)=>{console.log(res)})
+        .catch(err => console.log(err))
     }
   }
 

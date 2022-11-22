@@ -75,18 +75,18 @@ app.post("/login", async(req,res)=>{
     db.query(validate, (err, results)=>{
         if (results.length > 0) {
             console.log("Autenticado")
-            res.status(200).send("Logado")
+            res.status(200).send("Logado.")
             req.session.save();
         } else {
             console.log("Credenciais incorretas.")
-            res.status(400).send("Não logou.")
+            res.status(400).send("Não logado.")
         }
     })
 });
 
 app.get("/teste", (req,res)=>{
-    console.log(getIdUsuario());
-    res.send("Teste")
+    // console.log(getIdUsuario());
+    res.send("Oie")
 });
 
 app.post("/addfinanca", (req, res) => {
