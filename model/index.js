@@ -1,16 +1,15 @@
-const express = require('express')
-
+// CONFIGURAÇÕES GERAIS
+const express = require('express');
 const app = express();
-const mysql = require('mysql')
+const mysql = require('mysql');
 const cors = require('cors');
-
 const bodyParser = require('body-parser');
 const port = 3301;
 
-// CONFIGURANDO SESSÃO
-const session = require('express-session')
-const store = new session.MemoryStore();
 
+// CONFIGURANDO SESSÃO
+const session = require('express-session');
+const store = new session.MemoryStore();
 app.use(session({
     secret: "tcc2022",
     saveUninitialized: false,
@@ -18,10 +17,14 @@ app.use(session({
     store: store
 }));
 
-app.use(cors())
-app.use(bodyParser.urlencoded({extended:false}))
-app.use(bodyParser.json())
 
+// CONFIGURANDO MIDDLEWARES
+app.use(cors());
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
+
+
+// CONEXÃO COM BD
 var db = mysql.createConnection({
     host: 'localhost',
     port: '3306',
@@ -29,13 +32,14 @@ var db = mysql.createConnection({
     password: 'root',
     database: "mydb"
   });
-   
 db.connect(function(err) {
     if (err) {
-      console.error('ERRO: ' + err);
+      console.error('Erro ao realizar conexão com o banco de dados: ' + err);
       } else console.log('Conexão com o banco de dados realizada com sucesso.');
   });
 
+
+// CONFIGURANDO REQUISIÇÕES
 app.post("/register", async(req,res)=>{
     const email = "'" + req.body.email + "'"
     console.log(email)
@@ -85,22 +89,53 @@ app.post("/login", async(req,res)=>{
 });
 
 app.get("/teste", (req,res)=>{
-    // console.log(getIdUsuario());
-    res.send("Oie")
+    res.send("Teste.")
 });
 
-app.post("/addfinanca", (req, res) => {
-    const valor = (req.body.valor).replace('.','').replace(',','.');
-    const categoria = req.body.categoria;
-    const data = req.body.data;
-    const descricao = req.body.descricao;
-    const repete = req.body.repete;
-})
+app.post("/add", (req, res) => {
+    var contador = 0;
+    var valor = (req.body.valor).replace('.','').replace(',','.');
+    var categoria = req.body.categoria;
+    var data = req.body.data;
+    var descricao = req.body.descricao;
+    var repete = req.body.repete;
+    var tipo = req.body.tipo;
+    var idUsuario = getIdUsuario();
 
+    // SE REPETE = 0 INSERE UMA VEZ. SE REPETE MAIOR QUE 0 INSERE VARIAS.
+    if (repete == 0) {
+        var query = `INSERT INTO finança (Descricao, Valor, Tipo, Data, Categoria, idUsuario) VALUES (
+        ${descricao}, ${valor}, ${tipo}, ${data}, ${categoria}, ${idUsuario})`;
+        db.query(query, (err, results) => {
+            console.log(err);
+            console.log(results);
+        });
+
+    } else {
+        while (contador < repete) {
+            var query = `INSERT INTO finança (Descricao, Valor, Tipo, Data, Categoria, idUsuario) VALUES (
+            ${descricao}, ${valor}, ${tipo}, ${data}, ${categoria}, ${idUsuario})`;
+            db.query(query, (err, results) => {
+                console.log(err);
+                console.log(results);
+            });
+            data.toDate();
+        }
+    }
+});
+
+app.post("/addpatrimonio", (req,res)=> {
+
+});
+
+
+// INICIANDO SERVIDOR
 app.listen(port, () => {
     console.log('Servidor rodando na porta ' + port)
 });
 
+
+// FUNÇÃO QUE RETORNA ID DO USUÁRIO
 function getIdUsuario () {
     const dados = JSON.stringify(store);
     const parseDados = JSON.parse(dados);

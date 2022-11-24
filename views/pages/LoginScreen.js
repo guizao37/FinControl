@@ -128,7 +128,7 @@ const LoginScreen = ({navigation}) => {
         />
         <TouchableOpacity
         style={styleLogin.botaoLogin}
-        onPress={() => {navigation.navigate("Home")}}
+        onPress={() => {efetuaLogin()}}
         >
           <Text style={{fontWeight: 'bold'}}>Entrar</Text>
         </TouchableOpacity>

@@ -9,6 +9,7 @@ import style from "../styles/style"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as COLORS from "../styles/cores.json"
 import DropDownPicker from 'react-native-dropdown-picker';
+import axios from "axios";
 
 
 function formatarMoeda(valor) {
@@ -100,9 +101,13 @@ const Form = () =>
       }
     }
     const addFinanca = () => {
-        checkCampos();
-        if (checkCampos()) {
-        const uri = "http://192.168.0.10:3301/addfinanca";
+      var tipo = "";
+      if (categoria == "salario" || categoria == "emprestimo" || categoria == "bonus" || categoria == "rendimento" || categoria == "dividendos"
+      || categoria == "venda" || categoria == "outras_rendas") { 
+      tipo = "r";
+      } else tipo = "d";
+
+      const uri = "http://192.168.0.10:3301/add";
         const body =  {
           method: 'POST',
           body:
@@ -111,17 +116,33 @@ const Form = () =>
             descricao: description,
             data: date.toLocaleDateString(),
             repete: repete,
-            categoria: categoria
+            categoria: categoria,
+            tipo: tipo
           }),
           headers: {
             'Content-type': 'application/json; charset=UTF-8',
           }
         }
-        fetch(uri, body)
-        .then((res)=>{console.log(res)})
-        .catch(err => console.log(err))
-    }
+        checkCampos();
+        if (checkCampos()) {
+        
+        axios({
+          method: "post",
+          url: uri,
+          data: {
+            valor: formatarMoeda(valor),
+            descricao: description,
+            data: date.toLocaleDateString(),
+            repete: repete,
+            categoria: categoria
+          },
+        })
+        .then(res => { console.log(res)})
+        .catch(err => {console.log(err)})
+      }
   }
+
+  
 
     return (
         <View style={{width: '80%', alignItems: 'center'}}>
