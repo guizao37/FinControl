@@ -113,6 +113,7 @@ app.post("/add", (req, res) => {
 
     } else {
         while (contador < repete) {
+            contador = contador + 1;
             var query = `INSERT INTO finança (Descricao, Valor, Tipo, Data, Categoria, idUsuario) VALUES (
             ${descricao}, ${valor}, ${tipo}, ${data}, ${categoria}, ${idUsuario})`;
             db.query(query, (err, results) => {
