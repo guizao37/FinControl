@@ -119,15 +119,34 @@ app.post("/add", (req, res) => {
                 console.log(err);
                 console.log(results);
             });
-            data.toDate();
+            // Transformar variavel data em tipo date e somar 1 mês
         }
     }
 });
 
 app.post("/addpatrimonio", (req,res)=> {
-
+    // Inserir patrimonio na tabela patrimonio
 });
 
+app.get("/financas", (req, res) => {
+    // Buscar finanças do usuário (receitas e despesas)
+});
+
+app.get("/patrimonio", (req, res) => {
+    // Buscar patrimônio do usuário (bens e dívidas)
+});
+
+app.get("/usuario", (req, res) => {
+    // Busca dados pessoais do usuário
+});
+
+app.get("/alterar", (req, res)=>{
+    // Altera senha do usuário
+});
+
+app.get("/recuperar", (req, res)=>{
+    // Envia e-mail para recuperar senha do usuário
+});
 
 // INICIANDO SERVIDOR
 app.listen(port, () => {
