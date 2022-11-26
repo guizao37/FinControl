@@ -70,7 +70,7 @@ const Parcelas = () => {
     return (
     <View style={{alignItems: 'center', marginTop: 12}}>
         <Text style={style.label}>
-            Número de parcelas?
+            Número de parcelas
         </Text>
         <TextInput
         maxLength={3}
