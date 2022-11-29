@@ -42,12 +42,11 @@ const Form = () =>
     const [show, setShow] = useState(false);
 
 
-    const [valor, setValor] = useState(0)
-    const [date, setDate] = useState(new Date())
-    const [repete, setRepete] = useState(0)
-    const [categoria, setCategoria] = useState("")
-    const [description, setDescription] = useState("")
-
+    const [valor, setValor] = useState(0);
+    const [date, setDate] = useState(new Date());
+    const [repete, setRepete] = useState(0);
+    const [categoria, setCategoria] = useState("");
+    const [description, setDescription] = useState("");
 
     const [categorias, setCategorias] = useState([
         {label: 'Salário', value: 'salario'},
@@ -63,7 +62,7 @@ const Form = () =>
         {label: 'Alimentação', value: 'alimento'},
         {label: 'Outras rendas', value: 'outras_rendas'},
         {label: 'Outras despesas', value: 'outras_despesas'}
-    ])
+    ]);
     
     const [msg, setMsg] = useState("")
     
@@ -101,48 +100,46 @@ const Form = () =>
       }
     }
     const addFinanca = () => {
-      var tipo = "";
-      if (categoria == "salario" || categoria == "emprestimo" || categoria == "bonus" || categoria == "rendimento" || categoria == "dividendos"
-      || categoria == "venda" || categoria == "outras_rendas") { 
-      tipo = "r";
-      } else tipo = "d";
+
+      const limpaCampos = () => {
+        setValor(0);
+        setCategoria("");
+        setRepete(0);
+        setDescription("");
+      }
+
+      const mes = date.getMonth() + 1;
+      const dia = date.getDate();
+      const ano = date.getFullYear();
+
+      const dataEntrada = `${ano}-${mes}-${dia}`;
 
       const uri = "http://192.168.0.10:3301/add";
-        const body =  {
-          method: 'POST',
-          body:
-          JSON.stringify({
-            valor: formatarMoeda(valor),
-            descricao: description,
-            data: date.toLocaleDateString(),
-            repete: repete,
-            categoria: categoria,
-            tipo: tipo
-          }),
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-          }
-        }
-        checkCampos();
+
+      checkCampos();
+
         if (checkCampos()) {
-        
         axios({
           method: "post",
           url: uri,
           data: {
             valor: formatarMoeda(valor),
             descricao: description,
-            data: date.toLocaleDateString(),
+            data: dataEntrada,
             repete: repete,
-            categoria: categoria
+            categoria: categoria,
+            dia: dia,
+            mes: mes,
+            ano: ano,
           },
         })
-        .then(res => { console.log(res)})
-        .catch(err => {console.log(err)})
+        .then(res => { 
+          setMsg("Entrada adicionada com sucesso.")
+          limpaCampos();
+        })
+        .catch(err => {setMsg("Ocorreu um problema.")})
       }
   }
-
-  
 
     return (
         <View style={{width: '80%', alignItems: 'center'}}>
