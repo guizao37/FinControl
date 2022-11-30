@@ -9,46 +9,558 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function Dashboard() {
 
-  const Header = () => {
+    var vtSalario = 0, vtEmprestimo = 0, vtBonus = 0, 
+    vtRendimento = 0, vtDividendos = 0, vtVenda = 0, vtOutrasRendas =0;
+    var vtLazer = 0, vtEducacao = 0, vtCompras = 0,
+    vtAssinatura = 0, vtAlimento = 0, vtOutrasDespesas = 0;
+
+    
+
     const mesAtual = new Date().toLocaleString(
       'pt-BR', {month: 'long'}
     );
     const mesAgora = new Date().getMonth() + 1;
+    const proxMes = mesAgora + 1;
     const ano = new Date().getFullYear();
-    const data = `${ano}-${mesAgora}-01`;
+    const [data, setData] = useState(`${ano}-${mesAgora}-01`);
+    const [dataFim, setDataFim] = useState(`${ano}-${proxMes}-01`);
     const [mes, setMes] = useState(mesAtual.charAt(0).toUpperCase() + mesAtual.slice(1));
     const [meses, setMeses] = useState([
-      {"label": "Janeiro", "value": "2022-01-01"},
-      {"label": "Fevereiro", "value": "2022-02-01"},
-      {"label": "Março", "value": "2022-03-01"},
-      {"label": "Abril", "value": "2022-04-01"},
-      {"label": "Maio", "value": "2022-05-01"},
-      {"label": "Junho", "value": "2022-06-01"},
-      {"label": "Julho", "value": "2022-07-01"},
-      {"label": "Agosto", "value": "2022-08-01"},
-      {"label": "Setembro", "value": "2022-09-01"},
-      {"label": "Outubro", "value": "2022-10-01"},
-      {"label": "Novembro", "value": "2022-11-01"},
-      {"label": "Dezembro", "value": "2022-12-01"},
-      {"label": "Janeiro/2023", "value": "2023-01-01"},
-      {"label": "Fevereiro/2023", "value": "2023-02-01"},
-      {"label": "Março/2023", "value": "2023-03-01"},
-      {"label": "Abril/2023", "value": "2023-04-01"},
-      {"label": "Maio/2023", "value": "2023-05-01"},
-      {"label": "Junho/2023", "value": "2023-06-01"},
-      {"label": "Julho/2023", "value": "2023-07-01"},
-      {"label": "Agosto/2023", "value": "2023-08-01"},
-      {"label": "Setembro/2023", "value": "2023-09-01"},
-      {"label": "Outubro/2023", "value": "2023-10-01"},
-      {"label": "Novembro/2023", "value": "2023-11-01"},
-      {"label": "Dezembro/2023", "value": "2023-12-01"}
+      {"label": "Janeiro", "value": "2022-01-01", "proximo":"2022-02-01"},
+      {"label": "Fevereiro", "value": "2022-02-01", "proximo":"2022-03-01"},
+      {"label": "Março", "value": "2022-03-01", "proximo":"2022-04-01"},
+      {"label": "Abril", "value": "2022-04-01", "proximo":"2022-05-01"},
+      {"label": "Maio", "value": "2022-05-01", "proximo":"2022-06-01"},
+      {"label": "Junho", "value": "2022-06-01", "proximo":"2022-07-01"},
+      {"label": "Julho", "value": "2022-07-01", "proximo":"2022-08-01"},
+      {"label": "Agosto", "value": "2022-08-01", "proximo":"2022-09-01"},
+      {"label": "Setembro", "value": "2022-09-01", "proximo":"2022-10-01"},
+      {"label": "Outubro", "value": "2022-10-01", "proximo":"2022-11-01"},
+      {"label": "Novembro", "value": "2022-11-01", "proximo":"2022-12-01"},
+      {"label": "Dezembro", "value": "2022-12-01", "proximo":"2023-01-01"},
+      {"label": "Janeiro/2023", "value": "2023-01-01", "proximo":"2023-02-01"},
+      {"label": "Fevereiro/2023", "value": "2023-02-01", "proximo":"2023-03-01"},
+      {"label": "Março/2023", "value": "2023-03-01", "proximo":"2023-04-01"},
+      {"label": "Abril/2023", "value": "2023-04-01", "proximo":"2023-05-01"},
+      {"label": "Maio/2023", "value": "2023-05-01", "proximo":"2023-06-01"},
+      {"label": "Junho/2023", "value": "2023-06-01", "proximo":"2023-07-01"},
+      {"label": "Julho/2023", "value": "2023-07-01", "proximo":"2023-08-01"},
+      {"label": "Agosto/2023", "value": "2023-08-01", "proximo":"2023-09-01"},
+      {"label": "Setembro/2023", "value": "2023-09-01", "proximo":"2023-10-01"},
+      {"label": "Outubro/2023", "value": "2023-10-01", "proximo":"2023-11-01"},
+      {"label": "Novembro/2023", "value": "2023-11-01", "proximo":"2023-12-01"},
+      {"label": "Dezembro/2023", "value": "2023-12-01", "proximo":"2024-01-01"}
     ]);
     const [valueMes, setValueMes] = useState(data);
     const [open, setOpen] = useState(false);
-    const [openTipo, setOpenTipo] = useState(false);
 
+    const [dadosGrafico, setDadosGrafico] = useState([]);
 
-    return (
+    const [mostraTipos, setMostraTipos] = useState(false);
+    const [tipo, setTipo] = useState("Receitas");
+    const [valueTipo, setValueTipo] = useState("R");
+
+    const [tipos, setTipos] = useState([
+      {"label": "Receitas", "value": "R"},
+      {"label": "Despesas", "value": "D"},
+      {"label": "Bens", "value": "bens"},
+      {"label": "Dívidas", "value": "dividas"}
+    ]);
+
+    const uri = "http://192.168.0.11:3301/financas";
+
+    // Faz uma requisição quando navegar pra tela Dashboard
+    useEffect(()=>{
+      var salario = {};
+      var emprestimo  = {};
+      var bonus = {};
+      var rendimento  = {};
+      var dividendos = {};
+      var venda = {};
+      var outras = {};
+      var lazer  = {};
+      var educacao = {};
+      var outras_despesas = {};
+      var assinatura = {};
+      var compras = {};
+      var alimento = {};
+      axios({
+        method: 'post',
+        url: uri,
+        data: {
+          data: valueMes,
+          tipo: valueTipo,
+          dataFim: dataFim
+          }
+      })
+      .then(res => {
+        const dados = Object.values(res.data);
+        var arrayDados = [];
+        vtSalario = 0, vtEmprestimo = 0, vtBonus = 0, 
+        vtRendimento = 0, vtDividendos = 0, vtVenda = 0, vtOutrasRendas =0;
+        vtLazer = 0, vtEducacao = 0, vtCompras = 0,
+        vtAssinatura = 0, vtAlimento = 0, vtOutrasDespesas = 0;
+        setDadosGrafico([]);
+        for (var i=0; i < dados.length; i++) {
+          console.log("VALOR: " + dados[i].Valor);
+          if (valueTipo == "R"){
+            if (dados[i].Categoria == "salario") {
+              vtSalario = vtSalario + dados[i].Valor;
+              salario = {
+                "id": 1,
+                "value": vtSalario,
+                "label": "Salário"
+              };
+            }
+            if (dados[i].Categoria == "emprestimo") {
+              vtEmprestimo = vtEmprestimo + dados[i].Valor;
+              emprestimo = {
+                "id": 2,
+                "value": vtEmprestimo,
+                "label": "Empréstimo"
+              };
+            } 
+            if (dados[i].Categoria == "bonus") {
+              vtBonus = vtBonus + dados[i].Valor;
+              bonus = {
+                "id": 3,
+                "value": vtBonus,
+                "label": "Bônus"
+              };
+            } 
+            if (dados[i].Categoria == "rendimento") {
+              vtRendimento = vtRendimento + dados[i].Valor;
+              rendimento = {
+                "id": 4,
+                "value": vtRendimento,
+                "label": "Rendimento"
+              };
+            } 
+            if (dados[i].Categoria == "dividendos") {
+              vtDividendos = vtDividendos + dados[i].Valor;
+              dividendos = {
+                "id": 5,
+                "value": vtDividendos,
+                "label": "Dividendos"
+              };
+            } 
+            if (dados[i].Categoria == "venda") {
+              vtVenda = vtVenda + dados[i].Valor;
+              venda = {
+                "id": 6,
+                "value": vtVenda,
+                "label": "Vendas"
+              };
+            } 
+            if (dados[i].Categoria == "outras_rendas") {
+              vtOutrasRendas = vtOutrasRendas + dados[i].Valor;
+              outras = {
+                "id": 7,
+                "value": vtOutrasRendas,
+                "label": "Outras"
+              };
+            } 
+        } else if (valueTipo =="D") {
+          if (dados[i].Categoria == "lazer") {
+            vtLazer = vtLazer + dados[i].Valor;
+            lazer = {
+              "id": 8,
+              "value": vtLazer,
+              "label": "Lazer"
+            };
+          }
+          if (dados[i].Categoria == "educacao") {
+            vtEducacao = vtEducacao + dados[i].Valor;
+            educacao = {
+              "id": 9,
+              "value": vtEducacao,
+              "label": "Educação"
+            };
+          } 
+          if (dados[i].Categoria == "compras") {
+            vtCompras = vtCompras + dados[i].Valor;
+            compras = {
+              "id": 10,
+              "value": vtCompras,
+              "label": "Compras"
+            };
+          } 
+          if (dados[i].Categoria == "assinatura") {
+            vtAssinatura = vtAssinatura + dados[i].Valor;
+            assinatura = {
+              "id": 11,
+              "value": vtAssinatura,
+              "label": "Assinatura"
+            };
+          } 
+          if (dados[i].Categoria == "alimento") {
+            vtAlimento = vtAlimento + dados[i].Valor;
+            alimento = {
+              "id": 12,
+              "value": vtAlimento,
+              "label": "Alimentação"
+            };
+          } 
+          if (dados[i].Categoria == "outras_despesas") {
+            vtOutrasDespesas = vtOutrasDespesas + dados[i].Valor;
+            outras_despesas = {
+              "id": 1,
+              "value": vtOutrasDespesas,
+              "label": "Outras"
+            };
+          } 
+        }
+        if (Object.keys(salario).length > 0) arrayDados.push(salario);
+        if (Object.keys(emprestimo).length > 0) arrayDados.push(emprestimo);
+        if (Object.keys(bonus).length > 0) arrayDados.push(bonus);
+        if (Object.keys(rendimento).length > 0) arrayDados.push(rendimento);
+        if (Object.keys(dividendos).length > 0) arrayDados.push(dividendos);
+        if (Object.keys(venda).length > 0) arrayDados.push(venda);
+        if (Object.keys(outras).length > 0) arrayDados.push(outras);
+        if (Object.keys(lazer).length > 0) arrayDados.push(lazer);
+        if (Object.keys(educacao).length > 0) arrayDados.push(educacao);
+        if (Object.keys(outras_despesas).length > 0) arrayDados.push(outras_despesas);
+        if (Object.keys(assinatura).length > 0) arrayDados.push(assinatura);
+        if (Object.keys(compras).length > 0) arrayDados.push(compras);
+        if (Object.keys(alimento).length > 0) arrayDados.push(alimento);
+        }
+        setDadosGrafico(arrayDados);
+      console.log(dadosGrafico);
+      })
+      .catch(err => {
+        console.error(err);
+      })
+    }, []);
+
+    // Faz uma requisição quando alterar o valor do mês (QUANDO O USUÁRIO ALTERAR O MES)
+    useEffect(()=>{
+      var salario = {};
+      var emprestimo  = {};
+      var bonus = {};
+      var rendimento  = {};
+      var dividendos = {};
+      var venda = {};
+      var outras = {};
+      var lazer  = {};
+      var educacao = {};
+      var outras_despesas = {};
+      var assinatura = {};
+      var compras = {};
+      var alimento = {};
+      axios({
+        method: 'post',
+        url: uri,
+        data: {
+          data: valueMes,
+          tipo: valueTipo,
+          dataFim: dataFim
+          }
+      })
+      .then(res => {
+        const dados = Object.values(res.data);
+        var arrayDados = [];
+        vtSalario = 0, vtEmprestimo = 0, vtBonus = 0, 
+        vtRendimento = 0, vtDividendos = 0, vtVenda = 0, vtOutrasRendas =0;
+        vtLazer = 0, vtEducacao = 0, vtCompras = 0,
+        vtAssinatura = 0, vtAlimento = 0, vtOutrasDespesas = 0;
+        setDadosGrafico([]);
+        for (var i=0; i < dados.length; i++) {
+          console.log("VALOR: " + dados[i].Valor);
+          if (valueTipo == "R"){
+            if (dados[i].Categoria == "salario") {
+              vtSalario = vtSalario + dados[i].Valor;
+              salario = {
+                "id": 1,
+                "value": vtSalario,
+                "label": "Salário"
+              };
+            }
+            if (dados[i].Categoria == "emprestimo") {
+              vtEmprestimo = vtEmprestimo + dados[i].Valor;
+              emprestimo = {
+                "id": 2,
+                "value": vtEmprestimo,
+                "label": "Empréstimo"
+              };
+            } 
+            if (dados[i].Categoria == "bonus") {
+              vtBonus = vtBonus + dados[i].Valor;
+              bonus = {
+                "id": 3,
+                "value": vtBonus,
+                "label": "Bônus"
+              };
+            } 
+            if (dados[i].Categoria == "rendimento") {
+              vtRendimento = vtRendimento + dados[i].Valor;
+              rendimento = {
+                "id": 4,
+                "value": vtRendimento,
+                "label": "Rendimento"
+              };
+            } 
+            if (dados[i].Categoria == "dividendos") {
+              vtDividendos = vtDividendos + dados[i].Valor;
+              dividendos = {
+                "id": 5,
+                "value": vtDividendos,
+                "label": "Dividendos"
+              };
+            } 
+            if (dados[i].Categoria == "venda") {
+              vtVenda = vtVenda + dados[i].Valor;
+              venda = {
+                "id": 6,
+                "value": vtVenda,
+                "label": "Vendas"
+              };
+            } 
+            if (dados[i].Categoria == "outras_rendas") {
+              vtOutrasRendas = vtOutrasRendas + dados[i].Valor;
+              outras = {
+                "id": 7,
+                "value": vtOutrasRendas,
+                "label": "Outras"
+              };
+            } 
+        } else if (valueTipo =="D") {
+          if (dados[i].Categoria == "lazer") {
+            vtLazer = vtLazer + dados[i].Valor;
+            lazer = {
+              "id": 8,
+              "value": vtLazer,
+              "label": "Lazer"
+            };
+          }
+          if (dados[i].Categoria == "educacao") {
+            vtEducacao = vtEducacao + dados[i].Valor;
+            educacao = {
+              "id": 9,
+              "value": vtEducacao,
+              "label": "Educação"
+            };
+          } 
+          if (dados[i].Categoria == "compras") {
+            vtCompras = vtCompras + dados[i].Valor;
+            compras = {
+              "id": 10,
+              "value": vtCompras,
+              "label": "Compras"
+            };
+          } 
+          if (dados[i].Categoria == "assinatura") {
+            vtAssinatura = vtAssinatura + dados[i].Valor;
+            assinatura = {
+              "id": 11,
+              "value": vtAssinatura,
+              "label": "Assinatura"
+            };
+          } 
+          if (dados[i].Categoria == "alimento") {
+            vtAlimento = vtAlimento + dados[i].Valor;
+            alimento = {
+              "id": 12,
+              "value": vtAlimento,
+              "label": "Alimentação"
+            };
+          } 
+          if (dados[i].Categoria == "outras_despesas") {
+            vtOutrasDespesas = vtOutrasDespesas + dados[i].Valor;
+            outras_despesas = {
+              "id": 1,
+              "value": vtOutrasDespesas,
+              "label": "Outras"
+            };
+          } 
+        }
+        if (Object.keys(salario).length > 0) arrayDados.push(salario);
+        if (Object.keys(emprestimo).length > 0) arrayDados.push(emprestimo);
+        if (Object.keys(bonus).length > 0) arrayDados.push(bonus);
+        if (Object.keys(rendimento).length > 0) arrayDados.push(rendimento);
+        if (Object.keys(dividendos).length > 0) arrayDados.push(dividendos);
+        if (Object.keys(venda).length > 0) arrayDados.push(venda);
+        if (Object.keys(outras).length > 0) arrayDados.push(outras);
+        if (Object.keys(lazer).length > 0) arrayDados.push(lazer);
+        if (Object.keys(educacao).length > 0) arrayDados.push(educacao);
+        if (Object.keys(outras_despesas).length > 0) arrayDados.push(outras_despesas);
+        if (Object.keys(assinatura).length > 0) arrayDados.push(assinatura);
+        if (Object.keys(compras).length > 0) arrayDados.push(compras);
+        if (Object.keys(alimento).length > 0) arrayDados.push(alimento);
+        }
+        setDadosGrafico(arrayDados);
+      console.log(dadosGrafico);
+      })
+      .catch(err => {
+        console.error(err);
+      })
+    }, [valueMes]);
+
+    // Faz uma requisição quando alterar o valor do tipo (QUANDO O USUÁRIO ALTERAR O TIPO)
+    useEffect(()=>{
+      var salario = {};
+      var emprestimo  = {};
+      var bonus = {};
+      var rendimento  = {};
+      var dividendos = {};
+      var venda = {};
+      var outras = {};
+      var lazer  = {};
+      var educacao = {};
+      var outras_despesas = {};
+      var assinatura = {};
+      var compras = {};
+      var alimento = {};
+      axios({
+        method: 'post',
+        url: uri,
+        data: {
+          data: valueMes,
+          tipo: valueTipo,
+          dataFim: dataFim
+          }
+      })
+      .then(res => {
+        const dados = Object.values(res.data);
+        vtSalario = 0, vtEmprestimo = 0, vtBonus = 0, 
+        vtRendimento = 0, vtDividendos = 0, vtVenda = 0, vtOutrasRendas =0;
+        vtLazer = 0, vtEducacao = 0, vtCompras = 0,
+        vtAssinatura = 0, vtAlimento = 0, vtOutrasDespesas = 0;
+        var arrayDados = [];
+        setDadosGrafico([]);
+        for (var i=0; i < dados.length; i++) {
+          console.log("VALOR: " + dados[i].Valor);
+          if (valueTipo == "R"){
+            if (dados[i].Categoria == "salario") {
+              vtSalario = vtSalario + dados[i].Valor;
+              salario = {
+                "id": 1,
+                "value": vtSalario,
+                "label": "Salário"
+              };
+            }
+            if (dados[i].Categoria == "emprestimo") {
+              vtEmprestimo = vtEmprestimo + dados[i].Valor;
+              emprestimo = {
+                "id": 2,
+                "value": vtEmprestimo,
+                "label": "Empréstimo"
+              };
+            } 
+            if (dados[i].Categoria == "bonus") {
+              vtBonus = vtBonus + dados[i].Valor;
+              bonus = {
+                "id": 3,
+                "value": vtBonus,
+                "label": "Bônus"
+              };
+            } 
+            if (dados[i].Categoria == "rendimento") {
+              vtRendimento = vtRendimento + dados[i].Valor;
+              rendimento = {
+                "id": 4,
+                "value": vtRendimento,
+                "label": "Rendimento"
+              };
+            } 
+            if (dados[i].Categoria == "dividendos") {
+              vtDividendos = vtDividendos + dados[i].Valor;
+              dividendos = {
+                "id": 5,
+                "value": vtDividendos,
+                "label": "Dividendos"
+              };
+            } 
+            if (dados[i].Categoria == "venda") {
+              vtVenda = vtVenda + dados[i].Valor;
+              venda = {
+                "id": 6,
+                "value": vtVenda,
+                "label": "Vendas"
+              };
+            } 
+            if (dados[i].Categoria == "outras_rendas") {
+              vtOutrasRendas = vtOutrasRendas + dados[i].Valor;
+              outras = {
+                "id": 7,
+                "value": vtOutrasRendas,
+                "label": "Outras"
+              };
+            } 
+        } else if (valueTipo =="D") {
+          if (dados[i].Categoria == "lazer") {
+            vtLazer = vtLazer + dados[i].Valor;
+            lazer = {
+              "id": 8,
+              "value": vtLazer,
+              "label": "Lazer"
+            };
+          }
+          if (dados[i].Categoria == "educacao") {
+            vtEducacao = vtEducacao + dados[i].Valor;
+            educacao = {
+              "id": 9,
+              "value": vtEducacao,
+              "label": "Educação"
+            };
+          } 
+          if (dados[i].Categoria == "compras") {
+            vtCompras = vtCompras + dados[i].Valor;
+            compras = {
+              "id": 10,
+              "value": vtCompras,
+              "label": "Compras"
+            };
+          } 
+          if (dados[i].Categoria == "assinatura") {
+            vtAssinatura = vtAssinatura + dados[i].Valor;
+            assinatura = {
+              "id": 11,
+              "value": vtAssinatura,
+              "label": "Assinatura"
+            };
+          } 
+          if (dados[i].Categoria == "alimento") {
+            vtAlimento = vtAlimento + dados[i].Valor;
+            alimento = {
+              "id": 12,
+              "value": vtAlimento,
+              "label": "Alimentação"
+            };
+          } 
+          if (dados[i].Categoria == "outras_despesas") {
+            vtOutrasDespesas = vtOutrasDespesas + dados[i].Valor;
+            outras_despesas = {
+              "id": 1,
+              "value": vtOutrasDespesas,
+              "label": "Outras"
+            };
+          } 
+        }
+        if (Object.keys(salario).length > 0) arrayDados.push(salario);
+        if (Object.keys(emprestimo).length > 0) arrayDados.push(emprestimo);
+        if (Object.keys(bonus).length > 0) arrayDados.push(bonus);
+        if (Object.keys(rendimento).length > 0) arrayDados.push(rendimento);
+        if (Object.keys(dividendos).length > 0) arrayDados.push(dividendos);
+        if (Object.keys(venda).length > 0) arrayDados.push(venda);
+        if (Object.keys(outras).length > 0) arrayDados.push(outras);
+        if (Object.keys(lazer).length > 0) arrayDados.push(lazer);
+        if (Object.keys(educacao).length > 0) arrayDados.push(educacao);
+        if (Object.keys(outras_despesas).length > 0) arrayDados.push(outras_despesas);
+        if (Object.keys(assinatura).length > 0) arrayDados.push(assinatura);
+        if (Object.keys(compras).length > 0) arrayDados.push(compras);
+        if (Object.keys(alimento).length > 0) arrayDados.push(alimento);
+        }
+        setDadosGrafico(arrayDados);
+      console.log(dadosGrafico);
+      })
+      .catch(err => {
+        console.error(err);
+      })
+    }, [valueTipo]);
+
+  return (
+    <SafeAreaView style={style.container}>
+      <View style={{alignItems: 'center'}}>
       <View style={{alignItems: 'center', zIndex: 999}}>
         <TouchableOpacity onPress={() => {open ? setOpen(false) : setOpen(true)}}>
           <Text style={{
@@ -88,6 +600,7 @@ export default function Dashboard() {
             onPress= { () => {
               setValueMes(item.value);
               setMes(item.label);
+              setDataFim(item.proximo);
               setOpen(false);
              }}
             >
@@ -99,59 +612,6 @@ export default function Dashboard() {
           </View>
         ): null}
       </View>
-    )
-  }
-
-  const GerenciarContas = () => {
-
-    const [posts, setPosts] = useState([]);
-
-    useEffect(()=>{
-      axios.get("https://jsonplaceholder.typicode.com/posts")
-      .then(res => {
-        setPosts(res.data)
-      })
-      .catch(err=>{
-        console.log(err)
-      })
-    }, [])
-
-    const item = ({ item }) => (
-        <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 20, fontWeight: '500'}}>{item.id}</Text>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 20}}>{item.userId}</Text>
-        </TouchableOpacity>
-  )
-    
-    return (
-      <View style={{width: "90%", backgroundColor: COLORS.GRAY_800, borderRadius: 4, padding: 12, marginTop: 12}}>
-        <Text style={{color: COLORS.GRAY_100, fontSize: 24, marginBottom:12}}>
-          Gerenciar contas
-        </Text>
-        <FlatList
-        style={{height: 130}}
-        data={posts}
-        renderItem= {item}
-        keyExtractor={item => item.id.toString()}
-        />
-      </View>
-    )
-  }
-
-  const Grafico = () => {
-
-    const [mostraTipos, setMostraTipos] = useState(false);
-    const [tipo, setTipo] = useState("Receitas");
-    const [valueTipo, setValueTipo] = useState("receitas");
-
-    const [tipos, setTipos] = useState([
-      {"label": "Receitas", "value": "receitas"},
-      {"label": "Despesas", "value": "despesas"},
-      {"label": "Bens", "value": "bens"},
-      {"label": "Dívidas", "value": "dividas"}
-    ]);
- 
-    return (
       <View style={{width: "90%", marginTop: 12, borderRadius: 4, marginBottom: 12}}>
         <TouchableOpacity onPress={() => {mostraTipos ? setMostraTipos(false) : setMostraTipos(true)}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -214,23 +674,13 @@ export default function Dashboard() {
           ]}
           textAnchor="middle"
           />}
-          colorScale={["#D9CE3F", "#E83A14", "#890F0D", "#630606"]}
-          data={[
-            {x: "Compras", y: 100},
-            {x: "Lazer", y: 50},
-            {x: "Educação", y:30},
-            {x: "Contas", y: 100}
-          ]
-          }
+          data={dadosGrafico}
+          x="label"
+          y="value"
           innerRadius= {80}
           />
       </View>
       </View>
-    )
-  }
-
-  const ListaGrafico = () => {
-    return (
       <ScrollView 
       contentContainerStyle={{alignItems: 'center'}}
       style={{width:"100%", height: 240}}>
@@ -259,15 +709,6 @@ export default function Dashboard() {
         </View>
       </View>
       </ScrollView>
-    )
-    }
-
-  return (
-    <SafeAreaView style={style.container}>
-      <View style={{alignItems: 'center'}}>
-        <Header/>
-        <Grafico/>
-        <ListaGrafico/>
       </View>
     </SafeAreaView>
   );

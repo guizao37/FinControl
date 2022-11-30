@@ -142,7 +142,8 @@ app.post("/add", (req, res) => {
             var query = `INSERT INTO finança (Descricao, Valor, Data, Tipo, Categoria, Usuario_idUsuario) VALUES (
                 '${descricao}', ${valor}, '${dataRepete}', '${tipo}', '${categoria}', ${idUsuario})`;
             db.query(query, (err, results) => {
-                res.status(400).send("Sucesso.")
+                console.log(err);
+                console.log(results);
             });
             var mes = mes + 1;
                 if (mes > 12) { 
@@ -157,8 +158,21 @@ app.post("/addpatrimonio", (req,res)=> {
     // Inserir patrimonio na tabela patrimonio
 });
 
-app.get("/financas", (req, res) => {
+app.post("/financas", (req, res) => {
     // Buscar finanças do usuário (receitas e despesas)
+    var data = req.body.data;
+    var tipo = req.body.tipo;
+    var dataFim = req.body.dataFim;
+    var idUsuario = getIdUsuario();
+
+    var query = `select * from finança where Data between '${data}' and '${dataFim}' and Usuario_idUsuario = 
+    ${idUsuario} and tipo = '${tipo}'`;
+
+    console.log("QUERY: " + query)
+
+    db.query(query, (err, results)=> {
+        res.send(results);
+    })
 });
 
 app.get("/patrimonio", (req, res) => {

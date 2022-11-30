@@ -4,6 +4,7 @@ import {StyleSheet, Text, TextInput, TouchableOpacity, View, Image, KeyboardAvoi
 import styleLogin from '../styles/styleLogin'
 import * as Animatable from "react-native-animatable"
 import * as COLORS from '../styles/cores.json';
+import axios from 'axios'
 
 const LoginScreen = ({navigation}) => {
 
@@ -60,23 +61,19 @@ const LoginScreen = ({navigation}) => {
   }
 
   const efetuaLogin = () => {
-    const uri = "http://192.168.0.10:3301/login";
-    const body =  {
-        method: 'POST',
-        body:
-        JSON.stringify({
-          email: email.toLowerCase(),
-          senha: password,
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        }
-      }
+    const uri = "http://192.168.0.11:3301/login";
     checkCampos();
     checkEmail();
     checkPassword();
     if (checkEmail() && checkPassword() && checkCampos()){
-      fetch(uri, body)
+      axios({
+        method: "POST",
+        url: uri,
+        data: {
+          email: email.toLowerCase(),
+          senha: password
+        }
+      })
       .then((response) => {
       if (response.status == 200) {
         setMsg("")
