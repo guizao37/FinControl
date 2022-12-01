@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as COLORS from '../styles/cores.json';
 import { useEffect } from 'react';
+import axios from 'axios';
 
 
 export default function Finances() {
@@ -14,6 +15,7 @@ export default function Finances() {
   );
   const mesAgora = new Date().getMonth() + 1;
   var ano = new Date().getFullYear();
+
   var proxMes = 0;
   var proxAno = 0;
 
@@ -29,6 +31,12 @@ export default function Finances() {
   const [dataFim, setDataFim] = useState(`${proxAno}-${proxMes}-01`);
   const [mes, setMes] = useState(mesAtual.charAt(0).toUpperCase() + mesAtual.slice(1));
 
+  const [open, setOpen] = useState(false);
+
+  const [vtReceitas, setVtReceitas] = useState(0);
+  const [vtDespesas, setVtDespesas] = useState(0);
+  const [valorSaldo, setValorSaldo] = useState(0);
+ 
   const [meses, setMeses] = useState([
     //2022
     {"label": "Janeiro", "value": "2022-01-01", "proximo":"2022-01-31"},
@@ -58,30 +66,110 @@ export default function Finances() {
     {"label": "Dezembro/2023", "value": "2023-12-01", "proximo":"2023-12-31"}
   ]);
 
-  useEffect(()=>{
+  const uri1 = "http://192.168.0.11:3301/receitas";
+  const uri2 = "http://192.168.0.11:3301/despesas";
 
+  const api = () => { 
+    // Busca receitas
+    axios({
+      method: 'post',
+      url: uri1,
+      data: {
+        data: data,
+        dataFim: dataFim
+      }
+    })
+    .then(res=> {
+      var dados = res.data;
+      setVtReceitas(dados[0].receitas);
+    })
+    .catch(err => { console.log(err); })
+
+    // Busca despesas
+    axios({
+      method: 'post',
+      url: uri2,
+      data: {
+        data: data,
+        dataFim: dataFim
+      }
+    })
+    .then(res=> {
+      var dados = res.data;
+      setVtDespesas(dados[0].despesas);
+    })
+    .catch(err => { console.log(err); })
+
+    var saldo = vtReceitas - vtDespesas;
+    setValorSaldo(saldo);
+  }
+
+  useEffect(()=>{
+    api();
   }, []);
 
-  const addReceitas = () =>{
-    navigation.navigate("Receita")
+  const reload = () =>{
+    api();
   }
 
-  const addDespesas = () =>{
-    navigation.navigate("Despesa")
-  }
 
   const Header = () => {
     return (
       <View style={{alignItems: 'center'}}>
         <TouchableOpacity>
-        <View style={{flexDirection: 'row'}}>
-        <View>
         <Text style={style.textHeader}>
           {mes}
         </Text>
-        </View>
-        </View>
         </TouchableOpacity>
+        <TouchableOpacity 
+          onPress={() => { reload(); }}
+          >
+          <Image
+          style={{width: 25, height: 25, tintColor: 'white', position: 'absolute', left: 160, bottom: 5}}
+            source={require('../../assets/reload.png')}
+          />
+          </TouchableOpacity>
+          {open ? (
+            <View style={{
+            position: 'absolute',
+            borderRadius: 10,
+            shadowOpacity: 1,
+            backgroundColor: 'gray',
+            marginTop: '50%',
+            right: 'auto',
+            width: "90%",
+            height: 400,
+          }}>
+            <View style={{alignItems: 'center', height: 400}}>
+              <Text style={{fontWeight: 'bold', fontSize: 28, color: COLORS.GRAY_900, marginBottom: 8}}>
+                Selecione o mês
+              </Text>
+            <FlatList
+            style= {{
+              width: "100%",
+              height: 50
+            }}
+            contentContainerStyle={{
+              alignItems:'center'
+            }}
+            data={meses}
+            renderItem={({item})=>(
+              <TouchableOpacity 
+              style={{marginBottom: 4}}
+              onPress= { () => {
+                setValueMes(item.value);
+                setMes(item.label);
+                setDataFim(item.proximo);
+                setOpen(false);
+               }}
+              >
+                <Text style={{color: COLORS.GRAY_900, fontSize: 20, fontWeight: '500'}}>{item.label}</Text>
+              </TouchableOpacity>
+            )}
+            />
+            </View>
+            </View>
+          ): null}
       </View>
     )
   }
@@ -95,7 +183,7 @@ export default function Finances() {
           Receitas:
         </Text>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
-          R$ 
+          R$ { vtReceitas }
         </Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -103,7 +191,7 @@ export default function Finances() {
           Despesas:
         </Text>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
-          -R$
+          -R$ { vtDespesas }
         </Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -111,7 +199,7 @@ export default function Finances() {
           Saldo total:
         </Text>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
-        R$
+        R$ { valorSaldo }
         </Text>
         </View>
       </View>

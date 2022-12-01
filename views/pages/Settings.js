@@ -43,7 +43,8 @@ export default function Settings({emailUser}) {
   }
 
   const sair = () => {
-    navigation.navigate("Login")
+    axios.get("http://192.168.0.11:3301/sair");
+    navigation.navigate("Login");
   }
   
   const Buttons = () => {

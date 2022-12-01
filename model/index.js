@@ -175,20 +175,35 @@ app.post("/financas", (req, res) => {
     })
 });
 
-app.post("/saldo", (req, res)=>{
-    var mes = req.body.mes;
-    var proxMes = req.body.proxMes;
+app.post("/receitas", (req, res)=>{
+
+    var mes = req.body.data;
+    var proxMes = req.body.dataFim;
+
+    console.log(mes);
+    console.log(proxMes);
     
     const receitas = `select SUM(Valor) as receitas from finança where tipo = "R" and Data between
-    ${mes} and ${proxMes}`;
-    const despesas = `select SUM(Valor) as despesas from finança where tipo = "D" and Data between
-    ${mes} and ${proxMes}`;
+    '${mes}' and '${proxMes}' and usuario_idusuario = ${getIdUsuario()}`;
+
+    console.log(receitas);
 
     db.query(receitas, (err, results)=>{
         console.log(results);
+        res.send(results);
     });
+});
+
+app.post("/despesas", (req, res)=>{
+    var mes = req.body.data;
+    var proxMes = req.body.dataFim;
+    
+    const despesas = `select SUM(Valor) as despesas from finança where tipo = "D" and Data between
+    '${mes}' and '${proxMes}' and usuario_idusuario = ${getIdUsuario()}`;
+
     db.query(despesas, (err, results)=>{
         console.log(results);
+        res.send(results);
     });
 });
 
@@ -216,6 +231,13 @@ app.get("/nome", (req, res)=>{
         console.log(results);
         res.send(results);
     })
+});
+
+app.get("/sair", (req, res)=>{
+    req.session.destroy();
+    store.clear();
+    console.log(store);
+    res.send("Fim");
 });
 
 // INICIANDO SERVIDOR
