@@ -4,9 +4,63 @@ import style from '../styles/style';
 import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as COLORS from '../styles/cores.json';
+import { useEffect } from 'react';
 
 
 export default function Finances() {
+
+  const mesAtual = new Date().toLocaleString(
+    'pt-BR', {month: 'long'}
+  );
+  const mesAgora = new Date().getMonth() + 1;
+  var ano = new Date().getFullYear();
+  var proxMes = 0;
+  var proxAno = 0;
+
+  if (mesAgora == 12) {
+    proxMes = 1;
+    proxAno = ano + 1;
+  } else {
+    proxMes = mesAgora + 1;
+    proxAno = ano;
+  }
+
+  const [data, setData] = useState(`${ano}-${mesAgora}-01`);
+  const [dataFim, setDataFim] = useState(`${proxAno}-${proxMes}-01`);
+  const [mes, setMes] = useState(mesAtual.charAt(0).toUpperCase() + mesAtual.slice(1));
+
+  const [meses, setMeses] = useState([
+    //2022
+    {"label": "Janeiro", "value": "2022-01-01", "proximo":"2022-01-31"},
+    {"label": "Fevereiro", "value": "2022-02-01", "proximo":"2022-02-28"},
+    {"label": "Março", "value": "2022-03-01", "proximo":"2022-03-31"},
+    {"label": "Abril", "value": "2022-04-01", "proximo":"2022-04-30"},
+    {"label": "Maio", "value": "2022-05-01", "proximo":"2022-05-31"},
+    {"label": "Junho", "value": "2022-06-01", "proximo":"2022-06-30"},
+    {"label": "Julho", "value": "2022-07-01", "proximo":"2022-07-31"},
+    {"label": "Agosto", "value": "2022-08-01", "proximo":"2022-08-31"},
+    {"label": "Setembro", "value": "2022-09-01", "proximo":"2022-09-30"},
+    {"label": "Outubro", "value": "2022-10-01", "proximo":"2022-10-31"},
+    {"label": "Novembro", "value": "2022-11-01", "proximo":"2022-11-30"},
+    {"label": "Dezembro", "value": "2022-12-01", "proximo":"2022-12-31"},
+    // 2023
+    {"label": "Janeiro/2023", "value": "2023-01-01", "proximo":"2023-01-31"},
+    {"label": "Fevereiro/2023", "value": "2023-02-01", "proximo":"2023-02-28"},
+    {"label": "Março/2023", "value": "2023-03-01", "proximo":"2023-03-31"},
+    {"label": "Abril/2023", "value": "2023-04-01", "proximo":"2023-04-30"},
+    {"label": "Maio/2023", "value": "2023-05-01", "proximo":"2023-05-31"},
+    {"label": "Junho/2023", "value": "2023-06-01", "proximo":"2023-06-30"},
+    {"label": "Julho/2023", "value": "2023-07-01", "proximo":"2023-07-31"},
+    {"label": "Agosto/2023", "value": "2023-08-01", "proximo":"2023-08-31"},
+    {"label": "Setembro/2023", "value": "2023-09-01", "proximo":"2023-09-30"},
+    {"label": "Outubro/2023", "value": "2023-10-01", "proximo":"2023-10-31"},
+    {"label": "Novembro/2023", "value": "2023-11-01", "proximo":"2023-11-30"},
+    {"label": "Dezembro/2023", "value": "2023-12-01", "proximo":"2023-12-31"}
+  ]);
+
+  useEffect(()=>{
+
+  }, []);
 
   const addReceitas = () =>{
     navigation.navigate("Receita")
@@ -23,13 +77,8 @@ export default function Finances() {
         <View style={{flexDirection: 'row'}}>
         <View>
         <Text style={style.textHeader}>
-          Novembro
+          {mes}
         </Text>
-        </View>
-        <View style={{justifyContent: 'center', marginLeft: 8}}>
-        <Image source={require("../../assets/seta.png")}
-        style={{tintColor: COLORS.GRAY_100, width: 25, height: 25, }}
-        />
         </View>
         </View>
         </TouchableOpacity>
@@ -46,7 +95,7 @@ export default function Finances() {
           Receitas:
         </Text>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
-          R${formatarMoeda(123456)}
+          R$ 
         </Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -54,7 +103,7 @@ export default function Finances() {
           Despesas:
         </Text>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
-          -R${formatarMoeda(123456)}
+          -R$
         </Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -62,7 +111,7 @@ export default function Finances() {
           Saldo total:
         </Text>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
-        R${formatarMoeda(0)}
+        R$
         </Text>
         </View>
       </View>

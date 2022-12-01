@@ -175,6 +175,23 @@ app.post("/financas", (req, res) => {
     })
 });
 
+app.post("/saldo", (req, res)=>{
+    var mes = req.body.mes;
+    var proxMes = req.body.proxMes;
+    
+    const receitas = `select SUM(Valor) as receitas from finança where tipo = "R" and Data between
+    ${mes} and ${proxMes}`;
+    const despesas = `select SUM(Valor) as despesas from finança where tipo = "D" and Data between
+    ${mes} and ${proxMes}`;
+
+    db.query(receitas, (err, results)=>{
+        console.log(results);
+    });
+    db.query(despesas, (err, results)=>{
+        console.log(results);
+    });
+});
+
 app.get("/patrimonio", (req, res) => {
     // Buscar patrimônio do usuário (bens e dívidas)
 });
@@ -189,6 +206,16 @@ app.get("/alterar", (req, res)=>{
 
 app.get("/recuperar", (req, res)=>{
     // Envia e-mail para recuperar senha do usuário
+});
+
+app.get("/nome", (req, res)=>{
+    const idUser = getIdUsuario();
+    const query = `select * from usuario where idusuario = ${idUser}`;
+    console.log(query);
+    db.query(query, (err, results)=> {
+        console.log(results);
+        res.send(results);
+    })
 });
 
 // INICIANDO SERVIDOR

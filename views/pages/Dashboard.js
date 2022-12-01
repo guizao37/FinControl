@@ -14,42 +14,52 @@ export default function Dashboard() {
     var vtLazer = 0, vtEducacao = 0, vtCompras = 0,
     vtAssinatura = 0, vtAlimento = 0, vtOutrasDespesas = 0;
 
-    
-
     const mesAtual = new Date().toLocaleString(
       'pt-BR', {month: 'long'}
     );
     const mesAgora = new Date().getMonth() + 1;
-    const proxMes = mesAgora + 1;
-    const ano = new Date().getFullYear();
+    var ano = new Date().getFullYear();
+    var proxMes = 0;
+    var proxAno = 0;
+
+    if (mesAgora == 12) {
+      proxMes = 1;
+      proxAno = ano + 1;
+    } else {
+      proxMes = mesAgora + 1;
+      proxAno = ano;
+    }
+
     const [data, setData] = useState(`${ano}-${mesAgora}-01`);
-    const [dataFim, setDataFim] = useState(`${ano}-${proxMes}-01`);
+    const [dataFim, setDataFim] = useState(`${proxAno}-${proxMes}-01`);
     const [mes, setMes] = useState(mesAtual.charAt(0).toUpperCase() + mesAtual.slice(1));
     const [meses, setMeses] = useState([
-      {"label": "Janeiro", "value": "2022-01-01", "proximo":"2022-02-01"},
-      {"label": "Fevereiro", "value": "2022-02-01", "proximo":"2022-03-01"},
-      {"label": "Março", "value": "2022-03-01", "proximo":"2022-04-01"},
-      {"label": "Abril", "value": "2022-04-01", "proximo":"2022-05-01"},
-      {"label": "Maio", "value": "2022-05-01", "proximo":"2022-06-01"},
-      {"label": "Junho", "value": "2022-06-01", "proximo":"2022-07-01"},
-      {"label": "Julho", "value": "2022-07-01", "proximo":"2022-08-01"},
-      {"label": "Agosto", "value": "2022-08-01", "proximo":"2022-09-01"},
-      {"label": "Setembro", "value": "2022-09-01", "proximo":"2022-10-01"},
-      {"label": "Outubro", "value": "2022-10-01", "proximo":"2022-11-01"},
-      {"label": "Novembro", "value": "2022-11-01", "proximo":"2022-12-01"},
-      {"label": "Dezembro", "value": "2022-12-01", "proximo":"2023-01-01"},
-      {"label": "Janeiro/2023", "value": "2023-01-01", "proximo":"2023-02-01"},
-      {"label": "Fevereiro/2023", "value": "2023-02-01", "proximo":"2023-03-01"},
-      {"label": "Março/2023", "value": "2023-03-01", "proximo":"2023-04-01"},
-      {"label": "Abril/2023", "value": "2023-04-01", "proximo":"2023-05-01"},
-      {"label": "Maio/2023", "value": "2023-05-01", "proximo":"2023-06-01"},
-      {"label": "Junho/2023", "value": "2023-06-01", "proximo":"2023-07-01"},
-      {"label": "Julho/2023", "value": "2023-07-01", "proximo":"2023-08-01"},
-      {"label": "Agosto/2023", "value": "2023-08-01", "proximo":"2023-09-01"},
-      {"label": "Setembro/2023", "value": "2023-09-01", "proximo":"2023-10-01"},
-      {"label": "Outubro/2023", "value": "2023-10-01", "proximo":"2023-11-01"},
-      {"label": "Novembro/2023", "value": "2023-11-01", "proximo":"2023-12-01"},
-      {"label": "Dezembro/2023", "value": "2023-12-01", "proximo":"2024-01-01"}
+      //2022
+      {"label": "Janeiro", "value": "2022-01-01", "proximo":"2022-01-31"},
+      {"label": "Fevereiro", "value": "2022-02-01", "proximo":"2022-02-28"},
+      {"label": "Março", "value": "2022-03-01", "proximo":"2022-03-31"},
+      {"label": "Abril", "value": "2022-04-01", "proximo":"2022-04-30"},
+      {"label": "Maio", "value": "2022-05-01", "proximo":"2022-05-31"},
+      {"label": "Junho", "value": "2022-06-01", "proximo":"2022-06-30"},
+      {"label": "Julho", "value": "2022-07-01", "proximo":"2022-07-31"},
+      {"label": "Agosto", "value": "2022-08-01", "proximo":"2022-08-31"},
+      {"label": "Setembro", "value": "2022-09-01", "proximo":"2022-09-30"},
+      {"label": "Outubro", "value": "2022-10-01", "proximo":"2022-10-31"},
+      {"label": "Novembro", "value": "2022-11-01", "proximo":"2022-11-30"},
+      {"label": "Dezembro", "value": "2022-12-01", "proximo":"2022-12-31"},
+      // 2023
+      {"label": "Janeiro/2023", "value": "2023-01-01", "proximo":"2023-01-31"},
+      {"label": "Fevereiro/2023", "value": "2023-02-01", "proximo":"2023-02-28"},
+      {"label": "Março/2023", "value": "2023-03-01", "proximo":"2023-03-31"},
+      {"label": "Abril/2023", "value": "2023-04-01", "proximo":"2023-04-30"},
+      {"label": "Maio/2023", "value": "2023-05-01", "proximo":"2023-05-31"},
+      {"label": "Junho/2023", "value": "2023-06-01", "proximo":"2023-06-30"},
+      {"label": "Julho/2023", "value": "2023-07-01", "proximo":"2023-07-31"},
+      {"label": "Agosto/2023", "value": "2023-08-01", "proximo":"2023-08-31"},
+      {"label": "Setembro/2023", "value": "2023-09-01", "proximo":"2023-09-30"},
+      {"label": "Outubro/2023", "value": "2023-10-01", "proximo":"2023-10-31"},
+      {"label": "Novembro/2023", "value": "2023-11-01", "proximo":"2023-11-30"},
+      {"label": "Dezembro/2023", "value": "2023-12-01", "proximo":"2023-12-31"}
     ]);
     const [valueMes, setValueMes] = useState(data);
     const [open, setOpen] = useState(false);
@@ -69,168 +79,20 @@ export default function Dashboard() {
 
     const uri = "http://192.168.0.11:3301/financas";
 
-    // Faz uma requisição quando navegar pra tela Dashboard
-    useEffect(()=>{
-      var salario = {};
-      var emprestimo  = {};
-      var bonus = {};
-      var rendimento  = {};
-      var dividendos = {};
-      var venda = {};
-      var outras = {};
-      var lazer  = {};
-      var educacao = {};
-      var outras_despesas = {};
-      var assinatura = {};
-      var compras = {};
-      var alimento = {};
-      axios({
-        method: 'post',
-        url: uri,
-        data: {
-          data: valueMes,
-          tipo: valueTipo,
-          dataFim: dataFim
-          }
-      })
-      .then(res => {
-        const dados = Object.values(res.data);
-        var arrayDados = [];
-        vtSalario = 0, vtEmprestimo = 0, vtBonus = 0, 
-        vtRendimento = 0, vtDividendos = 0, vtVenda = 0, vtOutrasRendas =0;
-        vtLazer = 0, vtEducacao = 0, vtCompras = 0,
-        vtAssinatura = 0, vtAlimento = 0, vtOutrasDespesas = 0;
-        setDadosGrafico([]);
-        for (var i=0; i < dados.length; i++) {
-          console.log("VALOR: " + dados[i].Valor);
-          if (valueTipo == "R"){
-            if (dados[i].Categoria == "salario") {
-              vtSalario = vtSalario + dados[i].Valor;
-              salario = {
-                "id": 1,
-                "value": vtSalario,
-                "label": "Salário"
-              };
-            }
-            if (dados[i].Categoria == "emprestimo") {
-              vtEmprestimo = vtEmprestimo + dados[i].Valor;
-              emprestimo = {
-                "id": 2,
-                "value": vtEmprestimo,
-                "label": "Empréstimo"
-              };
-            } 
-            if (dados[i].Categoria == "bonus") {
-              vtBonus = vtBonus + dados[i].Valor;
-              bonus = {
-                "id": 3,
-                "value": vtBonus,
-                "label": "Bônus"
-              };
-            } 
-            if (dados[i].Categoria == "rendimento") {
-              vtRendimento = vtRendimento + dados[i].Valor;
-              rendimento = {
-                "id": 4,
-                "value": vtRendimento,
-                "label": "Rendimento"
-              };
-            } 
-            if (dados[i].Categoria == "dividendos") {
-              vtDividendos = vtDividendos + dados[i].Valor;
-              dividendos = {
-                "id": 5,
-                "value": vtDividendos,
-                "label": "Dividendos"
-              };
-            } 
-            if (dados[i].Categoria == "venda") {
-              vtVenda = vtVenda + dados[i].Valor;
-              venda = {
-                "id": 6,
-                "value": vtVenda,
-                "label": "Vendas"
-              };
-            } 
-            if (dados[i].Categoria == "outras_rendas") {
-              vtOutrasRendas = vtOutrasRendas + dados[i].Valor;
-              outras = {
-                "id": 7,
-                "value": vtOutrasRendas,
-                "label": "Outras"
-              };
-            } 
-        } else if (valueTipo =="D") {
-          if (dados[i].Categoria == "lazer") {
-            vtLazer = vtLazer + dados[i].Valor;
-            lazer = {
-              "id": 8,
-              "value": vtLazer,
-              "label": "Lazer"
-            };
-          }
-          if (dados[i].Categoria == "educacao") {
-            vtEducacao = vtEducacao + dados[i].Valor;
-            educacao = {
-              "id": 9,
-              "value": vtEducacao,
-              "label": "Educação"
-            };
-          } 
-          if (dados[i].Categoria == "compras") {
-            vtCompras = vtCompras + dados[i].Valor;
-            compras = {
-              "id": 10,
-              "value": vtCompras,
-              "label": "Compras"
-            };
-          } 
-          if (dados[i].Categoria == "assinatura") {
-            vtAssinatura = vtAssinatura + dados[i].Valor;
-            assinatura = {
-              "id": 11,
-              "value": vtAssinatura,
-              "label": "Assinatura"
-            };
-          } 
-          if (dados[i].Categoria == "alimento") {
-            vtAlimento = vtAlimento + dados[i].Valor;
-            alimento = {
-              "id": 12,
-              "value": vtAlimento,
-              "label": "Alimentação"
-            };
-          } 
-          if (dados[i].Categoria == "outras_despesas") {
-            vtOutrasDespesas = vtOutrasDespesas + dados[i].Valor;
-            outras_despesas = {
-              "id": 1,
-              "value": vtOutrasDespesas,
-              "label": "Outras"
-            };
-          } 
-        }
-        if (Object.keys(salario).length > 0) arrayDados.push(salario);
-        if (Object.keys(emprestimo).length > 0) arrayDados.push(emprestimo);
-        if (Object.keys(bonus).length > 0) arrayDados.push(bonus);
-        if (Object.keys(rendimento).length > 0) arrayDados.push(rendimento);
-        if (Object.keys(dividendos).length > 0) arrayDados.push(dividendos);
-        if (Object.keys(venda).length > 0) arrayDados.push(venda);
-        if (Object.keys(outras).length > 0) arrayDados.push(outras);
-        if (Object.keys(lazer).length > 0) arrayDados.push(lazer);
-        if (Object.keys(educacao).length > 0) arrayDados.push(educacao);
-        if (Object.keys(outras_despesas).length > 0) arrayDados.push(outras_despesas);
-        if (Object.keys(assinatura).length > 0) arrayDados.push(assinatura);
-        if (Object.keys(compras).length > 0) arrayDados.push(compras);
-        if (Object.keys(alimento).length > 0) arrayDados.push(alimento);
-        }
-        setDadosGrafico(arrayDados);
-      console.log(dadosGrafico);
-      })
-      .catch(err => {
-        console.error(err);
-      })
-    }, []);
+    const formatarMoeda = (valor) => {
+      valor = valor + '';
+      valor = parseInt(valor.replace(/[\D]+/g, ''));
+      valor = valor + '';
+      valor = valor.replace(/([0-9]{2})$/g, ",$1");
+  
+      if (valor.length > 6) {
+          valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
+      }
+  
+      if(valor == 'NaN') valor = '';
+  
+      return valor;
+    }
 
     // Faz uma requisição quando alterar o valor do mês (QUANDO O USUÁRIO ALTERAR O MES)
     useEffect(()=>{
@@ -265,14 +127,14 @@ export default function Dashboard() {
         vtAssinatura = 0, vtAlimento = 0, vtOutrasDespesas = 0;
         setDadosGrafico([]);
         for (var i=0; i < dados.length; i++) {
-          console.log("VALOR: " + dados[i].Valor);
           if (valueTipo == "R"){
             if (dados[i].Categoria == "salario") {
               vtSalario = vtSalario + dados[i].Valor;
               salario = {
                 "id": 1,
                 "value": vtSalario,
-                "label": "Salário"
+                "label": "Salário",
+                "color": "#990000"
               };
             }
             if (dados[i].Categoria == "emprestimo") {
@@ -280,7 +142,8 @@ export default function Dashboard() {
               emprestimo = {
                 "id": 2,
                 "value": vtEmprestimo,
-                "label": "Empréstimo"
+                "label": "Empréstimo",
+                "color": "#FF5B00"
               };
             } 
             if (dados[i].Categoria == "bonus") {
@@ -288,7 +151,8 @@ export default function Dashboard() {
               bonus = {
                 "id": 3,
                 "value": vtBonus,
-                "label": "Bônus"
+                "label": "Bônus",
+                "color": "#D4D925"
               };
             } 
             if (dados[i].Categoria == "rendimento") {
@@ -296,7 +160,8 @@ export default function Dashboard() {
               rendimento = {
                 "id": 4,
                 "value": vtRendimento,
-                "label": "Rendimento"
+                "label": "Rendimento",
+                "color": "#FFEE63"
               };
             } 
             if (dados[i].Categoria == "dividendos") {
@@ -304,7 +169,8 @@ export default function Dashboard() {
               dividendos = {
                 "id": 5,
                 "value": vtDividendos,
-                "label": "Dividendos"
+                "label": "Dividendos",
+                "color": "#B20600"
               };
             } 
             if (dados[i].Categoria == "venda") {
@@ -312,7 +178,8 @@ export default function Dashboard() {
               venda = {
                 "id": 6,
                 "value": vtVenda,
-                "label": "Vendas"
+                "label": "Vendas",
+                "color": "#E6D5B8"
               };
             } 
             if (dados[i].Categoria == "outras_rendas") {
@@ -320,7 +187,8 @@ export default function Dashboard() {
               outras = {
                 "id": 7,
                 "value": vtOutrasRendas,
-                "label": "Outras"
+                "label": "Outras",
+                "color": "#99154E"
               };
             } 
         } else if (valueTipo =="D") {
@@ -329,7 +197,8 @@ export default function Dashboard() {
             lazer = {
               "id": 8,
               "value": vtLazer,
-              "label": "Lazer"
+              "label": "Lazer",
+              "color": "#990000"
             };
           }
           if (dados[i].Categoria == "educacao") {
@@ -337,7 +206,8 @@ export default function Dashboard() {
             educacao = {
               "id": 9,
               "value": vtEducacao,
-              "label": "Educação"
+              "label": "Educação",
+              "color": "#FF5B00"
             };
           } 
           if (dados[i].Categoria == "compras") {
@@ -345,7 +215,8 @@ export default function Dashboard() {
             compras = {
               "id": 10,
               "value": vtCompras,
-              "label": "Compras"
+              "label": "Compras",
+              "color": "#D4D925"
             };
           } 
           if (dados[i].Categoria == "assinatura") {
@@ -353,7 +224,8 @@ export default function Dashboard() {
             assinatura = {
               "id": 11,
               "value": vtAssinatura,
-              "label": "Assinatura"
+              "label": "Assinatura",
+              "color": "#FFEE63"
             };
           } 
           if (dados[i].Categoria == "alimento") {
@@ -361,17 +233,20 @@ export default function Dashboard() {
             alimento = {
               "id": 12,
               "value": vtAlimento,
-              "label": "Alimentação"
+              "label": "Alimentação",
+              "color": "#B20600"
             };
           } 
           if (dados[i].Categoria == "outras_despesas") {
             vtOutrasDespesas = vtOutrasDespesas + dados[i].Valor;
             outras_despesas = {
-              "id": 1,
+              "id": 13,
               "value": vtOutrasDespesas,
-              "label": "Outras"
+              "label": "Outras",
+              "color": "#99154E"
             };
           } 
+        }
         }
         if (Object.keys(salario).length > 0) arrayDados.push(salario);
         if (Object.keys(emprestimo).length > 0) arrayDados.push(emprestimo);
@@ -386,17 +261,15 @@ export default function Dashboard() {
         if (Object.keys(assinatura).length > 0) arrayDados.push(assinatura);
         if (Object.keys(compras).length > 0) arrayDados.push(compras);
         if (Object.keys(alimento).length > 0) arrayDados.push(alimento);
-        }
         setDadosGrafico(arrayDados);
-      console.log(dadosGrafico);
+        console.log(arrayDados);
       })
       .catch(err => {
         console.error(err);
       })
-    }, [valueMes]);
+      }, [valueMes, valueTipo]);
 
-    // Faz uma requisição quando alterar o valor do tipo (QUANDO O USUÁRIO ALTERAR O TIPO)
-    useEffect(()=>{
+    const reload = () => {
       var salario = {};
       var emprestimo  = {};
       var bonus = {};
@@ -421,21 +294,21 @@ export default function Dashboard() {
       })
       .then(res => {
         const dados = Object.values(res.data);
+        var arrayDados = [];
         vtSalario = 0, vtEmprestimo = 0, vtBonus = 0, 
         vtRendimento = 0, vtDividendos = 0, vtVenda = 0, vtOutrasRendas =0;
         vtLazer = 0, vtEducacao = 0, vtCompras = 0,
         vtAssinatura = 0, vtAlimento = 0, vtOutrasDespesas = 0;
-        var arrayDados = [];
         setDadosGrafico([]);
         for (var i=0; i < dados.length; i++) {
-          console.log("VALOR: " + dados[i].Valor);
           if (valueTipo == "R"){
             if (dados[i].Categoria == "salario") {
               vtSalario = vtSalario + dados[i].Valor;
               salario = {
                 "id": 1,
                 "value": vtSalario,
-                "label": "Salário"
+                "label": "Salário",
+                "color": "#990000"
               };
             }
             if (dados[i].Categoria == "emprestimo") {
@@ -443,7 +316,8 @@ export default function Dashboard() {
               emprestimo = {
                 "id": 2,
                 "value": vtEmprestimo,
-                "label": "Empréstimo"
+                "label": "Empréstimo",
+                "color": "#FF5B00"
               };
             } 
             if (dados[i].Categoria == "bonus") {
@@ -451,7 +325,8 @@ export default function Dashboard() {
               bonus = {
                 "id": 3,
                 "value": vtBonus,
-                "label": "Bônus"
+                "label": "Bônus",
+                "color": "#D4D925"
               };
             } 
             if (dados[i].Categoria == "rendimento") {
@@ -459,7 +334,8 @@ export default function Dashboard() {
               rendimento = {
                 "id": 4,
                 "value": vtRendimento,
-                "label": "Rendimento"
+                "label": "Rendimento",
+                "color": "#FFEE63"
               };
             } 
             if (dados[i].Categoria == "dividendos") {
@@ -467,7 +343,8 @@ export default function Dashboard() {
               dividendos = {
                 "id": 5,
                 "value": vtDividendos,
-                "label": "Dividendos"
+                "label": "Dividendos",
+                "color": "#B20600"
               };
             } 
             if (dados[i].Categoria == "venda") {
@@ -475,7 +352,8 @@ export default function Dashboard() {
               venda = {
                 "id": 6,
                 "value": vtVenda,
-                "label": "Vendas"
+                "label": "Vendas",
+                "color": "#E6D5B8"
               };
             } 
             if (dados[i].Categoria == "outras_rendas") {
@@ -483,7 +361,8 @@ export default function Dashboard() {
               outras = {
                 "id": 7,
                 "value": vtOutrasRendas,
-                "label": "Outras"
+                "label": "Outras",
+                "color": "#99154E"
               };
             } 
         } else if (valueTipo =="D") {
@@ -492,7 +371,8 @@ export default function Dashboard() {
             lazer = {
               "id": 8,
               "value": vtLazer,
-              "label": "Lazer"
+              "label": "Lazer",
+              "color": "#990000"
             };
           }
           if (dados[i].Categoria == "educacao") {
@@ -500,7 +380,8 @@ export default function Dashboard() {
             educacao = {
               "id": 9,
               "value": vtEducacao,
-              "label": "Educação"
+              "label": "Educação",
+              "color": "#FF5B00"
             };
           } 
           if (dados[i].Categoria == "compras") {
@@ -508,7 +389,8 @@ export default function Dashboard() {
             compras = {
               "id": 10,
               "value": vtCompras,
-              "label": "Compras"
+              "label": "Compras",
+              "color": "#D4D925"
             };
           } 
           if (dados[i].Categoria == "assinatura") {
@@ -516,7 +398,8 @@ export default function Dashboard() {
             assinatura = {
               "id": 11,
               "value": vtAssinatura,
-              "label": "Assinatura"
+              "label": "Assinatura",
+              "color": "#FFEE63"
             };
           } 
           if (dados[i].Categoria == "alimento") {
@@ -524,17 +407,20 @@ export default function Dashboard() {
             alimento = {
               "id": 12,
               "value": vtAlimento,
-              "label": "Alimentação"
+              "label": "Alimentação",
+              "color": "#B20600"
             };
           } 
           if (dados[i].Categoria == "outras_despesas") {
             vtOutrasDespesas = vtOutrasDespesas + dados[i].Valor;
             outras_despesas = {
-              "id": 1,
+              "id": 13,
               "value": vtOutrasDespesas,
-              "label": "Outras"
+              "label": "Outras",
+              "color": "#99154E"
             };
           } 
+        }
         }
         if (Object.keys(salario).length > 0) arrayDados.push(salario);
         if (Object.keys(emprestimo).length > 0) arrayDados.push(emprestimo);
@@ -549,167 +435,163 @@ export default function Dashboard() {
         if (Object.keys(assinatura).length > 0) arrayDados.push(assinatura);
         if (Object.keys(compras).length > 0) arrayDados.push(compras);
         if (Object.keys(alimento).length > 0) arrayDados.push(alimento);
-        }
         setDadosGrafico(arrayDados);
-      console.log(dadosGrafico);
+        console.log(arrayDados);
       })
-      .catch(err => {
-        console.error(err);
-      })
-    }, [valueTipo]);
-
-  return (
-    <SafeAreaView style={style.container}>
-      <View style={{alignItems: 'center'}}>
-      <View style={{alignItems: 'center', zIndex: 999}}>
-        <TouchableOpacity onPress={() => {open ? setOpen(false) : setOpen(true)}}>
-          <Text style={{
-            fontSize: 32,
-            fontWeight: "bold",
-            color: COLORS.GRAY_100
+    }
+    
+    return (
+      <SafeAreaView style={style.container}>
+        <View style={{alignItems: 'center'}}>
+        <View style={{alignItems: 'center', zIndex: 999}}>
+          <View
+          style={{alignItems: 'center'}}
+          >
+          <TouchableOpacity onPress={() => {open ? setOpen(false) : setOpen(true)}}>
+            <Text style={{
+              fontSize: 32,
+              fontWeight: "bold",
+              color: COLORS.GRAY_100
+            }}>
+              {mes}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+          onPress={() => { reload(); }}
+          >
+          <Image
+          style={{width: 25, height: 25, tintColor: 'white', position: 'absolute', left: 150, bottom: 5}}
+            source={require('../../assets/reload.png')}
+          />
+          </TouchableOpacity>
+          </View>
+          {open ? (
+            <View style={{
+            position: 'absolute',
+            borderRadius: 10,
+            shadowOpacity: 1,
+            backgroundColor: 'gray',
+            marginTop: '50%',
+            right: 'auto',
+            width: "90%",
+            height: 400,
           }}>
-            {mes}
-          </Text>
-        </TouchableOpacity>
-        {open ? (
+            <View style={{alignItems: 'center', height: 400}}>
+              <Text style={{fontWeight: 'bold', fontSize: 28, color: COLORS.GRAY_900, marginBottom: 8}}>
+                Selecione o mês
+              </Text>
+            <FlatList
+            style= {{
+              width: "100%",
+              height: 50
+            }}
+            contentContainerStyle={{
+              alignItems:'center'
+            }}
+            data={meses}
+            renderItem={({item})=>(
+              <TouchableOpacity 
+              style={{marginBottom: 4}}
+              onPress= { () => {
+                setValueMes(item.value);
+                setMes(item.label);
+                setDataFim(item.proximo);
+                setOpen(false);
+               }}
+              >
+                <Text style={{color: COLORS.GRAY_900, fontSize: 20, fontWeight: '500'}}>{item.label}</Text>
+              </TouchableOpacity>
+            )}
+            />
+            </View>
+            </View>
+          ): null}
+        </View>
+        <View style={{width: "90%", marginTop: 12, borderRadius: 4, marginBottom: 12}}>
+          <TouchableOpacity onPress={() => {mostraTipos ? setMostraTipos(false) : setMostraTipos(true)}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={{fontSize: 24, color: COLORS.GRAY_100, marginLeft: 12, marginRight: 12}}>
+              {tipo}
+            </Text>
+            <Image source={require("../../assets/seta.png")}
+            style={{tintColor: COLORS.GRAY_100, width: 20, height: 20, justifyContent: 'center'}}
+            />
+          </View>
+          </TouchableOpacity>
+          {
+            mostraTipos ? (
+          <View style={{alignItems: 'center', zIndex: 999}}>
           <View style={{
           position: 'absolute',
           borderRadius: 10,
           shadowOpacity: 1,
-          backgroundColor: 'black',
+          backgroundColor: 'gray',
           marginTop: '50%',
           right: 'auto',
           width: "90%",
-          height: 400,
+          height: 150
         }}>
           <View style={{alignItems: 'center', height: 400}}>
-            <Text style={{fontWeight: 'bold', fontSize: 28, color: COLORS.GRAY_100, marginBottom: 8}}>
-              Selecione o mês
+            <Text style={{fontWeight: 'bold', fontSize: 28, color: COLORS.GRAY_900, marginBottom: 8}}>
+              Selecione o tipo
             </Text>
-          <FlatList
-          style= {{
-            width: "100%",
-          }}
-          contentContainerStyle={{
-            alignItems:'center'
-          }}
-          data={meses}
-          renderItem={({item})=>(
+              <FlatList
+              style= {{
+            width: "100%"
+            }}
+            contentContainerStyle={{
+              alignItems:'center'
+            }}
+            data={tipos}
+            renderItem={({item})=>(
             <TouchableOpacity 
             style={{marginBottom: 4}}
-            onPress= { () => {
-              setValueMes(item.value);
-              setMes(item.label);
-              setDataFim(item.proximo);
-              setOpen(false);
+            onPress= {() => {
+                setTipo(item.label);
+                setValueTipo(item.value);
+                setMostraTipos(false);
              }}
             >
-              <Text style={{color: COLORS.GRAY_100, fontSize: 20, fontWeight: '500'}}>{item.label}</Text>
+              <Text style={{color: COLORS.GRAY_900, fontSize: 20, fontWeight: '500'}}>{item.label}</Text>
             </TouchableOpacity>
-          )}
-          />
+              )}
+              />
           </View>
           </View>
-        ): null}
-      </View>
-      <View style={{width: "90%", marginTop: 12, borderRadius: 4, marginBottom: 12}}>
-        <TouchableOpacity onPress={() => {mostraTipos ? setMostraTipos(false) : setMostraTipos(true)}}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={{fontSize: 24, color: COLORS.GRAY_100, marginLeft: 12, marginRight: 12}}>
-            {tipo}
-          </Text>
-          <Image source={require("../../assets/seta.png")}
-          style={{tintColor: COLORS.GRAY_100, width: 20, height: 20, justifyContent: 'center'}}
-          />
+          </View>
+            ) : null
+          }
+          <View style={{alignItems: 'center'}}>
+            <VictoryPie
+            width={400}
+            labelComponent={<VictoryLabel style={[
+              {"fill": "white"}
+            ]}
+            textAnchor="middle"
+            />}
+            data={dadosGrafico}
+            colorScale={dadosGrafico.map(item=>item.color)}
+            x="label"
+            y="value"
+            innerRadius= {80}
+            />
         </View>
-        </TouchableOpacity>
-        {
-          mostraTipos ? (
-        <View style={{alignItems: 'center', zIndex: 999}}>
-        <View style={{
-        position: 'absolute',
-        borderRadius: 10,
-        shadowOpacity: 1,
-        backgroundColor: 'black',
-        marginTop: '50%',
-        right: 'auto',
-        width: "90%",
-        height: 150
-      }}>
-        <View style={{alignItems: 'center', height: 400}}>
-          <Text style={{fontWeight: 'bold', fontSize: 28, color: COLORS.GRAY_100, marginBottom: 8}}>
-            Selecione o tipo
-          </Text>
+        </View>
         <FlatList
-        style= {{
-          width: "100%",
-        }}
-        contentContainerStyle={{
-          alignItems:'center'
-        }}
-        data={tipos}
+        style={{width: "100%", height: 240}}
+        data = {dadosGrafico}
         renderItem={({item})=>(
-          <TouchableOpacity 
-          style={{marginBottom: 4}}
-          onPress= {() => {
-              setTipo(item.label);
-              setValueTipo(item.value);
-              setMostraTipos(false);
-           }}
-          >
-            <Text style={{color: COLORS.GRAY_100, fontSize: 20, fontWeight: '500'}}>{item.label}</Text>
-          </TouchableOpacity>
+          <View style={{alignItems: 'center'}}>
+          <View style={{width: "90%", backgroundColor: item.color, height: 100, borderRadius: 4, marginBottom: 12}}>
+            <View style={{width: "95%", backgroundColor: COLORS.GRAY_800, height: 100, justifyContent: 'space-between', alignItems: 'center',flexDirection: 'row', padding: 8}}>
+              <Text style={{color: COLORS.GRAY_100, fontSize: 24}}>{item.label}:</Text>
+              <Text style={{color: COLORS.GRAY_100, fontSize: 24}}>R$ {(item.value).toString().replace('.','.')} </Text>
+          </View>
+        </View>
+        </View>
         )}
         />
         </View>
-        </View>
-        </View>
-          ) : null
-        }
-        <View style={{alignItems: 'center'}}>
-          <VictoryPie
-          width={400}
-          labelComponent={<VictoryLabel style={[
-            {"fill": "white"}
-          ]}
-          textAnchor="middle"
-          />}
-          data={dadosGrafico}
-          x="label"
-          y="value"
-          innerRadius= {80}
-          />
-      </View>
-      </View>
-      <ScrollView 
-      contentContainerStyle={{alignItems: 'center'}}
-      style={{width:"100%", height: 240}}>
-      <View style={{width: "90%", backgroundColor: "#D9CE3F", height: 100, borderRadius: 4, marginBottom: 12}}>
-        <View style={{width: "95%", backgroundColor: COLORS.GRAY_800, height: 100, justifyContent: 'space-between', alignItems: 'center',flexDirection: 'row', padding: 8}}>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 24}}>Compras:</Text>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 24}}>R$1.000,00</Text>
-        </View>
-      </View>
-      <View style={{width: "90%", backgroundColor: "#E83A14", height: 100, borderRadius: 4, marginBottom: 12}}>
-        <View style={{width: "95%", backgroundColor: COLORS.GRAY_800, height: 100, justifyContent: 'space-between', alignItems: 'center',flexDirection: 'row', padding: 8}}>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 24}}>Contas:</Text>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 24}}>R$1.000,00</Text>
-        </View>
-      </View>
-      <View style={{width: "90%", backgroundColor: "#890F0D", height: 100, borderRadius: 4, marginBottom: 12}}>
-        <View style={{width: "95%", backgroundColor: COLORS.GRAY_800, height: 100, justifyContent: 'space-between', alignItems: 'center',flexDirection: 'row', padding: 8}}>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 24}}>Lazer:</Text>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 24}}>R$500,00</Text>
-        </View>
-      </View>
-      <View style={{width: "90%", backgroundColor: "#630606", height: 100, borderRadius: 4, marginBottom: 12}}>
-        <View style={{width: "95%", backgroundColor: COLORS.GRAY_800, height: 100, justifyContent: 'space-between', alignItems: 'center',flexDirection: 'row', padding: 8}}>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 24}}>Educação:</Text>
-          <Text style={{color: COLORS.GRAY_100, fontSize: 24}}>R$300,00</Text>
-        </View>
-      </View>
-      </ScrollView>
-      </View>
-    </SafeAreaView>
-  );
+      </SafeAreaView>
+    );
 }

@@ -8,10 +8,27 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import styleSettings from '../styles/styleSettings';
 import * as COLORS from '../styles/cores.json';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export default function Settings({emailUser}) {
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+  const uri = "http://192.168.0.11:3301/nome";
+
+  const [nomeUser, setNomeUser] = useState();
+
+  useEffect(() => {
+    axios.get(uri)
+    .then(res=>{
+      var dados = res.data;
+      setNomeUser(dados[0].Nome);
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+  },
+  []);
 
   const dados = () =>{
     navigation.navigate("Dados")
@@ -33,7 +50,7 @@ export default function Settings({emailUser}) {
     return (
       <View style={{margin: 12}}>
       <Text style={styleSettings.greetings}>
-        Olá, João
+        Olá, {nomeUser}
       </Text>
       <View style={{borderWidth: 1, marginTop: 16, borderColor: COLORS.GRAY_100}}/>
       <View style={{marginTop: 8}}>
