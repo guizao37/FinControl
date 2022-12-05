@@ -97,11 +97,12 @@ export default function Finances() {
     .then(res=> {
       var dados = res.data;
       setVtDespesas(dados[0].despesas);
+      var saldo = vtReceitas - vtDespesas;
+      setValorSaldo(saldo.toFixed(2));
     })
     .catch(err => { console.log(err); })
 
-    var saldo = vtReceitas - vtDespesas;
-    setValorSaldo(saldo);
+
   }
 
   useEffect(()=>{
@@ -199,7 +200,7 @@ export default function Finances() {
           Saldo total:
         </Text>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
-        R$ { valorSaldo }
+        {(valorSaldo > 0) ? "R$ " + valorSaldo : "-R$ " + valorSaldo*(-1)}
         </Text>
         </View>
       </View>

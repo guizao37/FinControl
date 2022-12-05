@@ -11,7 +11,7 @@ import * as COLORS from '../styles/cores.json';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default function Settings({emailUser}) {
+export default function Settings() {
 
   const navigation = useNavigation();
   const uri = "http://192.168.0.11:3301/nome";
