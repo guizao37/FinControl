@@ -94,7 +94,6 @@ export default function Dashboard() {
       return valor;
     }
 
-    // Faz uma requisição quando alterar o valor do mês (QUANDO O USUÁRIO ALTERAR O MES)
     useEffect(()=>{
       var salario = {};
       var emprestimo  = {};

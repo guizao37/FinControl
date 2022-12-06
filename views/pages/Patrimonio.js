@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { 
   View,
   Text, 
@@ -13,10 +13,51 @@ import style from "../styles/style";
 import * as COLORS from '../styles/cores.json';
 import { useNavigation } from '@react-navigation/native';
 import { VictoryChart, VictoryLine, VictoryTheme } from 'victory-native'
+import axios from 'axios';
 
 export default function Patrimonio() {
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+
+  const uri1 = "http://192.168.0.11:3301/bens";
+  const uri2 = "http://192.168.0.11:3301/dividas";
+
+  const [bens, setBens] = useState(0);
+  const [dividas, setDividas] = useState(0);
+
+  const [pl, setPl] = useState(0);
+ 
+  const apiGeral = () => { 
+    // Busca bens
+    axios.get(uri1)
+    .then(res=>{
+      let dados = res.data;
+      setBens(dados[0].BemTotal);
+    })
+    .catch(err=>{
+      console.error(err);
+    });
+
+    //busca dividas
+    axios.get(uri2)
+    .then(res=>{
+      let dados = res.data;
+      setDividas(dados[0].DividaTotal);
+    })
+    .catch(err=>{
+      console.error(err);
+    });
+
+    setPl(bens - dividas);
+  }
+
+  useEffect(()=>{
+    apiGeral();
+  }, []);
+
+  const reload = () =>{
+    apiGeral();
+  }
 
   function formatarMoeda(valor) {
     valor = valor + '';
@@ -33,13 +74,21 @@ export default function Patrimonio() {
     return valor;
 }
 
-  const Header = ({texto}) => {
+  const Header = () => {
     return (
-      <View style={style.header}>
+      <View style={{alignItems: 'center'}}>
         <Text style={style.textHeader}>
-          {texto}
+          Patrimônio
         </Text>
-      </View>
+        <TouchableOpacity 
+          onPress={() => { reload(); }}
+          >
+          <Image
+          style={{width: 25, height: 25, tintColor: 'white', position: 'absolute', left: 160, bottom: 5}}
+            source={require('../../assets/reload.png')}
+          />
+          </TouchableOpacity>
+        </View>
     )
   }
 
@@ -52,7 +101,7 @@ export default function Patrimonio() {
           Bens:
         </Text>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
-          R${formatarMoeda(123456)}
+          R$ {bens}
         </Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -60,7 +109,7 @@ export default function Patrimonio() {
           Dívidas:
         </Text>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
-          -R${formatarMoeda(123456)}
+          -R$ {dividas}
         </Text>
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -68,7 +117,7 @@ export default function Patrimonio() {
           Patrimônio líquido:
         </Text>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
-        R${formatarMoeda(0)}
+        {(pl > 0) ? "R$ " + pl : "-R$ " + pl*(-1)}
         </Text>
         </View>
       </View>

@@ -155,7 +155,26 @@ app.post("/add", (req, res) => {
 });
 
 app.post("/addpatrimonio", (req,res)=> {
-    // Inserir patrimonio na tabela patrimonio
+    var data = req.body.data;
+    var valor = (req.body.valor).replace('.','').replace(',','.');
+    var descricao = req.body.descricao;
+    var categoria = req.body.categoria;
+    var tipo = "";
+
+    if (categoria == "veiculo" || categoria == "imovel" || categoria == "aplicacao" ||categoria == "outros_bens") { 
+        tipo = "B";
+    } else {tipo = "D";}
+
+    var query = `insert into patrimonio (Valor, Data, Descricao, Tipo, Categoria, Usuario_idUsuario) VALUES (
+        ${valor}, '${data}', '${descricao}', '${tipo}', '${categoria}', ${getIdUsuario()}
+    )`;
+    console.log(query);
+    db.query(query, (err, results) => {
+        if (err) {
+            console.log(err);
+            res.status(400).send("Ocorreu um erro");
+        } else {console.log(results); res.status(200).send("Entrada adicionada");}
+    });
 });
 
 app.post("/financas", (req, res) => {
@@ -207,8 +226,18 @@ app.post("/despesas", (req, res)=>{
     });
 });
 
-app.get("/patrimonio", (req, res) => {
-    // Buscar patrimônio do usuário (bens e dívidas)
+app.get("/bens", (req, res) => {
+    var query = `select SUM(Valor) as BemTotal from patrimonio where Tipo = "B" and Usuario_idUsuario = ${getIdUsuario()}`;
+    db.query(query,(err, results) => {
+        res.send(results);
+    });
+});
+
+app.get("/dividas", (req, res) => {
+    var query = `select SUM(Valor) as DividaTotal from patrimonio where Tipo = "D" and Usuario_idUsuario = ${getIdUsuario()}`;
+    db.query(query,(err, results) => {
+        res.send(results);
+    });
 });
 
 app.get("/usuario", (req, res) => {

@@ -9,6 +9,7 @@ import style from "../styles/style"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as COLORS from "../styles/cores.json"
 import DropDownPicker from 'react-native-dropdown-picker';
+import axios from 'axios';
 
 
 function formatarMoeda(valor) {
@@ -26,6 +27,7 @@ function formatarMoeda(valor) {
     return valor;
 }
 
+
 const Header = () => {
     return (
         <View style={{alignItems: 'center'}}>
@@ -36,67 +38,25 @@ const Header = () => {
     )
 }
 
-const Categorias = () => {
-  const [categoria, setCategoria] = useState("")
-  const [categorias, setCategorias] = useState([
-
-  ])
-  const [open, setOpen] = useState(false)
-  return (
-    <DropDownPicker
-        style={style.input}
-        textStyle={{
-        color:COLORS.GRAY_100
-        }}
-        open={open}
-        value={categoria}
-        items={categorias}
-        setOpen={setOpen}
-        setValue={(value)=> {setCategoria(value)}}
-        setItems={setCategorias}
-        dropDownContainerStyle={{
-        backgroundColor: COLORS.GRAY_800,
-        width: "100%",
-        borderWidth: 0,
-        }}
-        placeholder="Categoria"
-    />
-  )
-}
-
-const Parcelas = () => {
-    const [parcelas, setParcelas] = useState(0)
-
-    return (
-    <View style={{alignItems: 'center', marginTop: 12}}>
-        <Text style={style.label}>
-            Número de parcelas?
-        </Text>
-        <TextInput
-        maxLength={3}
-        keyboardType="numeric"
-        style={style.input}
-        value= {parcelas}
-        onChangeText={() => {setParcelas(parcelas)}}
-        />
-    </View>
-    )
-}
-
 const Form = () => 
 {   
     const [show, setShow] = useState(false);
-    const [valor, setValor] = useState(0)
-    const [date, setDate] = useState(new Date())
 
-    const divida = "divida"
- 
-    const [tipo, setTipo] = useState("")
+    const [valor, setValor] = useState(0);
+    const [date, setDate] = useState(new Date());
+    const [categoria, setCategoria] = useState("");
+    const [description, setDescription] = useState("");
 
-    const [tipos, setTipos] = useState([
-        {label: 'Bem', value: 'bem'},
-        {label: 'Dívida', value: 'divida'},
-    ])
+    const [categorias, setCategorias] = useState([
+        {label: 'Veículo', value: 'veiculo'},
+        {label: 'Imóvel', value: 'imovel'},
+        {label: 'Aplicação', value: 'aplicacao'},
+        {label: 'Rendimento', value: 'rendimento'},
+        {label: 'Outros bens', value: 'outros_bens'},
+        {label: 'Outras dívidas', value: 'outras_dividas'}
+    ]);
+    
+    const [msg, setMsg] = useState("")
     
     const [open, setOpen] = useState(false)
 
@@ -113,29 +73,98 @@ const Form = () =>
       setShow(false)
     }
     };
+    const checkCampos = () => {
+      if (categoria=='') {
+        setMsg("Preencha os campos.")
+        return false
+      }
+      if (description=='') {
+        setMsg("Preencha os campos.")
+        return false
+      } 
+      if (valor==0) {
+        setMsg("Preencha os campos.")
+        return false
+      }    
+      if (categoria!= '' && valor!= 0 && description!= ''){
+        setMsg("")
+        return true
+      }
+    }
+    const AddPatrimonio = () => {
+
+      const limpaCampos = () => {
+        setValor(0);
+        setCategoria("");
+        setDescription("");
+      }
+
+      const mes = date.getMonth() + 1;
+      const dia = date.getDate();
+      const ano = date.getFullYear();
+
+      const dataEntrada = `${ano}-${mes}-${dia}`;
+
+      const uri = "http://192.168.0.11:3301/addpatrimonio";
+
+      checkCampos();
+
+        if (checkCampos()) {
+        axios({
+          method: "post",
+          url: uri,
+          data: {
+            valor: formatarMoeda(valor),
+            descricao: description,
+            data: dataEntrada,
+            categoria: categoria
+          },
+        })
+        .then(res => { 
+          setMsg("Entrada adicionada com sucesso.")
+          limpaCampos();
+        })
+        .catch(err => {
+          setMsg("Ocorreu um problema.");
+          limpaCampos();
+      })
+      }
+  }
 
     return (
         <View style={{width: '80%', alignItems: 'center'}}>
-          <Text style={style.label}>
+        <Text style={{margin: 4, color: COLORS.GRAY_100, fontSize: 16}}>
+          { msg }
+        </Text>
+        <Text style={style.label}>
+          Dê um nome
+        </Text>
+        <TextInput
+        maxLength={45}
+        style={style.input}
+        value= {description}
+        onChangeText={(description) => {setDescription(description)}}
+        />
+        <Text style={style.label}>
             Qual o valor?
-          </Text>
-          <TextInput
-          maxLength={12}
-          keyboardType="numeric"
-          style={style.input}
-          value= {"R$" + formatarMoeda(valor)}
-          onChangeText={(valor) => {setValor(valor)}}
-          />
-          <Text style={style.label}>
-            Qual a data?
-          </Text>
-
-        <View style={style.inputDate}>
+        </Text>
+        <TextInput
+        maxLength={10}
+        keyboardType="numeric"
+        style={style.input}
+        value= {formatarMoeda(valor)}
+        onChangeText={(valor) => {setValor(valor)}}
+        />
+        <Text style={style.label}>
+          Qual a data?
+        </Text>
+        <View
+        style={style.inputDate}
+        >
           <TouchableOpacity style={{width: "100%"}} onPress={() => {showDatepicker()}}>
             <Text style={{color: COLORS.GRAY_100}}>{date.toLocaleDateString()}</Text>
           </TouchableOpacity>
         </View>
-
         {show && (<DateTimePicker
           value={date}
           display={'inline'}
@@ -143,9 +172,10 @@ const Form = () =>
           onChange={onChange}
           style={style.datePicker}
         />)}
-
+        
+        
         <Text style={style.label}>
-          Selecione o tipo
+        Selecione a categoria
         </Text>
 
         <View>
@@ -155,30 +185,23 @@ const Form = () =>
         color:COLORS.GRAY_100
         }}
         open={open}
-        value={tipo}
-        items={tipos}
+        value={categoria}
+        items={categorias}
         setOpen={setOpen}
-        setValue={(value)=> {setTipo(value)}}
-        setItems={setTipos}
+        setValue={(categoria)=> {setCategoria(categoria)}}
+        setItems={setCategorias}
         dropDownContainerStyle={{
         backgroundColor: COLORS.GRAY_800,
+        width: "100%",
         borderWidth: 0,
         }}
-        placeholder="Categoria"
+        placeholder="Categorias"
         />
-
-        {tipo == 'divida' ? (
-          <View>
-            <Parcelas/>
-            <Categorias/>
-          </View>
-        ):null}
-        
-        <TouchableOpacity 
+        <TouchableOpacity
+        onPress={() => {AddPatrimonio()}}
         style={style.button}>
           <Text style={{color: COLORS.GRAY_800, fontWeight: 'bold'}}>Adicionar</Text>
         </TouchableOpacity>
-        
       </View>
       </View>
     )
