@@ -79,21 +79,6 @@ export default function Dashboard() {
 
     const uri = "http://192.168.0.11:3301/financas";
 
-    const formatarMoeda = (valor) => {
-      valor = valor + '';
-      valor = parseInt(valor.replace(/[\D]+/g, ''));
-      valor = valor + '';
-      valor = valor.replace(/([0-9]{2})$/g, ",$1");
-  
-      if (valor.length > 6) {
-          valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
-      }
-  
-      if(valor == 'NaN') valor = '';
-  
-      return valor;
-    }
-
     useEffect(()=>{
       var salario = {};
       var emprestimo  = {};

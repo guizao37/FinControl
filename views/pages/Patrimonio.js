@@ -96,6 +96,9 @@ export default function Patrimonio() {
     return (
     <View style={{alignItems: 'center', marginTop: 12}}>
       <View style={{width: "90%", backgroundColor: COLORS.GRAY_800, borderRadius: 4, padding: 12}}>
+        <TouchableOpacity
+        onPress={() => {}}
+        >
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
           Bens:
@@ -120,6 +123,7 @@ export default function Patrimonio() {
         {(pl > 0) ? "R$ " + pl : "-R$ " + pl*(-1)}
         </Text>
         </View>
+        </TouchableOpacity>
       </View>
     </View>
     )

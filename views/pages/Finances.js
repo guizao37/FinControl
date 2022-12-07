@@ -101,9 +101,11 @@ export default function Finances() {
       setValorSaldo(saldo.toFixed(2));
     })
     .catch(err => { console.log(err); })
-
-
   }
+
+  const Listagem = () => {
+    navigation.navigate("Listagem");
+  };
 
   useEffect(()=>{
     api();
@@ -179,6 +181,11 @@ export default function Finances() {
     return (
     <View style={{alignItems: 'center', marginTop: 12}}>
       <View style={{width: "90%", backgroundColor: COLORS.GRAY_800, borderRadius: 4, padding: 12}}>
+        <TouchableOpacity
+        onPress={() => {
+          Listagem();
+        }}
+        >
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
           Receitas:
@@ -203,6 +210,7 @@ export default function Finances() {
         {(valorSaldo > 0) ? "R$ " + valorSaldo : "-R$ " + valorSaldo*(-1)}
         </Text>
         </View>
+        </TouchableOpacity>
       </View>
     </View>
     )

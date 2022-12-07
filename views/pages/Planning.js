@@ -80,6 +80,24 @@ export default function Planning() {
         />
 
         <Text style={style.label}>
+          Qual a data de início?
+        </Text>
+        <View
+        style={style.inputDate}
+        >
+          <TouchableOpacity onPress={() => {showDatepicker()}}>
+            <Text style={{color: COLORS.GRAY_100}}>{date.toLocaleDateString()}</Text>
+          </TouchableOpacity>
+        </View>
+        {show && (<DateTimePicker
+          value={date}
+          display={'inline'}
+          mode='date'
+          onChange={onChange}
+          style={style.datePicker}
+        />)}
+
+        <Text style={style.label}>
           Qual o número de parcelas?
         </Text>
         <TextInput
@@ -99,23 +117,7 @@ export default function Planning() {
         value= {formatarMoeda(juros)}
         onChangeText={(value) => {setJuros(value)}}
         />
-        <Text style={style.label}>
-          Qual a data de início?
-        </Text>
-        <View
-        style={style.inputDate}
-        >
-          <TouchableOpacity onPress={() => {showDatepicker()}}>
-            <Text style={{color: COLORS.GRAY_100}}>{date.toLocaleDateString()}</Text>
-          </TouchableOpacity>
-        </View>
-        {show && (<DateTimePicker
-          value={date}
-          display={'inline'}
-          mode='date'
-          onChange={onChange}
-          style={style.datePicker}
-        />)}
+        
 
         <Text style={style.label}>
           Selecione uma categoria.

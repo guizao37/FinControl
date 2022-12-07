@@ -262,6 +262,13 @@ app.get("/nome", (req, res)=>{
     })
 });
 
+app.get("/finances", (req,res)=>{
+    const query = `SELECT * FROM finança WHERE Usuario_idUsuario = ${getIdUsuario()}`;
+    db.query(query, (err, results)=>{
+        res.send(results);
+    })
+});
+
 app.get("/sair", (req, res)=>{
     req.session.destroy();
     store.clear();

@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import { 
   View,
   Text, 
@@ -9,8 +9,9 @@ import style from "../styles/style"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as COLORS from "../styles/cores.json"
 import DropDownPicker from 'react-native-dropdown-picker';
-import axios from 'axios';
-
+import axios from "axios";
+import { useNavigation } from '@react-navigation/core'
+import {useRoute} from '@react-navigation/native'
 
 function formatarMoeda(valor) {
     valor = valor + '';
@@ -27,33 +28,56 @@ function formatarMoeda(valor) {
     return valor;
 }
 
-
 const Header = () => {
     return (
         <View style={{alignItems: 'center'}}>
             <Text style={style.textHeader}>
-                Bens e dívidas
+                Editar entrada
             </Text>
         </View>
     )
 }
 
-const Form = () => 
-{   
+const Form = () => {
+
+    const route = useRoute();
+    
+    useEffect(()=>{
+        const uri = "http://192.168.0.11:3301/edit";
+        axios({
+            method: uri,
+            data:{
+                idFinanca: route.params.idFinanca
+            }
+        })
+        .then(res=>{
+            
+        })
+        .catch(err=>{})
+    }, [])
     const [show, setShow] = useState(false);
+
 
     const [valor, setValor] = useState(0);
     const [date, setDate] = useState(new Date());
+    const [repete, setRepete] = useState(0);
     const [categoria, setCategoria] = useState("");
     const [description, setDescription] = useState("");
 
     const [categorias, setCategorias] = useState([
-        {label: 'Veículo', value: 'veiculo'},
-        {label: 'Imóvel', value: 'imovel'},
-        {label: 'Aplicação', value: 'aplicacao'},
-        {label: 'Financiamento', value: 'financiamento'},
-        {label: 'Outros bens', value: 'outros_bens'},
-        {label: 'Outras dívidas', value: 'outras_dividas'}
+        {label: 'Salário', value: 'salario'},
+        {label: 'Empréstimo', value: 'emprestimo'},
+        {label: 'Bônus', value: 'bonus'},
+        {label: 'Rendimento', value: 'rendimento'},
+        {label: 'Dividendos', value: 'dividendos'},
+        {label: 'Venda', value: 'venda'},
+        {label: 'Lazer', value: 'lazer'},
+        {label: 'Educação', value: 'educacao'},
+        {label: 'Compras', value: 'compras'},
+        {label: 'Assinatura', value: 'assinatura'},
+        {label: 'Alimentação', value: 'alimento'},
+        {label: 'Outras rendas', value: 'outras_rendas'},
+        {label: 'Outras despesas', value: 'outras_despesas'}
     ]);
     
     const [msg, setMsg] = useState("")
@@ -73,63 +97,6 @@ const Form = () =>
       setShow(false)
     }
     };
-    const checkCampos = () => {
-      if (categoria=='') {
-        setMsg("Preencha os campos.")
-        return false
-      }
-      if (description=='') {
-        setMsg("Preencha os campos.")
-        return false
-      } 
-      if (valor==0) {
-        setMsg("Preencha os campos.")
-        return false
-      }    
-      if (categoria!= '' && valor!= 0 && description!= ''){
-        setMsg("")
-        return true
-      }
-    }
-    const AddPatrimonio = () => {
-
-      const limpaCampos = () => {
-        setValor(0);
-        setCategoria("");
-        setDescription("");
-      }
-
-      const mes = date.getMonth() + 1;
-      const dia = date.getDate();
-      const ano = date.getFullYear();
-
-      const dataEntrada = `${ano}-${mes}-${dia}`;
-
-      const uri = "http://192.168.0.11:3301/addpatrimonio";
-
-      checkCampos();
-
-        if (checkCampos()) {
-        axios({
-          method: "post",
-          url: uri,
-          data: {
-            valor: formatarMoeda(valor),
-            descricao: description,
-            data: dataEntrada,
-            categoria: categoria
-          },
-        })
-        .then(res => { 
-          setMsg("Entrada adicionada com sucesso.")
-          limpaCampos();
-        })
-        .catch(err => {
-          setMsg("Ocorreu um problema.");
-          limpaCampos();
-      })
-      }
-  }
 
     return (
         <View style={{width: '80%', alignItems: 'center'}}>
@@ -137,16 +104,7 @@ const Form = () =>
           { msg }
         </Text>
         <Text style={style.label}>
-          Dê um nome
-        </Text>
-        <TextInput
-        maxLength={45}
-        style={style.input}
-        value= {description}
-        onChangeText={(description) => {setDescription(description)}}
-        />
-        <Text style={style.label}>
-            Qual o valor?
+            Valor
         </Text>
         <TextInput
         maxLength={10}
@@ -156,7 +114,7 @@ const Form = () =>
         onChangeText={(valor) => {setValor(valor)}}
         />
         <Text style={style.label}>
-          Qual a data?
+          Data
         </Text>
         <View
         style={style.inputDate}
@@ -172,10 +130,27 @@ const Form = () =>
           onChange={onChange}
           style={style.datePicker}
         />)}
-        
-        
         <Text style={style.label}>
-        Selecione a categoria
+          Descrição
+        </Text>
+        <TextInput
+        maxLength={45}
+        style={style.input}
+        value= {description}
+        onChangeText={(description) => {setDescription(description)}}
+        />
+        <Text style={style.label}>
+          Repetir (em meses)
+        </Text>
+        <TextInput
+        maxLength={3}
+        keyboardType="numeric"
+        style={style.input}
+        value= {repete.toString()}
+        onChangeText={(repete) => {setRepete(repete.toString())}}
+        />
+        <Text style={style.label}>
+        Categoria
         </Text>
 
         <View>
@@ -198,15 +173,23 @@ const Form = () =>
         placeholder="Categorias"
         />
         <TouchableOpacity
-        onPress={() => {AddPatrimonio()}}
+        onPress={() => {}}
         style={style.button}>
-          <Text style={{color: COLORS.GRAY_800, fontWeight: 'bold'}}>Adicionar</Text>
+          <Text style={{color: COLORS.GRAY_800, fontWeight: 'bold'}}>Salvar</Text>
+        </TouchableOpacity><TouchableOpacity
+        onPress={() => {}}
+        style={style.buttonDelete}>
+          <Text style={{color: COLORS.GRAY_000, fontWeight: 'bold'}}>Apagar</Text>
         </TouchableOpacity>
       </View>
       </View>
     )
 }
-const AddPatrimonio = () => {
+
+
+
+
+const Adicionar = () => {
     return (
     <SafeAreaView style={style.container}>
       <View style={{alignItems:'center'}}>
@@ -217,4 +200,4 @@ const AddPatrimonio = () => {
   )
 }
 
-export default AddPatrimonio
+export default Adicionar

@@ -62,6 +62,14 @@ const style = StyleSheet.create({
         borderRadius: 4,
         justifyContent: "center",
         alignItems: "center"
+    },
+    buttonDelete:{
+        backgroundColor: '#FF4343',
+        height: 40,
+        marginTop: 12,
+        borderRadius: 4,
+        justifyContent: "center",
+        alignItems: "center"
     }
 })
 
