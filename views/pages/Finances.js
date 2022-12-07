@@ -2,7 +2,6 @@ import React, {useState, useCallback} from 'react';
 import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView, StatusBar, ScrollView, Touchable } from 'react-native';
 import style from '../styles/style';
 import { useNavigation } from '@react-navigation/native';
-import DropDownPicker from 'react-native-dropdown-picker';
 import * as COLORS from '../styles/cores.json';
 import { useEffect } from 'react';
 import axios from 'axios';
