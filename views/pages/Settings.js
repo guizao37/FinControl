@@ -14,7 +14,7 @@ import axios from 'axios';
 export default function Settings() {
 
   const navigation = useNavigation();
-  const uri = "http://192.168.0.9:3301/nome";
+  const uri = "http://192.168.0.12:3301/nome";
 
   const [nomeUser, setNomeUser] = useState();
 
@@ -43,7 +43,7 @@ export default function Settings() {
   }
 
   const sair = () => {
-    axios.get("http://192.168.0.11:3301/sair");
+    axios.get("http://192.168.0.12:3301/sair");
     navigation.navigate("Login");
   }
   

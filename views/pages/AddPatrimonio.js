@@ -105,7 +105,7 @@ const Form = () =>
 
       const dataEntrada = `${ano}-${mes}-${dia}`;
 
-      const uri = "http://192.168.0.9:3301/addpatrimonio";
+      const uri = "http://192.168.0.12:3301/addpatrimonio";
 
       checkCampos();
 

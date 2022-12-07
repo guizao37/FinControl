@@ -45,8 +45,8 @@ export default function Planning() {
     }
 
   const planejar = () => {
-    const uri1 = "http://192.168.0.9:3301/receitasplan";
-    const uri2 = "http://192.168.0.9:3301/despesasplan";
+    const uri1 = "http://192.168.0.12:3301/receitasplan";
+    const uri2 = "http://192.168.0.12:3301/despesasplan";
 
     axios.get(uri1).then(res=>{
       valorReceita = res.data;

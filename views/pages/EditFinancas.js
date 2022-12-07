@@ -68,7 +68,7 @@ const Form = () => {
     };
 
     const excluirFinanca = () => {
-      const uri = "http://192.168.0.9:3301/delete";
+      const uri = "http://192.168.0.12:3301/delete";
       axios({
        method: 'post',
        url: uri,
@@ -89,7 +89,7 @@ const Form = () => {
     }
 
     const api = () => {
-      const uri = "http://192.168.0.9:3301/edit";
+      const uri = "http://192.168.0.12:3301/edit";
       axios({
           method: 'post',
           url: uri,

@@ -61,7 +61,7 @@ const LoginScreen = ({navigation}) => {
   }
 
   const efetuaLogin = () => {
-    const uri = "http://192.168.0.9:3301/login";
+    const uri = "http://192.168.0.12:3301/login";
     checkCampos();
     checkEmail();
     checkPassword();

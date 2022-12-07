@@ -71,8 +71,8 @@ export default function Finances() {
     {"label": "Dezembro/2023", "value": "2023-12-01", "proximo":"2023-12-31"}
   ]);
 
-  const uri1 = "http://192.168.0.9:3301/receitas";
-  const uri2 = "http://192.168.0.9:3301/despesas";
+  const uri1 = "http://192.168.0.12:3301/receitas";
+  const uri2 = "http://192.168.0.12:3301/despesas";
 
   const api = () => { 
     // Busca receitas
@@ -107,7 +107,7 @@ export default function Finances() {
     })
     .catch(err => { console.log(err); });
 
-    const uri = "http://192.168.0.9:3301/extrato";
+    const uri = "http://192.168.0.12:3301/extrato";
         axios({
           method: 'post',
           url: uri,

@@ -19,8 +19,8 @@ export default function Patrimonio() {
 
   const navigation = useNavigation();
 
-  const uri1 = "http://192.168.0.9:3301/bens";
-  const uri2 = "http://192.168.0.9:3301/dividas";
+  const uri1 = "http://192.168.0.12:3301/bens";
+  const uri2 = "http://192.168.0.12:3301/dividas";
 
   const [bens, setBens] = useState(0);
   const [dividas, setDividas] = useState(0);
@@ -61,11 +61,11 @@ export default function Patrimonio() {
 
   const apiGrafico = () => {
 
-    const uri = "http://192.168.0.9:3301/agosto";
-    const uri2 = "http://192.168.0.9:3301/setembro";
-    const uri3 = "http://192.168.0.9:3301/outubro";
-    const uri4 = "http://192.168.0.9:3301/novembro";
-    const uri5 = "http://192.168.0.9:3301/dezembro";
+    const uri = "http://192.168.0.12:3301/agosto";
+    const uri2 = "http://192.168.0.12:3301/setembro";
+    const uri3 = "http://192.168.0.12:3301/outubro";
+    const uri4 = "http://192.168.0.12:3301/novembro";
+    const uri5 = "http://192.168.0.12:3301/dezembro";
 
     axios.get(uri).then(res=>{if ((res.data)[0].Valor === null) {setValorAgosto(0)} else { setValorAgosto((res.data)[0].Valor) }}).catch(err=>{console.log(err)});
     axios.get(uri2).then(res=>{if ((res.data)[0].Valor === null){setValorSetembro(0)} else { setValorSetembro((res.data)[0].Valor) }}).catch(err=>{console.log(err)});

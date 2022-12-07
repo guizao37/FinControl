@@ -15,7 +15,7 @@ const Listagem = () => {
     ])
 
     const api = () => { 
-        const uri = "http://192.168.0.9:3301/finances";
+        const uri = "http://192.168.0.12:3301/finances";
         axios.get(uri)
         .then(res=>{
             console.log(res.data);

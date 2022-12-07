@@ -79,7 +79,7 @@ export default function Dashboard() {
       {"label": "Dívidas", "value": "dividas"}
     ]);
 
-    const uri = "http://192.168.0.9:3301/financas";
+    const uri = "http://192.168.0.12:3301/financas";
 
     const api = () => {
       if (tipo == "Receitas" || tipo == "Despesas") { 
@@ -263,7 +263,7 @@ export default function Dashboard() {
       var outras_dividas = {};
       axios({
         method: 'post',
-        url: "http://192.168.0.9:3301/dashboardpatrimonio",
+        url: "http://192.168.0.12:3301/dashboardpatrimonio",
         data:{
           data: valueMes,
           tipo: valueTipo,
