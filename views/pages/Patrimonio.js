@@ -19,8 +19,8 @@ export default function Patrimonio() {
 
   const navigation = useNavigation();
 
-  const uri1 = "http://192.168.0.11:3301/bens";
-  const uri2 = "http://192.168.0.11:3301/dividas";
+  const uri1 = "http://192.168.0.9:3301/bens";
+  const uri2 = "http://192.168.0.9:3301/dividas";
 
   const [bens, setBens] = useState(0);
   const [dividas, setDividas] = useState(0);
@@ -49,14 +49,45 @@ export default function Patrimonio() {
     });
 
     setPl(bens - dividas);
+  };
+
+  const [valorAgosto, setValorAgosto] = useState(0);
+  const [valorSetembro, setValorSetembro] = useState(0);
+  const [valorOutubro, setValorOutubro] = useState(0);
+  const [valorNovembro, setValorNovembro] = useState(0);
+  const [valorDezembro, setValorDezembro] = useState(0);
+
+  const [evolucao, setEvolucao] = useState([])
+
+  const apiGrafico = () => {
+
+    const uri = "http://192.168.0.9:3301/agosto";
+    const uri2 = "http://192.168.0.9:3301/setembro";
+    const uri3 = "http://192.168.0.9:3301/outubro";
+    const uri4 = "http://192.168.0.9:3301/novembro";
+    const uri5 = "http://192.168.0.9:3301/dezembro";
+
+    axios.get(uri).then(res=>{if ((res.data)[0].Valor === null) {setValorAgosto(0)} else { setValorAgosto((res.data)[0].Valor) }}).catch(err=>{console.log(err)});
+    axios.get(uri2).then(res=>{if ((res.data)[0].Valor === null){setValorSetembro(0)} else { setValorSetembro((res.data)[0].Valor) }}).catch(err=>{console.log(err)});
+    axios.get(uri3).then(res=>{if ((res.data)[0].Valor === null){setValorOutubro(0)} else { setValorOutubro((res.data)[0].Valor) }}).catch(err=>{console.log(err)});
+    axios.get(uri4).then(res=>{if ((res.data)[0].Valor === null){setValorNovembro(0)} else { setValorNovembro((res.data)[0].Valor) }}).catch(err=>{console.log(err)});
+    axios.get(uri5).then(res=>{if ((res.data)[0].Valor === null){setValorDezembro(0)} else { setValorDezembro((res.data)[0].Valor) }}).catch(err=>{console.log(err)});
+
+    console.log(valorAgosto)
+    console.log(valorSetembro)
+    console.log(valorOutubro)
+    console.log(valorNovembro)
+    console.log(valorDezembro)
   }
 
   useEffect(()=>{
     apiGeral();
+    apiGrafico();
   }, []);
 
   const reload = () =>{
     apiGeral();
+    apiGrafico();
   }
 
   function formatarMoeda(valor) {
@@ -139,23 +170,28 @@ export default function Patrimonio() {
           <Text style={{ color: COLORS.GRAY_100, fontSize: 16}}>
             (patrimônio líquido)
           </Text>
+          <Text style={{ color: COLORS.GRAY_100, fontSize: 16}}>
+            x1000
+          </Text>
           <View style={{marginLeft: 20}}>
           <VictoryChart
+          maxDomain={{ y: 1000 }}
+          height={400}
           width={350}
           theme={VictoryTheme.material}
+          minDomain={{ y: 0 }}
           >
             <VictoryLine
-            interpolation="natural"
             style={{
               data: { stroke: "#c43a31" },
               parent: { border: "1px solid #e1e1e6"}
             }}
             data={[
-              { x: "Janeiro", y: "1.000" },
-              { x: "Fevereiro", y: "3.000" },
-              { x: "Março", y: "4.000" },
-              { x: "Abril", y: "5.000" },
-              { x: "Maio", y: "6.000" }
+              { x: "Agosto", y: valorAgosto/1000},
+              { x: "Setembro", y:valorSetembro/1000},
+              { x: "Outubro", y:valorOutubro/1000},
+              { x: "Novembro", y: valorNovembro/1000},
+              { x: "Dezembro", y:valorDezembro/1000}
             ]}
             />
           </VictoryChart>

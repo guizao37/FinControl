@@ -102,6 +102,8 @@ app.get("/teste", (req,res)=>{
     res.send("Teste.")
 });
 
+
+
 app.post("/add", (req, res) => {
     var contador = 0;
     var valor = (req.body.valor).replace('.','').replace(',','.');
@@ -194,6 +196,25 @@ app.post("/financas", (req, res) => {
     })
 });
 
+app.post("/dashboardpatrimonio", (req, res) => {
+    // Buscar finanças do usuário (receitas e despesas)
+    var data = req.body.data;
+    var tipo = req.body.tipo;
+    var dataFim = req.body.dataFim;
+    var idUsuario = getIdUsuario();
+
+    if (tipo == "bens") {tipo = "B"} else {tipo = "D"}
+
+    var query = `select * from patrimonio where Data between '${data}' and '${dataFim}' and Usuario_idUsuario = 
+    ${idUsuario} and tipo = '${tipo}'`;
+
+    console.log("QUERY: " + query)
+
+    db.query(query, (err, results)=> {
+        res.send(results);
+    })
+});
+
 app.post("/receitas", (req, res)=>{
 
     var mes = req.body.data;
@@ -213,6 +234,18 @@ app.post("/receitas", (req, res)=>{
     });
 });
 
+app.get("/receitasplan", (req, res)=>{
+    const receitas = `select SUM(Valor) as receitas from finança where tipo = "R" and Data between
+    '2022-10-01' and '2022-12-31' and usuario_idusuario = ${getIdUsuario()}`;
+
+    console.log(receitas);
+
+    db.query(receitas, (err, results)=>{
+        console.log(results);
+        res.send(results);
+    });
+});
+
 app.post("/despesas", (req, res)=>{
     var mes = req.body.data;
     var proxMes = req.body.dataFim;
@@ -221,7 +254,18 @@ app.post("/despesas", (req, res)=>{
     '${mes}' and '${proxMes}' and usuario_idusuario = ${getIdUsuario()}`;
 
     db.query(despesas, (err, results)=>{
-        console.log(results);
+        console.log(despesas);
+        res.send(results);
+    });
+});
+
+app.get("/despesasplan", (req, res)=>{
+
+    const despesas = `select SUM(Valor) as despesas from finança where tipo = "D" and Data between
+    '2022-10-01' and '2022-12-31' and usuario_idusuario = ${getIdUsuario()}`;
+
+    db.query(despesas, (err, results)=>{
+        console.log(despesas);
         res.send(results);
     });
 });
@@ -252,6 +296,14 @@ app.get("/recuperar", (req, res)=>{
     // Envia e-mail para recuperar senha do usuário
 });
 
+app.post("/delete", (req,res)=>{
+    const query = `delete from finança where idFinança = ${req.body.idFinanca}`;
+    db.query(query, (err,results)=>{
+        console.log(results);
+        res.send(results);
+    })
+});
+
 app.get("/nome", (req, res)=>{
     const idUser = getIdUsuario();
     const query = `select * from usuario where idusuario = ${idUser}`;
@@ -269,12 +321,73 @@ app.get("/finances", (req,res)=>{
     })
 });
 
+app.post("/edit", (req,res)=>{
+    const query = `select * from finança where idFinança = ${req.body.idFinanca}`;
+    db.query(query,(err, results)=>{
+        console.log(results);
+        res.send(results);
+    });
+});
+
+app.post("/extrato", (req,res)=>{
+    var dataFim = req.body.dataFim;
+    var data = req.body.data;
+    const query = `select * from finança where Data between '${data}' and '${dataFim}' and Usuario_idUsuario = 
+    ${getIdUsuario()}`;
+    db.query(query, (err, results)=>{
+        res.send(results);
+    });
+});
+
 app.get("/sair", (req, res)=>{
     req.session.destroy();
     store.clear();
     console.log(store);
     res.send("Fim");
 });
+
+app.get("/agosto", (req,res)=>{
+    const q = `select SUM(Valor) as Valor from patrimonio where Data between '2022-08-01' and '2022-08-31' and Usuario_idUsuario = ${getIdUsuario()}`;
+    db.query(q, (err, results)=>{
+        res.send(results);
+        console.log(results)
+        console.log(q)
+    });
+})
+
+app.get("/setembro", (req,res)=>{
+    const q = `select SUM(Valor) as Valor from patrimonio where Data between '2022-08-01' and '2022-09-30' and Usuario_idUsuario = ${getIdUsuario()}`;
+    db.query(q, (err, results)=>{
+        res.send(results);
+        console.log(results)
+        console.log(q)
+    });
+})
+app.get("/outubro", (req,res)=>{
+    const q = `select SUM(Valor) as Valor from patrimonio where Data between '2022-08-01' and '2022-10-31' and Usuario_idUsuario = ${getIdUsuario()}`;
+    db.query(q, (err, results)=>{
+        res.send(results);
+        console.log(results)
+        console.log(q)
+    });
+})
+app.get("/novembro", (req,res)=>{
+    const q = `select SUM(Valor) as Valor from patrimonio where Data between '2022-08-01' and '2022-11-30' and Usuario_idUsuario = ${getIdUsuario()}`;
+    db.query(q, (err, results)=>{
+        res.send(results);
+        console.log(results)
+        console.log(q)
+    });
+})
+app.get("/dezembro", (req,res)=>{
+    const q = `select SUM(Valor) as Valor from patrimonio where Data between '2022-08-01' and '2022-12-31' and Usuario_idUsuario = ${getIdUsuario()}`;
+    db.query(q, (err, results)=>{
+        res.send(results);
+        console.log(results)
+        console.log(q)
+    });
+})
+
 
 // INICIANDO SERVIDOR
 app.listen(port, () => {

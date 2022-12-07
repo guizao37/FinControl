@@ -4,63 +4,26 @@ import {
   Text, 
   TextInput, 
   TouchableOpacity, 
-  SafeAreaView } from 'react-native';
+  SafeAreaView,
+  Image
+} from 'react-native';
 import style from "../styles/style"
-import DateTimePicker from '@react-native-community/datetimepicker';
 import * as COLORS from "../styles/cores.json"
 import DropDownPicker from 'react-native-dropdown-picker';
 import axios from "axios";
 import { useNavigation } from '@react-navigation/core'
 import {useRoute} from '@react-navigation/native'
 
-function formatarMoeda(valor) {
-    valor = valor + '';
-    valor = parseInt(valor.replace(/[\D]+/g, ''));
-    valor = valor + '';
-    valor = valor.replace(/([0-9]{2})$/g, ",$1");
 
-    if (valor.length > 6) {
-        valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
-    }
-
-    if(valor == 'NaN') valor = '';
-
-    return valor;
-}
-
-const Header = () => {
-    return (
-        <View style={{alignItems: 'center'}}>
-            <Text style={style.textHeader}>
-                Editar entrada
-            </Text>
-        </View>
-    )
-}
 
 const Form = () => {
 
-    const route = useRoute();
-    
-    useEffect(()=>{
-        const uri = "http://192.168.0.11:3301/edit";
-        axios({
-            method: uri,
-            data:{
-                idFinanca: route.params.idFinanca
-            }
-        })
-        .then(res=>{
-            
-        })
-        .catch(err=>{})
-    }, [])
     const [show, setShow] = useState(false);
 
+    const[aux, setAux] = useState(true);
 
     const [valor, setValor] = useState(0);
-    const [date, setDate] = useState(new Date());
-    const [repete, setRepete] = useState(0);
+    const [date, setDate] = useState("");
     const [categoria, setCategoria] = useState("");
     const [description, setDescription] = useState("");
 
@@ -79,10 +42,16 @@ const Form = () => {
         {label: 'Outras rendas', value: 'outras_rendas'},
         {label: 'Outras despesas', value: 'outras_despesas'}
     ]);
+  
+
+    const [msg, setMsg] = useState("");
     
-    const [msg, setMsg] = useState("")
-    
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
+
+    const [dados, setDados] = useState([]);
+
+    const route = useRoute();
+    const navigation = useNavigation();  
 
     const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -98,7 +67,76 @@ const Form = () => {
     }
     };
 
+    const excluirFinanca = () => {
+      const uri = "http://192.168.0.9:3301/delete";
+      axios({
+       method: 'post',
+       url: uri,
+       data:{
+        idFinanca: route.params.idFinanca
+       } 
+      })
+      .then(
+        res=>{
+          console.log(res);
+        }
+      )
+      .catch(err=>{
+        console.error(err);
+      });
+      alert("Entrada apagada.");
+      navigation.goBack();
+    }
+
+    const api = () => {
+      const uri = "http://192.168.0.9:3301/edit";
+      axios({
+          method: 'post',
+          url: uri,
+          data:{
+              idFinanca: route.params.idFinanca
+          }
+      })
+      .then(res=>{
+          setDados(res.data);
+          var vlr = dados[0].Valor;
+          console.log(typeof valor);
+          console.log(vlr);
+          setValor(vlr);
+          console.log(valor);
+          setCategoria(dados[0].Categoria);
+          setDescription(dados[0].Descricao);
+          setDate(dados[0].Data);
+      })
+      .catch(err=>{})
+    }
+
+
+
+    useEffect(()=>{
+      api();
+    }, [categorias, open])
+
+    const reload = () => {
+      api();
+    }
+
     return (
+      <View style={{width: '100%', alignItems:'center'}}>
+        <View style={{alignItems: 'center', marginBottom: 12, marginTop: 12}}>
+        <Text style={{color: COLORS.GRAY_100, fontSize: 24}}>
+          Editar finança
+        </Text>
+        <TouchableOpacity 
+        onPress={() => { reload(); }}
+        >
+        <Image
+        style={{width: 25, height: 25, tintColor: 'white', position: 'absolute', left: 160, bottom: 5}}
+          source={require('../../assets/reload.png')}
+        />
+        </TouchableOpacity>
+        </View>
+      
         <View style={{width: '80%', alignItems: 'center'}}>
         <Text style={{margin: 4, color: COLORS.GRAY_100, fontSize: 16}}>
           { msg }
@@ -108,28 +146,20 @@ const Form = () => {
         </Text>
         <TextInput
         maxLength={10}
-        keyboardType="numeric"
         style={style.input}
-        value= {formatarMoeda(valor)}
-        onChangeText={(valor) => {setValor(valor)}}
+        value= {valor.toString()}
+        onChangeText={ () => { }}
         />
         <Text style={style.label}>
           Data
         </Text>
-        <View
-        style={style.inputDate}
-        >
-          <TouchableOpacity style={{width: "100%"}} onPress={() => {showDatepicker()}}>
-            <Text style={{color: COLORS.GRAY_100}}>{date.toLocaleDateString()}</Text>
-          </TouchableOpacity>
-        </View>
-        {show && (<DateTimePicker
-          value={date}
-          display={'inline'}
-          mode='date'
-          onChange={onChange}
-          style={style.datePicker}
-        />)}
+        <TextInput
+        maxLength={45}
+        style={style.input}
+        value= {date.substring(0,10)}
+        onChangeText={(date) => {setDate(date)}}
+        editable = {false}
+        />
         <Text style={style.label}>
           Descrição
         </Text>
@@ -137,17 +167,7 @@ const Form = () => {
         maxLength={45}
         style={style.input}
         value= {description}
-        onChangeText={(description) => {setDescription(description)}}
-        />
-        <Text style={style.label}>
-          Repetir (em meses)
-        </Text>
-        <TextInput
-        maxLength={3}
-        keyboardType="numeric"
-        style={style.input}
-        value= {repete.toString()}
-        onChangeText={(repete) => {setRepete(repete.toString())}}
+        onChangeText={(value) => {setDescription(value)}}
         />
         <Text style={style.label}>
         Categoria
@@ -176,11 +196,13 @@ const Form = () => {
         onPress={() => {}}
         style={style.button}>
           <Text style={{color: COLORS.GRAY_800, fontWeight: 'bold'}}>Salvar</Text>
-        </TouchableOpacity><TouchableOpacity
-        onPress={() => {}}
+        </TouchableOpacity>
+        <TouchableOpacity
+        onPress={() => {excluirFinanca()}}
         style={style.buttonDelete}>
           <Text style={{color: COLORS.GRAY_000, fontWeight: 'bold'}}>Apagar</Text>
         </TouchableOpacity>
+      </View>
       </View>
       </View>
     )
@@ -188,12 +210,10 @@ const Form = () => {
 
 
 
-
 const Adicionar = () => {
     return (
     <SafeAreaView style={style.container}>
       <View style={{alignItems:'center'}}>
-        <Header/>
         <Form/>
       </View>
     </SafeAreaView>

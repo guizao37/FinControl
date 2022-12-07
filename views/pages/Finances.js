@@ -28,10 +28,15 @@ export default function Finances() {
   }
 
   const [data, setData] = useState(`${ano}-${mesAgora}-01`);
+
+  const [extrato, setExtrato] = useState([]);
   const [dataFim, setDataFim] = useState(`${proxAno}-${proxMes}-01`);
   const [mes, setMes] = useState(mesAtual.charAt(0).toUpperCase() + mesAtual.slice(1));
+  
+  const [valueMes, setValueMes] = useState(data);
 
   const [open, setOpen] = useState(false);
+
 
   const [vtReceitas, setVtReceitas] = useState(0);
   const [vtDespesas, setVtDespesas] = useState(0);
@@ -66,8 +71,8 @@ export default function Finances() {
     {"label": "Dezembro/2023", "value": "2023-12-01", "proximo":"2023-12-31"}
   ]);
 
-  const uri1 = "http://192.168.0.11:3301/receitas";
-  const uri2 = "http://192.168.0.11:3301/despesas";
+  const uri1 = "http://192.168.0.9:3301/receitas";
+  const uri2 = "http://192.168.0.9:3301/despesas";
 
   const api = () => { 
     // Busca receitas
@@ -75,7 +80,7 @@ export default function Finances() {
       method: 'post',
       url: uri1,
       data: {
-        data: data,
+        data: valueMes,
         dataFim: dataFim
       }
     })
@@ -83,14 +88,14 @@ export default function Finances() {
       var dados = res.data;
       setVtReceitas(dados[0].receitas);
     })
-    .catch(err => { console.log(err); })
+    .catch(err => { console.log(err); });
 
     // Busca despesas
     axios({
       method: 'post',
       url: uri2,
       data: {
-        data: data,
+        data: valueMes,
         dataFim: dataFim
       }
     })
@@ -100,7 +105,22 @@ export default function Finances() {
       var saldo = vtReceitas - vtDespesas;
       setValorSaldo(saldo.toFixed(2));
     })
-    .catch(err => { console.log(err); })
+    .catch(err => { console.log(err); });
+
+    const uri = "http://192.168.0.9:3301/extrato";
+        axios({
+          method: 'post',
+          url: uri,
+          data:{
+            data: valueMes,
+            dataFim: dataFim
+          }
+        })
+        .then(res=>{
+            console.log(res.data);
+            setExtrato(res.data);
+        })
+        .catch(err=>{});
   }
 
   const Listagem = () => {
@@ -109,17 +129,19 @@ export default function Finances() {
 
   useEffect(()=>{
     api();
-  }, []);
+    setValorSaldo((vtReceitas - vtDespesas).toFixed(2))
+  }, [valueMes]);
 
   const reload = () =>{
     api();
+    setValorSaldo((vtReceitas - vtDespesas).toFixed(2))
   }
 
 
   const Header = () => {
     return (
-      <View style={{alignItems: 'center'}}>
-        <TouchableOpacity>
+      <View style={{alignItems: 'center', zIndex: 999}}>
+        <TouchableOpacity onPress={() => {open ? setOpen(false) : setOpen(true)}}>
         <Text style={style.textHeader}>
           {mes}
         </Text>
@@ -134,6 +156,7 @@ export default function Finances() {
           </TouchableOpacity>
           {open ? (
             <View style={{
+              zIndex: 999,
             position: 'absolute',
             borderRadius: 10,
             shadowOpacity: 1,
@@ -163,6 +186,7 @@ export default function Finances() {
                 setValueMes(item.value);
                 setMes(item.label);
                 setDataFim(item.proximo);
+                console.log(dataFim);
                 setOpen(false);
                }}
               >
@@ -232,22 +256,37 @@ export default function Finances() {
   
 
   const Extrato = () => {
-    const [show, setShow] = useState(true)
+    const renderItem = ({item}) => {
+      return (
+      <View>
+          <View style={{backgroundColor: COLORS.GRAY_700, borderRadius: 8, justifyContent: 'space-between', flexDirection: 'row',
+          marginBottom: 4, height: 40, alignItems: 'center', padding: 4
+          }}>
+              <Text style={{color: COLORS.GRAY_100}}>
+                  Descrição: {item.Descricao}
+              </Text>
+              <Text style={{color: COLORS.GRAY_100}}>
+                  {(item.Tipo == "R") ? "R$ " + item.Valor : "-R$ " + item.Valor}
+              </Text>
+          </View>
+      </View>
+      )
+  }
     return (
-      <View style={{alignItems: 'center', marginTop: 12}}>
+      <View style={{alignItems: 'center', marginTop: 12, zIndex: 1}}>
         <View style={{width: "90%", backgroundColor: COLORS.GRAY_800, borderRadius: 4, padding: 12}}>
-          <TouchableOpacity onPress={() => {setShow(show ? false : true)}}>
             <View style={{alignItems: 'center'}}>
-            <Text style={{color:COLORS.GRAY_100, fontSize: 28, fontWeight: '500'}}>
+            <Text style={{color:COLORS.GRAY_100, fontSize: 28, fontWeight: '500', marginBottom: 12}}>
               Extrato
             </Text>
             </View>
-          </TouchableOpacity>
-          {show ? (
-            <FlatList style={{height:"70%"}}>
+            <FlatList 
+            renderItem={renderItem}
+            style={{height:"70%"}}
+            data={extrato}
+            >
               
             </FlatList>
-          ) : null}
         </View>
       </View>
     )

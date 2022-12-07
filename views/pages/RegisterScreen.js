@@ -77,7 +77,7 @@ const RegisterScreen = () => {
     checkPassword();
     checkEmail();
     if (checkCampos() && checkPassword() && checkEmail()){
-      fetch('http://192.168.0.11:3301/register',
+      fetch('http://192.168.0.9:3301/register',
     {
       method: 'POST',
       body: JSON.stringify({

@@ -12,23 +12,31 @@ const Listagem = () => {
     const navigation = useNavigation();
 
     const [dados, setDados] = useState([
-    ]);
+    ])
 
-    useEffect(()=>{
-        var uri = "http://192.168.0.11:3301/finances";
+    const api = () => { 
+        const uri = "http://192.168.0.9:3301/finances";
         axios.get(uri)
         .then(res=>{
             console.log(res.data);
             setDados(res.data);
         })
         .catch(err=>{});
+    }
+
+    useEffect(()=>{
+        api();
     },[]);
+
+    const reload = () => {
+        api();
+    }
     
     const renderItem = ({item}) => {
         return (
         <View>
             <TouchableOpacity style={{backgroundColor: COLORS.GRAY_700, borderRadius: 8, justifyContent: 'space-between', flexDirection: 'row',
-            marginBottom: 4, height: 40, alignItems: 'center', padding: 4
+            marginBottom: 4, height: 56, alignItems: 'center', padding: 4
             }}
             onPress= { () => {
                 navigation.navigate("Edit",{
@@ -36,10 +44,10 @@ const Listagem = () => {
                 });
             }}
             >
-                <Text>
+                <Text style={{color: COLORS.GRAY_100}}>
                     Descrição: {item.Descricao}
                 </Text>
-                <Text>
+                <Text style={{color: COLORS.GRAY_100}}>
                     R${item.Valor}
                 </Text>
             </TouchableOpacity>
@@ -49,8 +57,18 @@ const Listagem = () => {
 
     return (
     <SafeAreaView style={style.container}>
-        <View style={{alignItems: 'center'}}>
-            <Text style={{color: 'white', fontSize: 24, marginBottom: 12}}>Listagem de finanças</Text>
+        <View style={{alignItems: 'center', marginBottom: 12, marginTop: 12}}>
+        <Text style={{color: COLORS.GRAY_100, fontSize: 24}}>
+          Listagem de finanças
+        </Text>
+        <TouchableOpacity 
+          onPress={() => { reload(); }}
+          >
+          <Image
+          style={{width: 25, height: 25, tintColor: 'white', position: 'absolute', left: 160, bottom: 5}}
+            source={require('../../assets/reload.png')}
+          />
+          </TouchableOpacity>
         </View>
         <View style={{alignItems: 'center'}}>
             <View style={{height: "90%", width: "90%", backgroundColor: COLORS.GRAY_800, borderRadius: 4, padding: 8}}>

@@ -7,6 +7,8 @@ import style from "../styles/style"
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { KeyboardAvoidingView } from 'react-native';
+import axios from 'axios';
+import { Alert } from 'react-native';
 
 export default function Planning() {
 
@@ -26,48 +28,68 @@ export default function Planning() {
 }
 
   const Form = () => {
-    const [show, setShow] = useState(false);
+
     const [valor, setValor] = useState(0)
-    const [date, setDate] = useState(new Date())
     const [parcelas, setParcelas] = useState(0)
     const [juros, setJuros] = useState(0)
+    const [nome, setNome] = useState("");
 
-    const [description, setDescription] = useState("")
-    const [categoria, setCategoria] = useState("")
-    const [categorias, setCategorias] = useState([
-      {label: 'Compra', value: 'compra'},
-      {label: 'Pagamento de dívida', value: 'divida'},
-      {label: 'Empréstimo', value: 'emprestimo'}
-    ]);
-    const [open, setOpen] = useState(false)
+    const [saldo, setSaldo] = useState(0);
 
-    const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setShow(false);
-    setDate(currentDate);
-  };
+    var valorReceita, valorDespesa, vtReceita, vtDespesa;
 
-  const showDatepicker = () => {
-    if (show == false) { 
-      setShow(true)
-    } else {
-      setShow(false)
+    const limpaCampos = () => {
+      setValor(0);
+      setParcelas(0);
+      setJuros(0);
     }
-  };
+
+  const planejar = () => {
+    const uri1 = "http://192.168.0.9:3301/receitasplan";
+    const uri2 = "http://192.168.0.9:3301/despesasplan";
+
+    axios.get(uri1).then(res=>{
+      valorReceita = res.data;
+      vtReceita = valorReceita[0].receitas;
+    })
+    .catch(err=>{console.log(err)});
+    
+    axios.get(uri2).then(res=>{
+      valorDespesa = res.data;
+      vtDespesa = valorDespesa[0].despesas;
+    }).
+    catch(err=>{console.log(err)});
+
+    var valorSaldo = (vtReceita/3) - (vtDespesa/3);
+    console.log(vtReceita);
+    console.log()
+    console.log(valorSaldo);
+    setSaldo(valorSaldo);
+
+    var valorP = parseFloat(valor.toString().replace(',','.'));
+    var jurosR = parseFloat(juros.toString().replace(',','.')).toFixed(2);
+    var J = parseFloat(valor.toString().replace(',','.')) * jurosR * parcelas;
+    var VT = valorP  + J;
+    Alert.alert(nome,"Valor final: R$" + VT.toFixed(2) + "\n" + "Valor de cada parcela: R$" + (VT/parcelas).toFixed(2)
+    + "\n" + "Saldo médio últimos 3 meses: R$" + saldo
+    );
+    limpaCampos();
+  }
+
     return (
       <KeyboardAvoidingView
       behavior='padding'
       style={{width: "80%", alignItems: 'center'}}>
+
         <Text style={style.label}>
-          Dê um nome ao planejamento.
+          Nome
         </Text>
         <TextInput
-        maxLength={20}
+        maxLength={12}
         style={style.input}
-        value= {description}
-        onChangeText={(value) => {setDescription(value)}}
+        value= {nome}
+        onChangeText={(nome) => {setNome(nome)}}
         />
-
         <Text style={style.label}>
           Qual o valor?
         </Text>
@@ -75,28 +97,9 @@ export default function Planning() {
         maxLength={12}
         style={style.input}
         keyboardType = "numeric"
-        value= {"R$"+formatarMoeda(valor)}
-        onChangeText={(value) => {setValor(value)}}
+        value= {valor}
+        onChangeText={(valor) => {setValor(valor)}}
         />
-
-        <Text style={style.label}>
-          Qual a data de início?
-        </Text>
-        <View
-        style={style.inputDate}
-        >
-          <TouchableOpacity onPress={() => {showDatepicker()}}>
-            <Text style={{color: COLORS.GRAY_100}}>{date.toLocaleDateString()}</Text>
-          </TouchableOpacity>
-        </View>
-        {show && (<DateTimePicker
-          value={date}
-          display={'inline'}
-          mode='date'
-          onChange={onChange}
-          style={style.datePicker}
-        />)}
-
         <Text style={style.label}>
           Qual o número de parcelas?
         </Text>
@@ -114,36 +117,12 @@ export default function Planning() {
         maxLength={5}
         style={style.input}
         keyboardType = "numeric"
-        value= {formatarMoeda(juros)}
+        value= {juros}
         onChangeText={(value) => {setJuros(value)}}
         />
-        
-
-        <Text style={style.label}>
-          Selecione uma categoria.
-        </Text>
-
-        <View>
-        <DropDownPicker
-        style={style.input}
-        textStyle={{
-          color:COLORS.GRAY_100
-        }}
-        open={open}
-        value={categoria}
-        items={categorias}
-        setOpen={setOpen}
-        setValue={(value)=> {setCategoria(value)}}
-        setItems={setCategorias}
-        dropDownContainerStyle={{
-          backgroundColor: COLORS.GRAY_800,
-          width: "100%",
-          borderWidth: 0,
-        }}
-        placeholder="Categorias"
-        />
+        <View style={{width: "100%"}}>
         <TouchableOpacity
-        onPress={() => {}}
+        onPress={() => {planejar()}}
         style={style.button}>
           <Text style={{color: COLORS.GRAY_800, fontWeight: 'bold'}}>Estimar</Text>
         </TouchableOpacity>
