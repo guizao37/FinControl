@@ -41,19 +41,23 @@ const Header = () => {
 const Form = () => 
 {   
     const [show, setShow] = useState(false);
-
+    const [parcelas, setParcelas] = useState(1);
     const [valor, setValor] = useState(0);
     const [date, setDate] = useState(new Date());
     const [categoria, setCategoria] = useState("");
     const [description, setDescription] = useState("");
+    
 
     const [categorias, setCategorias] = useState([
         {label: 'Veículo', value: 'veiculo'},
         {label: 'Imóvel', value: 'imovel'},
         {label: 'Aplicação', value: 'aplicacao'},
         {label: 'Financiamento', value: 'financiamento'},
+        {label: 'Compras', value: 'compras'},
+        {label: 'Cartão de crédito', value: 'cartao'},
         {label: 'Outros bens', value: 'outros_bens'},
-        {label: 'Outras dívidas', value: 'outras_dividas'}
+        {label: 'Outras dívidas', value: 'outras_dividas'},
+        
     ]);
     
     const [msg, setMsg] = useState("")
@@ -117,7 +121,11 @@ const Form = () =>
             valor: formatarMoeda(valor),
             descricao: description,
             data: dataEntrada,
-            categoria: categoria
+            categoria: categoria,
+            parcelas: parcelas,
+            dia: dia,
+            mes: mes,
+            ano: ano
           },
         })
         .then(res => { 
@@ -173,7 +181,22 @@ const Form = () =>
           style={style.datePicker}
         />)}
         
-        
+        {(categoria == "compras" || categoria == "financiamento" || categoria == "outras_dividas"
+        || categoria == "cartao") ?
+        (
+        <View style={{width:"100%", alignItems: 'center'}}>
+        <Text style={style.label}>
+            Parcelas
+        </Text>
+        <TextInput
+        maxLength={3}
+        keyboardType="numeric"
+        style={style.input}
+        value= {parcelas.toString()}
+        onChangeText={(parcelas)=>{setParcelas(parcelas)}}
+        />
+        </View>
+        ) : null}
         <Text style={style.label}>
         Selecione a categoria
         </Text>

@@ -28,19 +28,18 @@ export default function Finances() {
   }
 
   const [data, setData] = useState(`${ano}-${mesAgora}-01`);
-
-  const [extrato, setExtrato] = useState([]);
   const [dataFim, setDataFim] = useState(`${proxAno}-${proxMes}-01`);
   const [mes, setMes] = useState(mesAtual.charAt(0).toUpperCase() + mesAtual.slice(1));
-  
-  const [valueMes, setValueMes] = useState(data);
 
   const [open, setOpen] = useState(false);
 
+  const [valueMes, setValueMes] = useState(data);
 
   const [vtReceitas, setVtReceitas] = useState(0);
   const [vtDespesas, setVtDespesas] = useState(0);
   const [valorSaldo, setValorSaldo] = useState(0);
+
+  const[extrato, setExtrato] = useState([]);
  
   const [meses, setMeses] = useState([
     //2022
@@ -156,7 +155,6 @@ export default function Finances() {
           </TouchableOpacity>
           {open ? (
             <View style={{
-              zIndex: 999,
             position: 'absolute',
             borderRadius: 10,
             shadowOpacity: 1,
@@ -186,7 +184,6 @@ export default function Finances() {
                 setValueMes(item.value);
                 setMes(item.label);
                 setDataFim(item.proximo);
-                console.log(dataFim);
                 setOpen(false);
                }}
               >
@@ -282,7 +279,7 @@ export default function Finances() {
             </View>
             <FlatList 
             renderItem={renderItem}
-            style={{height:"70%"}}
+            style={{height:"60%"}}
             data={extrato}
             >
               
@@ -291,7 +288,6 @@ export default function Finances() {
       </View>
     )
   }
-
   function formatarMoeda(valor) {
     valor = valor + '';
     valor = parseInt(valor.replace(/[\D]+/g, ''));

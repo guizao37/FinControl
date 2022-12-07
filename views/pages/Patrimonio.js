@@ -73,11 +73,11 @@ export default function Patrimonio() {
     axios.get(uri4).then(res=>{if ((res.data)[0].Valor === null){setValorNovembro(0)} else { setValorNovembro((res.data)[0].Valor) }}).catch(err=>{console.log(err)});
     axios.get(uri5).then(res=>{if ((res.data)[0].Valor === null){setValorDezembro(0)} else { setValorDezembro((res.data)[0].Valor) }}).catch(err=>{console.log(err)});
 
-    console.log(valorAgosto)
-    console.log(valorSetembro)
-    console.log(valorOutubro)
-    console.log(valorNovembro)
-    console.log(valorDezembro)
+    console.log(valorAgosto);
+    console.log(valorSetembro);
+    console.log(valorOutubro);
+    console.log(valorNovembro);
+    console.log(valorDezembro);
   }
 
   useEffect(()=>{
@@ -89,21 +89,6 @@ export default function Patrimonio() {
     apiGeral();
     apiGrafico();
   }
-
-  function formatarMoeda(valor) {
-    valor = valor + '';
-    valor = parseInt(valor.replace(/[\D]+/g, ''));
-    valor = valor + '';
-    valor = valor.replace(/([0-9]{2})$/g, ",$1");
-
-    if (valor.length > 6) {
-        valor = valor.replace(/([0-9]{3}),([0-9]{2}$)/g, ".$1,$2");
-    }
-
-    if(valor == 'NaN') valor = '';
-
-    return valor;
-}
 
   const Header = () => {
     return (
@@ -128,7 +113,7 @@ export default function Patrimonio() {
     <View style={{alignItems: 'center', marginTop: 12}}>
       <View style={{width: "90%", backgroundColor: COLORS.GRAY_800, borderRadius: 4, padding: 12}}>
         <TouchableOpacity
-        onPress={() => {}}
+        onPress={() => {navigation.navigate("Listagem");}}
         >
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text style={{fontSize: 20, fontWeight: '500', color: COLORS.GRAY_100}}>
@@ -164,14 +149,11 @@ export default function Patrimonio() {
     return (
       <View style= {{ alignItems: 'center'}}>
       <View style={{ backgroundColor: COLORS.GRAY_800, borderRadius: 4, marginTop: 20, width: "90%", alignItems: 'center'}}>
-          <Text style={{ color: COLORS.GRAY_100, fontWeight: '500', fontSize: 24, margin: 8, alignItems: 'center'}}>
+          <Text style={{ color: COLORS.GRAY_100, fontWeight: '500', fontSize: 24, marginTop: 4,alignItems: 'center'}}>
             Evolução
           </Text>
-          <Text style={{ color: COLORS.GRAY_100, fontSize: 16}}>
-            (patrimônio líquido)
-          </Text>
-          <Text style={{ color: COLORS.GRAY_100, fontSize: 16}}>
-            x1000
+          <Text style={{color: COLORS.GRAY_100, fontSize: 16}}>
+            (x1000)
           </Text>
           <View style={{marginLeft: 20}}>
           <VictoryChart

@@ -157,26 +157,53 @@ app.post("/add", (req, res) => {
 });
 
 app.post("/addpatrimonio", (req,res)=> {
+    var parcelas = parseInt(req.body.parcelas);
     var data = req.body.data;
     var valor = (req.body.valor).replace('.','').replace(',','.');
     var descricao = req.body.descricao;
     var categoria = req.body.categoria;
     var tipo = "";
+    var contador = 0;
+    var dia = req.body.dia;
+    var mes = req.body.mes;
+    var ano = req.body.ano;
+    valor = (valor/parcelas).toFixed(2);
 
     if (categoria == "veiculo" || categoria == "imovel" || categoria == "aplicacao" ||categoria == "outros_bens") { 
         tipo = "B";
     } else {tipo = "D";}
-
+    
+    if (parcelas == 1){
     var query = `insert into patrimonio (Valor, Data, Descricao, Tipo, Categoria, Usuario_idUsuario) VALUES (
         ${valor}, '${data}', '${descricao}', '${tipo}', '${categoria}', ${getIdUsuario()}
     )`;
-    console.log(query);
     db.query(query, (err, results) => {
         if (err) {
             console.log(err);
             res.status(400).send("Ocorreu um erro");
         } else {console.log(results); res.status(200).send("Entrada adicionada");}
     });
+    } else {
+        while(parcelas>contador){
+            contador = contador + 1;
+            if (mes == 2 && dia > 28 ) {
+                var dataRepete = `${ano}-${mes}-28`;
+            } else { 
+                var dataRepete = `${ano}-${mes}-${dia}`;
+            }
+            var query = `insert into patrimonio (Valor, Data, Descricao, Tipo, Categoria, Usuario_idUsuario) VALUES (
+            ${valor}, '${dataRepete}', '${descricao}', '${tipo}', '${categoria}', ${getIdUsuario()})`;
+            db.query(query, (err, results) => {
+                console.log(err);
+                console.log(results);
+            });
+            var mes = mes + 1;
+                if (mes > 12) { 
+                    mes = 1;
+                    ano = ano + 1;
+                }
+        }
+    }
 });
 
 app.post("/financas", (req, res) => {
@@ -234,18 +261,6 @@ app.post("/receitas", (req, res)=>{
     });
 });
 
-app.get("/receitasplan", (req, res)=>{
-    const receitas = `select SUM(Valor) as receitas from finança where tipo = "R" and Data between
-    '2022-10-01' and '2022-12-31' and usuario_idusuario = ${getIdUsuario()}`;
-
-    console.log(receitas);
-
-    db.query(receitas, (err, results)=>{
-        console.log(results);
-        res.send(results);
-    });
-});
-
 app.post("/despesas", (req, res)=>{
     var mes = req.body.data;
     var proxMes = req.body.dataFim;
@@ -259,16 +274,6 @@ app.post("/despesas", (req, res)=>{
     });
 });
 
-app.get("/despesasplan", (req, res)=>{
-
-    const despesas = `select SUM(Valor) as despesas from finança where tipo = "D" and Data between
-    '2022-10-01' and '2022-12-31' and usuario_idusuario = ${getIdUsuario()}`;
-
-    db.query(despesas, (err, results)=>{
-        console.log(despesas);
-        res.send(results);
-    });
-});
 
 app.get("/bens", (req, res) => {
     var query = `select SUM(Valor) as BemTotal from patrimonio where Tipo = "B" and Usuario_idUsuario = ${getIdUsuario()}`;
@@ -388,6 +393,20 @@ app.get("/dezembro", (req,res)=>{
     });
 })
 
+app.get("/listapatrimonio", (req,res)=>{
+    const query = `SELECT * FROM patrimonio WHERE Usuario_idUsuario = ${getIdUsuario()}`;
+    db.query(query, (err, results)=>{
+        res.send(results);
+    })
+});
+
+app.post("/deleteP", (req,res)=>{
+    const query = `delete from patrimonio where idPatrimonio = ${req.body.idPatrimonio}`;
+    db.query(query, (err,results)=>{
+        console.log(results);
+        res.send(results);
+    })
+});
 
 // INICIANDO SERVIDOR
 app.listen(port, () => {

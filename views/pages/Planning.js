@@ -29,14 +29,10 @@ export default function Planning() {
 
   const Form = () => {
 
-    const [valor, setValor] = useState(0)
-    const [parcelas, setParcelas] = useState(0)
-    const [juros, setJuros] = useState(0)
+    const [valor, setValor] = useState(0);
+    const [parcelas, setParcelas] = useState(0);
+    const [juros, setJuros] = useState(0);
     const [nome, setNome] = useState("");
-
-    const [saldo, setSaldo] = useState(0);
-
-    var valorReceita, valorDespesa, vtReceita, vtDespesa;
 
     const limpaCampos = () => {
       setValor(0);
@@ -45,33 +41,16 @@ export default function Planning() {
     }
 
   const planejar = () => {
-    const uri1 = "http://192.168.0.12:3301/receitasplan";
-    const uri2 = "http://192.168.0.12:3301/despesasplan";
-
-    axios.get(uri1).then(res=>{
-      valorReceita = res.data;
-      vtReceita = valorReceita[0].receitas;
-    })
-    .catch(err=>{console.log(err)});
-    
-    axios.get(uri2).then(res=>{
-      valorDespesa = res.data;
-      vtDespesa = valorDespesa[0].despesas;
-    }).
-    catch(err=>{console.log(err)});
-
-    var valorSaldo = (vtReceita/3) - (vtDespesa/3);
-    console.log(vtReceita);
-    console.log()
-    console.log(valorSaldo);
-    setSaldo(valorSaldo);
 
     var valorP = parseFloat(valor.toString().replace(',','.'));
+    console.log(valorP);
     var jurosR = parseFloat(juros.toString().replace(',','.')).toFixed(2);
-    var J = parseFloat(valor.toString().replace(',','.')) * jurosR * parcelas;
+    console.log(jurosR);
+    var J = parseFloat(valor.toString().replace(',','.')) * (jurosR/100) * parcelas;
     var VT = valorP  + J;
+    console.log(J);
+    console.log(VT);
     Alert.alert(nome,"Valor final: R$" + VT.toFixed(2) + "\n" + "Valor de cada parcela: R$" + (VT/parcelas).toFixed(2)
-    + "\n" + "Saldo médio últimos 3 meses: R$" + saldo
     );
     limpaCampos();
   }
